@@ -1,50 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN News - لائیو رپورٹ</title>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <title>SDN News - ڈیجیٹل پورٹل</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 15px; }
-        .card { max-width: 700px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; border-top: 6px solid #cc0000; }
-        .header { background: #cc0000; color: white; padding: 25px; text-align: center; }
-        .header h1 { margin: 0; font-size: 26px; }
-        #chart-container { width: 100%; height: 400px; padding: 15px; box-sizing: border-box; }
-        .footer { background: #222; color: white; padding: 20px; text-align: center; font-size: 14px; }
+        /* Modern News Theme - Red/White/Black */
+        :root {
+            --primary: #dc3545; /* Red */
+            --dark: #1a1a1a;    /* Black */
+            --light: #ffffff;   /* White */
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: #f4f4f4; color: var(--dark); }
+        header { background: var(--dark); color: var(--light); padding: 15px; text-align: center; border-bottom: 4px solid var(--primary); }
+        
+        /* Breaking News Ticker */
+        .ticker-wrap { background: var(--primary); color: white; padding: 10px; overflow: hidden; white-space: nowrap; }
+        .ticker { display: inline-block; animation: marquee 20s linear infinite; font-weight: bold; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* Content Area */
+        .container { max-width: 1000px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .news-post { border-bottom: 2px solid #eee; padding: 15px 0; }
+        .news-post h2 { color: var(--primary); }
+        
+        /* Submit News Form */
+        .form-section { background: #eee; padding: 20px; border-radius: 8px; margin-top: 30px; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: var(--primary); color: white; border: none; padding: 12px 25px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #b02a37; }
+
+        /* Social Links Section */
+        .social-contact { text-align: center; margin: 30px 0; padding: 20px; border-top: 2px solid var(--primary); }
+        .social-icon { font-size: 30px; margin: 0 15px; color: var(--dark); text-decoration: none; }
+        .fa-facebook { color: #1877f2; }
+        .fa-youtube { color: #ff0000; }
+        .fa-whatsapp { color: #25d366; }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float { position: fixed; bottom: 20px; left: 20px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; text-align: center; font-size: 35px; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="header">
-        <h1>SDN NEWS - علاقائی رپورٹ</h1>
-        <p>رپورٹ: جمیل احمد کلیال</p>
+<header>
+    <h1>SDN News - سرائے عالمگیر کی آواز</h1>
+    <p>آپ کا اپنا ڈیجیٹل نیوز پورٹل</p>
+</header>
+
+<div class="ticker-wrap">
+    <div class="ticker">تازہ ترین خبر: SDN News ڈیجیٹل پورٹل اب مکمل طور پر فعال ہو چکا ہے! برائے مہربانی اپنی خبریں ہمیں ارسال کریں اور ہمارے سوشل میڈیا پیجز کو فالو کریں۔</div>
+</div>
+
+<div class="container">
+    <div class="news-post">
+        <h2>خوش آمدید!</h2>
+        <p>یہ SDN News کا نیا پورٹل ہے۔ یہاں آپ کو سرائے عالمگیر اور گردونواح کی تازہ ترین خبریں ملیں گی۔</p>
     </div>
 
-    <div id="chart-container"></div>
+    <div class="form-section">
+        <h3>اپنی خبر بھیجیں (Submit News)</h3>
+        <p>آپ نیچے دیے گئے فارم کے ذریعے ہمیں خبریں اور تصویریں بھیج سکتے ہیں۔</p>
+        <input type="text" placeholder="خبر کی سرخی (Title)">
+        <textarea rows="5" placeholder="خبر کی مکمل تفصیل"></textarea>
+        <input type="file" accept="image/*">
+        <button onclick="alert('خبر موصول ہو گئی! شکریہ۔')">خبر اپ لوڈ کریں</button>
+    </div>
 
-    <div class="footer">
-        <p><b>SDN News: باخبر، ہر لمحہ</b></p>
-        <p>آن لائن: www.SDNNews.com</p>
-        <p>رابطہ: +92 346 0008235</p>
+    <div class="social-contact">
+        <h3>ہم سے رابطہ کریں</h3>
+        <a href="https://www.facebook.com/share/1PqJRgSHUX/" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
+        <a href="https://youtube.com/@jamalahmadkalyal?si=WI2puchc9X-vx_Zh" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+        <p style="margin-top: 15px;">ای میل: contact@sdnnews.com</p>
     </div>
 </div>
 
-<script>
-    Highcharts.chart('chart-container', {
-        chart: { type: 'column' },
-        title: { text: 'ترقیاتی کاموں کی تازہ صورتحال' },
-        xAxis: { categories: ['سرائے عالمگیر', 'کھاریاں', 'گجرات', 'جہلم', 'لالہ موسیٰ'] },
-        yAxis: { title: { text: 'فیصد (%)' }, min: 0, max: 100 },
-        series: [{
-            name: 'ترقیاتی کام',
-            color: '#cc0000',
-            data: [85, 72, 90, 65, 78]
-        }],
-        credits: { enabled: false }
-    });
-</script>
+<a href="https://www.facebook.com/share/1PqJRgSHUX/" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
 
 </body>
 </html>
