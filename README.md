@@ -17,9 +17,8 @@
 ### 🛠 میں کیا کرتا ہوں؟
 * **SDN News:** ڈیجیٹل نیوز پلیٹ فارم کی سربراہی۔
 * **Content Creation:** اردو زبان میں تعلیمی اور معلوماتی مواد کی تیاری۔
-* **Web Development:** جاوا اسکرپٹ اور کلاؤڈ آٹومیشن (Azure) پر کام۔
-
----
+* **Web Development:** جاوا اسکرپٹ اور کلاؤڈ آٹومیشن (Azure) پر کام
+https://github-readme-stats.vercel.app/api/top-langs/?username=marwajameel&layout=compact&theme=radical
 
 ### 📱 مجھ سے رابطہ کریں
 * 📺 [YouTube](https://youtube.com/@jamalahmadkalyal)
