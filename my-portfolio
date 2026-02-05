@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>میرا لائیو پورٹ فولیو</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f1f3f4; direction: rtl; padding: 15px; margin: 0; }
+        .container { max-width: 500px; margin: auto; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: #1a73e8; color: white; padding: 20px; text-align: center; }
+        .total-balance { font-size: 32px; font-weight: bold; margin: 10px 0; }
+        .switch-btn { background: #fff; color: #1a73e8; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .asset-list { padding: 10px; }
+        .asset-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .asset-name { font-weight: bold; }
+        .green { color: #137333; }
+        .red { color: #d93025; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>میرا کل سرمایہ</h1>
+        <div id="grand-total" class="total-balance">لوڈنگ...</div>
+        <button class="switch-btn" onclick="toggleCurrency()">کرنسی تبدیل کریں (AED/PKR)</button>
+    </div>
+    <div id="assets" class="asset-list"></div>
+</div>
+
+<script>
+    let currentCurrency = 'AED';
+    let pkrRate = 75.50; 
+    
+    // آپ کی ہولڈنگز
+    const myPortfolio = [
+        { id: 'solana', symbol: 'SOL', name: 'Solana', qty: 13 },
+        { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', qty: 0.05 },
+        { id: 'tesla', symbol: 'TSLA', name: 'Tesla Inc', qty: 5 },
+        { id: 'nvidia', symbol: 'NVDA', name: 'NVIDIA Corp', qty: 10 }
+    ];
+
+    async function fetchPrices() {
+        try {
+            const ids = myPortfolio.map(a => a.id).join(',');
+            const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids},united-arab-emirates-dirham&vs_currencies=aed,pkr&include_24hr_change=true`);
+            const data = await response.json();
+            pkrRate = data['united-arab-emirates-dirham'].pkr;
+            updateUI(data);
+        } catch (e) { console.log("Error loading prices"); }
+    }
+
+    function updateUI(data) {
+        let totalValueAED = 0;
+        let html = '';
+        myPortfolio.forEach(asset => {
+            const priceAED = data[asset.id].aed;
+            const change = data[asset.id].aed_24h_change;
+            const displayPrice = currentCurrency === 'AED' ? priceAED : priceAED * pkrRate;
+            totalValueAED += (priceAED * asset.qty);
+            html += `<div class="asset-row">
+                <div><b>${asset.name}</b><br><small>${asset.qty} ${asset.symbol}</small></div>
+                <div style="text-align:left;">
+                    <span class="asset-name">${currentCurrency} ${displayPrice.toLocaleString()}</span>
+                    <span class="${change >= 0 ? 'green' : 'red'}">${change.toFixed(2)}%</span>
+                </div>
+            </div>`;
+        });
+        const finalTotal = currentCurrency === 'AED' ? totalValueAED : totalValueAED * pkrRate;
+        document.getElementById('grand-total').innerText = currentCurrency + ' ' + finalTotal.toLocaleString();
+        document.getElementById('assets').innerHTML = html;
+    }
+
+    function toggleCurrency() {
+        currentCurrency = currentCurrency === 'AED' ? 'PKR' : 'AED';
+        fetchPrices();
+    }
+
+    fetchPrices();
+    setInterval(fetchPrices, 60000); // ہر منٹ بعد اپڈیٹ
+</script>
+</body>
+</html>
