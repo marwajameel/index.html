@@ -1,45 +1,60 @@
 <div align="center">
 
-# 🔐 Passkey Authenticator AAGUIDs Explorer
+<img src="https://raw.githubusercontent.com/marwajameel/passkey-authenticator-aaguids/main/1000234455.jpg" alt="Jamil Ahmed Kalyal" width="150" height="150" style="border-radius: 50%; border: 4px solid #0078D4; object-fit: cover; margin-bottom: 15px;" />
 
-<img src="https://raw.githubusercontent.com/marwajameel/passkey-authenticator-aaguids/main/logo.png" alt="Passkey Logo" width="150" onerror="this.src='https://via.placeholder.com/150/0078D4/FFFFFF?text=Passkey+AAGUID'" style="border-radius: 20px; margin-bottom: 20px;" />
+# 🔐 Passkey Authenticator AAGUIDs Explorer
 
 ### 🚀 A Comprehensive Community-Driven List of Passkey Provider AAGUIDs
 
-**Built by [Jamil Ahmed Kalyal](https://github.com/marwajameel)** 📍
+**Built by [Jamil Ahmed Kalyal](https://github.com/marwajameel)** 📍  
+*Digital Media Expert | Educator | Developer*
 
-[![GitHub license](https://img.shields.io/github/license/marwajameel/passkey-authenticator-aaguids?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/marwajameel/passkey-authenticator-aaguids?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/marwajameel/passkey-authenticator-aaguids?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids/issues)
+[![License](https://img.shields.io/badge/License-Not%20Specified-lightgrey?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids)
+[![Stars](https://img.shields.io/github/stars/marwajameel/passkey-authenticator-aaguids?style=for-the-badge&color=blue)](https://github.com/marwajameel/passkey-authenticator-aaguids/stargazers)
+[![Issues](https://img.shields.io/github/issues/marwajameel/passkey-authenticator-aaguids?style=for-the-badge&color=green)](https://github.com/marwajameel/passkey-authenticator-aaguids/issues)
+
+---
+
+### 🌐 Connect With Me
+
+<p align="center">
+<a href="https://www.SDNNews.com"><img src="https://img.shields.io/badge/Website-SDN%20News-blue?style=flat-square&logo=google-chrome&logoColor=white" /></a>
+<a href="https://wa.me/923460008235"><img src="https://img.shields.io/badge/WhatsApp-25D366?style=flat-square&logo=whatsapp&logoColor=white" /></a>
+<a href="mailto:jamilahmed.overvalue964@passinbox.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a>
+</p>
+
+</div>
 
 ---
 
-### 📖 About This Repository
+### 📖 Project Overview
 
-This repository provides a community-sourced mapping of **AAGUIDs** to their respective passkey providers. It helps Relying Parties (RPs) and developers identify and display the correct provider name and icon (e.g., Google Password Manager, Dashlane, or iCloud Keychain) in their user interfaces.
-
----
+This repository provides a community-sourced mapping of **AAGUIDs** (Authenticator Attestation Globally Unique Identifiers) to their respective passkey providers. It helps developers and Relying Parties (RPs) identify and display the correct authenticator name and icon (e.g., Google Password Manager, iCloud Keychain, or Dashlane) in their applications.
 
 ### 🛠️ Key Features
-
-* ✅ **Extensive Database:** A growing list of AAGUIDs for various authenticators.
-* 🎨 **Icon Support:** Includes SVG icons for dark and light modes.
-* 📊 **Developer Friendly:** Simple JSON structure for easy integration.
-* 🌍 **Community Driven:** Open for contributions from the global developer community.
+* ✅ **Mapped Database:** Accurate list of AAGUIDs for global authenticators.
+* 🎨 **Visual Assets:** Includes icons for both light and dark themes.
+* 💻 **Developer Ready:** Structured JSON for easy integration into web/mobile apps.
 
 ---
 
-### 🚀 How to Use
+### 📊 My GitHub Stats
 
-Simply fetch the `aaguid.json` or `combined_aaguid.json` file and map the AAGUID from the WebAuthn response to the provider details in the list.
+<p align="center">
+<img src="https://github-readme-stats.vercel.app/api?username=marwajameel&show_icons=true&theme=radical&hide_border=true" width="48%" />
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=marwajameel&layout=compact&theme=radical&hide_border=true" width="45%" />
+</p>
 
-```json
-{
-  "ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4": {
-    "name": "Google Password Manager",
-    "icon_light": "data:image/svg+xml;base64,...",
-    "icon_dark": "data:image/svg+xml;base64,..."
-  }
-}
+---
+
+### 📍 Office & Contact
+* 🏠 **Address:** Nizamabad Kalyal House 182, Near Session Court, St. 13, Sarai Alamgir, District Gujrat.
+* 🆔 **Key ID:** `3AA5C34371567BD2`
+
+---
+<div align="center">
+**SDN News: Informed, Every Moment** 🌐 [www.SDNNews.com](http://www.SDNNews.com) | 📞 +92 346 0008235  
+**Report by:** Jamil Ahmed Kalyal
+</div>
 
 
