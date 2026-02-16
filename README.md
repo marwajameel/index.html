@@ -1,32 +1,45 @@
-لا# السلام علیکم! میں ہوں جمیل احمد کلیل 👋
+<div align="center">
 
-### 🚀 Digital Media Expert | Educator | Developer
+# 🔐 Passkey Authenticator AAGUIDs Explorer
 
-میرا تعلق سرائے عالمگیر، پاکستان سے ہے۔ میں ڈیجیٹل میڈیا اور جدید تعلیمی نظام میں ٹیکنالوجی کے استعمال کا ماہر ہوں۔ 
+<img src="https://raw.githubusercontent.com/marwajameel/passkey-authenticator-aaguids/main/logo.png" alt="Passkey Logo" width="150" onerror="this.src='https://via.placeholder.com/150/0078D4/FFFFFF?text=Passkey+AAGUID'" style="border-radius: 20px; margin-bottom: 20px;" />
+
+### 🚀 A Comprehensive Community-Driven List of Passkey Provider AAGUIDs
+
+**Built by [Jamil Ahmed Kalyal](https://github.com/marwajameel)** 📍
+
+[![GitHub license](https://img.shields.io/github/license/marwajameel/passkey-authenticator-aaguids?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/marwajameel/passkey-authenticator-aaguids?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/marwajameel/passkey-authenticator-aaguids?style=for-the-badge)](https://github.com/marwajameel/passkey-authenticator-aaguids/issues)
 
 ---
 
-### 📊 گٹ ہب کے اعداد و شمار (GitHub Stats)
+### 📖 About This Repository
 
-| **My Stats** | **Most Used Languages** |
-| :---: | :---: |
-| ![Jamil's GitHub Stats](https://github-readme-stats.vercel.app/api?username=marwajameel&show_icons=true&theme=radical) | ![Jamil's Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=marwajameel&layout=compact&theme=radical) |
+This repository provides a community-sourced mapping of **AAGUIDs** to their respective passkey providers. It helps Relying Parties (RPs) and developers identify and display the correct provider name and icon (e.g., Google Password Manager, Dashlane, or iCloud Keychain) in their user interfaces.
 
 ---
 
-### 🛠 میں کیا کرتا ہوں؟
-* **SDN News:** ڈیجیٹل نیوز پلیٹ فارم کی سربراہی۔
-* **Content Creation:** اردو زبان میں تعلیمی اور معلوماتی مواد کی تیاری۔
-* **Web Development:** جاوا اسکرپٹ اور کلاؤڈ آٹومیشن (Azure) پر کام
-https://github-readme-stats.vercel.app/api/top-langs/?username=marwajameel&layout=compact&theme=radical
+### 🛠️ Key Features
 
-### 📱 مجھ سے رابطہ کریں
-* 📺 [YouTube](https://youtube.com/@jamalahmadkalyal)
-* 📘 [Facebook](https://www.facebook.com/share/1BzT48A2DZ/)
-* 💼 [Website](https://jameelkalyallk.com.free)
+* ✅ **Extensive Database:** A growing list of AAGUIDs for various authenticators.
+* 🎨 **Icon Support:** Includes SVG icons for dark and light modes.
+* 📊 **Developer Friendly:** Simple JSON structure for easy integration.
+* 🌍 **Community Driven:** Open for contributions from the global developer community.
 
---
+---
 
-### ⚡ دلچسپ حقیقت
-میں ٹیکنالوجی کو اردو زبان کے ذریعے عام کرنے اور تعلیمی معیار کو بہتر بنانے کے لیے ہمہ وقت کوشاں رہتا ہوں۔
+### 🚀 How to Use
+
+Simply fetch the `aaguid.json` or `combined_aaguid.json` file and map the AAGUID from the WebAuthn response to the provider details in the list.
+
+```json
+{
+  "ea9b8d66-4d01-1d21-3ce4-b6b48cb575d4": {
+    "name": "Google Password Manager",
+    "icon_light": "data:image/svg+xml;base64,...",
+    "icon_dark": "data:image/svg+xml;base64,..."
+  }
+}
+
 
