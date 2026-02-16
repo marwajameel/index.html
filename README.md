@@ -27,18 +27,18 @@
 
 ---
 
-### 📖 Project Overview
+### 📖 About This Repository
 
-This repository provides a community-sourced mapping of **AAGUIDs** (Authenticator Attestation Globally Unique Identifiers) to their respective passkey providers. It helps developers and Relying Parties (RPs) identify and display the correct authenticator name and icon (e.g., Google Password Manager, iCloud Keychain, or Dashlane) in their applications.
+This repository provides a community-sourced mapping of **AAGUIDs** (Authenticator Attestation Globally Unique Identifiers) to their respective passkey providers。 It helps Relying Parties (RPs) and developers identify and display the correct provider name and icon (e.g., Google Password Manager, Dashlane, or iCloud Keychain) in their applications。
 
-### 🛠️ Key Features
-* ✅ **Mapped Database:** Accurate list of AAGUIDs for global authenticators.
-* 🎨 **Visual Assets:** Includes icons for both light and dark themes.
-* 💻 **Developer Ready:** Structured JSON for easy integration into web/mobile apps.
+### 🛠️ Key Skills & Focus
+* 📢 **SDN News:** Leading a digital news platform。
+* ✍️ **Content Creation:** Educational and informative content in Urdu。
+* 💻 **Web Development:** JavaScript and Azure Cloud Automation。
 
 ---
 
-### 📊 My GitHub Stats
+### 📊 GitHub Statistics
 
 <p align="center">
 <img src="https://github-readme-stats.vercel.app/api?username=marwajameel&show_icons=true&theme=radical&hide_border=true" width="48%" />
@@ -47,8 +47,8 @@ This repository provides a community-sourced mapping of **AAGUIDs** (Authenticat
 
 ---
 
-### 📍 Office & Contact
-* 🏠 **Address:** Nizamabad Kalyal House 182, Near Session Court, St. 13, Sarai Alamgir, District Gujrat.
+### 📍 Contact & Address
+* 🏠 **Address:** Nizamabad Kalyal House 182, Near Session Court, Street 13, Sarai Alamgir, District Gujrat。
 * 🆔 **Key ID:** `3AA5C34371567BD2`
 
 ---
@@ -56,5 +56,4 @@ This repository provides a community-sourced mapping of **AAGUIDs** (Authenticat
 **SDN News: Informed, Every Moment** 🌐 [www.SDNNews.com](http://www.SDNNews.com) | 📞 +92 346 0008235  
 **Report by:** Jamil Ahmed Kalyal
 </div>
-
 
