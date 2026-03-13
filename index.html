@@ -3,191 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN News - جمیل احمد کلیال</title>
+    <title>SDN News - لائیو اپڈیٹس</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
-
         body {
-            font-family: 'Noto Nastaliq Urdu', serif;
-            background-color: #f0f2f5;
+            background-image: url('1000271859.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
             margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            font-family: 'Noori Nastaleeq', 'Arial', sans-serif;
+            color: white;
         }
 
-        .main-container {
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6); /* تصویر کو تھوڑا گہرا کرنے کے لیے */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* لائیو نیوز پٹی */
+        .news-ticker {
+            background: #cc0000;
+            color: white;
             width: 100%;
-            max-width: 500px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            padding: 10px 0;
             overflow: hidden;
+            white-space: nowrap;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
         }
 
-        /* Header Style */
-        .header-section {
-            text-align: center;
-            padding: 25px;
-            background: #fff;
-        }
-
-        .header-section h1 {
-            font-size: 26px;
-            margin: 0;
-            color: #1a1a1a;
-        }
-
-        .welcome-banner {
-            background-color: #5eb5f7;
-            color: white;
-            padding: 12px;
-            text-align: center;
+        .news-ticker marquee {
+            font-size: 1.2rem;
             font-weight: bold;
-            font-size: 22px;
-            margin: 10px 0;
         }
 
-        /* Numbered Question Style */
-        .content-area {
+        .container {
+            margin-top: 80px;
+            text-align: center;
             padding: 20px;
+            max-width: 800px;
         }
 
-        .section-heading {
-            color: #c0392b;
-            border-right: 5px solid #c0392b;
-            padding-right: 10px;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .question-row {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-
-        .question-row:hover {
-            background: #eef7ff;
-        }
-
-        .number-badge {
-            background-color: #007bff; /* نیلی پٹی */
-            color: white;
-            min-width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            margin-left: 15px;
-            font-size: 16px;
-            box-shadow: 0 2px 5px rgba(0,123,255,0.3);
-        }
-
-        .question-text {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
-        }
-
-        /* Buttons Grid */
-        .social-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        h1 {
+            background: rgba(255, 255, 255, 0.2);
             padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
         }
 
-        .btn-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            border-radius: 8px;
-            color: white;
-            text-decoration: none;
-            font-size: 12px;
-            font-family: sans-serif;
+        .poll-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .poll-option {
+            background: white;
+            color: black;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
             font-weight: bold;
-            background: #333;
+            display: block;
+            text-decoration: none;
         }
 
-        .wa { border-right: 10px solid #25D366; }
-        .web { border-right: 10px solid #00a2ed; }
-        .fb { border-right: 10px solid #1877F2; }
-        .tk { border-right: 10px solid #000000; }
+        .poll-option:hover {
+            background: #ffcc00;
+            transform: scale(1.02);
+        }
 
         .footer {
-            text-align: center;
-            background: #f8f9fa;
+            margin-top: auto;
             padding: 20px;
-            border-top: 1px solid #ddd;
-            font-size: 13px;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
 
-<div class="main-container">
-    <div class="header-section">
-        <h1>السلام علیکم! میں ہوں جمیل احمد کلیال 👋</h1>
-        <p style="color: #666;">Digital Media Expert | Educator</p>
+    <div class="overlay">
+        <div class="news-ticker">
+            <marquee behavior="scroll" direction="right">
+                📢 تازہ ترین: حلقہ NA-62 اور PP-27 کی سیاسی سرگرمیاں تیز ۔۔۔ SDN News پر لائیو سروے جاری ہے ۔۔۔ اپنی رائے کا اظہار کریں ۔۔۔
+            </marquee>
+        </div>
+
+        <div class="container">
+            <h1>حلقہ NA-62 سرائے عالمگیر</h1>
+            <p>امیدواران کی فہرست اور عوامی رائے عامہ</p>
+
+            <div class="poll-section">
+                <h3>آپ کے خیال میں سب سے اہم مسئلہ کیا ہے؟</h3>
+                <a href="#" class="poll-option">🚗 جی ٹی روڈ فلائی اوور</a>
+                <a href="#" class="poll-option">💧 سیوریج کا جدید نظام</a>
+                <a href="#" class="poll-option">🏥 ہسپتال میں سہولیات</a>
+                <a href="#" class="poll-option">⛲ ریور فرنٹ پارک</a>
+            </div>
+        </div>
+
+        <footer class="footer">
+            &copy; 2026 SDN News - Jamil Ahmed Kalyal
+        </footer>
     </div>
-
-    <div class="welcome-banner">Welcome to SDN News</div>
-
-    <div class="content-area">
-        <h2 class="section-heading">⚖️ حصہ اول: ایک کروڑ کی ادائیگی کا تضاد</h2>
-
-        <div class="question-row">
-            <div class="number-badge">1</div>
-            <div class="question-text">ای-اسٹیمپ نمبر 1839/21 پر تحریر ایک کروڑ روپے کے معاملے کی حقیقت کیا ہے؟</div>
-        </div>
-
-        <div class="question-row">
-            <div class="number-badge">2</div>
-            <div class="question-text">کیا یہ درست ہے کہ صرف 10 لاکھ روپے نقد ادا کیے گئے تھے؟</div>
-        </div>
-
-        <div class="question-row">
-            <div class="number-badge">3</div>
-            <div class="question-text">90 لاکھ روپے کے دو چیکس (نمبر 2002260654 و 2002260655) کا کیا ہوا؟</div>
-        </div>
-
-        <div class="question-row">
-            <div class="number-badge">4</div>
-            <div class="question-text">کیا ان چیکوں کی ادائیگی بینک سے ثابت ہو سکی؟</div>
-        </div>
-
-        <div class="question-row">
-            <div class="number-badge">5</div>
-            <div class="question-text">ایف آئی آر میں "مکمل رقم نقد" لکھوانے کی اصل وجہ کیا تھی؟ کیا یہ حقیقت کے برعکس نہیں؟</div>
-        </div>
-    </div>
-
-    <div style="text-align: center; font-weight: bold; margin-top: 10px;">🌐 مجھ سے جڑیں (Connect With Me)</div>
-    
-    <div class="social-grid">
-        <a href="https://wa.me/923460008235" class="btn-link wa">WHATSAPP 🟢</a>
-        <a href="http://www.SDNNews.com" class="btn-link web">WEBSITE 🔵</a>
-        <a href="#" class="btn-link fb">FACEBOOK 🔵</a>
-        <a href="#" class="btn-link tk">TIKTOK ⚫</a>
-    </div>
-
-    <div class="footer">
-        <strong>SDN News: باخبر، ہر لمحہ</strong><br>
-        رپورٹ: جمیل احمد کلیال<br>
-        ID: 3AA5C34371567BD2<br>
-        <span style="font-size: 11px;">نظام آباد کلیال ہاؤس 182، سرائے عالمگیر</span>
-    </div>
-</div>
 
 </body>
 </html>
+
