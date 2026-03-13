@@ -3,121 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN News - لائیو اپڈیٹس</title>
+    <title>SDN News - لائیو ووٹنگ</title>
     <style>
         body {
             background-image: url('1000271859.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-repeat: no-repeat;
             margin: 0;
-            padding: 0;
-            font-family: 'Noori Nastaleeq', 'Arial', sans-serif;
+            font-family: sans-serif;
             color: white;
         }
-
         .overlay {
-            background-color: rgba(0, 0, 0, 0.6); /* تصویر کو تھوڑا گہرا کرنے کے لیے */
+            background-color: rgba(0, 0, 0, 0.7);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-top: 60px;
         }
-
-        /* لائیو نیوز پٹی */
         .news-ticker {
             background: #cc0000;
-            color: white;
             width: 100%;
             padding: 10px 0;
-            overflow: hidden;
-            white-space: nowrap;
             position: fixed;
             top: 0;
             z-index: 1000;
         }
-
-        .news-ticker marquee {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
         .container {
-            margin-top: 80px;
             text-align: center;
             padding: 20px;
-            max-width: 800px;
+            width: 90%;
+            max-width: 500px;
         }
-
-        h1 {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-        }
-
-        .poll-section {
-            background: rgba(255, 255, 255, 0.1);
+        .poll-card {
+            background: rgba(255, 255, 255, 0.15);
             padding: 20px;
             border-radius: 15px;
-            margin-top: 20px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
         }
-
-        .poll-option {
+        .btn-vote {
             background: white;
-            color: black;
-            padding: 10px;
+            color: #333;
+            padding: 12px;
             margin: 10px 0;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.3s;
             font-weight: bold;
             display: block;
-            text-decoration: none;
+            border: none;
+            width: 100%;
+            font-size: 16px;
         }
-
-        .poll-option:hover {
-            background: #ffcc00;
-            transform: scale(1.02);
+        .btn-vote:hover { background: #ffcc00; }
+        .result {
+            font-size: 14px;
+            color: #ffcc00;
+            margin-top: 5px;
+            display: block;
         }
-
-        .footer {
-            margin-top: auto;
-            padding: 20px;
-            font-size: 0.8rem;
-        }
+        #thank-you { display: none; color: #22c55e; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <div class="overlay">
         <div class="news-ticker">
-            <marquee behavior="scroll" direction="right">
-                📢 تازہ ترین: حلقہ NA-62 اور PP-27 کی سیاسی سرگرمیاں تیز ۔۔۔ SDN News پر لائیو سروے جاری ہے ۔۔۔ اپنی رائے کا اظہار کریں ۔۔۔
-            </marquee>
+            <marquee direction="right">📢 SDN News: حلقہ NA-62 کے مسائل پر اپنی رائے دیں اور ووٹ ریکارڈ کروائیں ۔۔۔ </marquee>
         </div>
 
         <div class="container">
-            <h1>حلقہ NA-62 سرائے عالمگیر</h1>
-            <p>امیدواران کی فہرست اور عوامی رائے عامہ</p>
-
-            <div class="poll-section">
+            <h1>عوامی رائے عامہ</h1>
+            <div class="poll-card">
                 <h3>آپ کے خیال میں سب سے اہم مسئلہ کیا ہے؟</h3>
-                <a href="#" class="poll-option">🚗 جی ٹی روڈ فلائی اوور</a>
-                <a href="#" class="poll-option">💧 سیوریج کا جدید نظام</a>
-                <a href="#" class="poll-option">🏥 ہسپتال میں سہولیات</a>
-                <a href="#" class="poll-option">⛲ ریور فرنٹ پارک</a>
+                
+                <button class="btn-vote" onclick="addVote('traffic')">🚗 جی ٹی روڈ فلائی اوور
+                    <span class="result" id="traffic-res">0 ووٹ</span>
+                </button>
+
+                <button class="btn-vote" onclick="addVote('sewerage')">💧 سیوریج کا نظام
+                    <span class="result" id="sewerage-res">0 ووٹ</span>
+                </button>
+
+                <button class="btn-vote" onclick="addVote('hospital')">🏥 ہسپتال کی بہتری
+                    <span class="result" id="hospital-res">0 ووٹ</span>
+                </button>
+
+                <p id="thank-you">آپ کا ووٹ ریکارڈ کر لیا گیا ہے! ✅</p>
             </div>
         </div>
-
-        <footer class="footer">
-            &copy; 2026 SDN News - Jamil Ahmed Kalyal
-        </footer>
     </div>
 
+    <script>
+        // ووٹ دکھانے کا فنکشن
+        function updateResults() {
+            document.getElementById('traffic-res').innerText = (localStorage.getItem('traffic') || 0) + " ووٹ";
+            document.getElementById('sewerage-res').innerText = (localStorage.getItem('sewerage') || 0) + " ووٹ";
+            document.getElementById('hospital-res').innerText = (localStorage.getItem('hospital') || 0) + " ووٹ";
+        }
+
+        // ووٹ ڈالنے کا فنکشن
+        function addVote(type) {
+            let currentVotes = parseInt(localStorage.getItem(type) || 0);
+            localStorage.setItem(type, currentVotes + 1);
+            updateResults();
+            document.getElementById('thank-you').style.display = 'block';
+            
+            // بٹن عارضی طور پر ڈس ایبل کرنا
+            let buttons = document.getElementsByClassName('btn-vote');
+            for(let btn of buttons) { btn.disabled = true; btn.style.opacity = "0.7"; }
+        }
+
+        // پیج لوڈ ہوتے ہی رزلٹ دکھائیں
+        window.onload = updateResults;
+    </script>
 </body>
 </html>
 
