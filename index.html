@@ -216,6 +216,49 @@ window.onload = function() {
     })
     .catch(error => console.error('Error fetching data:', error));
 };
+<div class="container" style="text-align: center; margin-top: 50px; font-family: 'Noto Nastaliq Urdu', serif;">
+    <h2 style="color: #bc0000;">🎨 SDN News HD کارڈ میکر</h2>
+    
+    <div id="newsCard" style="width: 600px; height: 600px; background: #fff; position: relative; border: 15px solid #bc0000; overflow: hidden; margin: 0 auto; box-shadow: 0 15px 35px rgba(0,0,0,0.4);">
+        
+        <div id="imagePreview" style="width: 100%; height: 60%; background: #eee; background-size: cover; background-position: center;"></div>
+
+        <div style="background: yellow; color: #000; padding: 10px; font-weight: bold; font-size: 24px; position: absolute; top: 55%; width: 100%; text-align: center; border-top: 4px solid #fff; border-bottom: 4px solid #fff;">
+            بریکنگ نیوز
+        </div>
+
+        <div style="height: 40%; background: #bc0000; color: #fff; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; margin-top: 50px;">
+            <h2 id="cardTitle" style="font-size: 26px; line-height: 1.8; margin: 0;">اپنی خبر یہاں لکھیں...</h2>
+        </div>
+
+        <div style="position: absolute; top: 20px; right: 20px; background: #fff; padding: 5px; border-radius: 5px;">
+            <img src="YOUR_LOGO_LINK" style="width: 80px;"> </div>
+    </div>
+
+    <div style="margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 10px; display: inline-block;">
+        <input type="file" id="imageInput" accept="image/*" style="margin-bottom: 10px;"><br>
+        <textarea id="newsInput" placeholder="خبر کی سرخی یہاں ٹائپ کریں..." style="width: 400px; height: 80px; padding: 10px; font-family: 'Noto Nastaliq Urdu';"></textarea><br>
+        <button onclick="updateCard()" style="padding: 10px 30px; background: #bc0000; color: #white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; color: white;">پوسٹر اپ ڈیٹ کریں</button>
+    </div>
+</div>
+
+<script>
+function updateCard() {
+    // متن اپ ڈیٹ کریں
+    var text = document.getElementById('newsInput').value;
+    document.getElementById('cardTitle').innerText = text;
+
+    // تصویر اپ ڈیٹ کریں
+    var file = document.getElementById('imageInput').files[0];
+    var reader = new FileReader();
+    reader.onloadend = function() {
+        document.getElementById('imagePreview').style.backgroundImage = 'url(' + reader.result + ')';
+    }
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+</script>
 
 
 
