@@ -1,0 +1,67 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<div class="container" style="text-align: center; margin-top: 50px; font-family: 'Noto Nastaliq Urdu', serif;">
+    <h2 style="color: #bc0000;">🎨 SDN News HD پوسٹر میکر</h2>
+    
+    <div id="captureCard" style="width: 600px; height: 650px; background: #fff; position: relative; border: 15px solid #bc0000; overflow: hidden; margin: 0 auto; box-shadow: 0 15px 35px rgba(0,0,0,0.4);">
+        
+        <div id="imagePreview" style="width: 100%; height: 55%; background: #eee; background-size: cover; background-position: center; background-image: url('https://via.placeholder.com/600x400?text=Select+Image');"></div>
+
+        <div style="background: yellow; color: #000; padding: 10px; font-weight: bold; font-size: 26px; position: absolute; top: 52%; width: 100%; text-align: center; border-top: 5px solid #fff; border-bottom: 5px solid #fff; z-index: 10;">
+            بریکنگ نیوز
+        </div>
+
+        <div style="height: 45%; background: #bc0000; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px 20px 20px; box-sizing: border-box;">
+            <h2 id="cardTitle" style="font-size: 28px; line-height: 1.8; margin: 0; text-align: center;">اپنی خبر یہاں ٹائپ کریں...</h2>
+            
+            <div style="margin-top: auto; width: 100%; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; font-size: 14px; display: flex; justify-content: space-between;">
+                <span>www.SDNNews.com</span>
+                <span>0346-0008235</span>
+            </div>
+        </div>
+
+        <div style="position: absolute; top: 20px; right: 20px; background: #fff; padding: 5px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+            <img src="https://i.ibb.co/LhYkX8G/1000236061.jpg" style="width: 80px;">
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; background: #f1f1f1; padding: 25px; border-radius: 15px; display: inline-block; border: 1px solid #ddd;">
+        <input type="file" id="imageInput" accept="image/*" style="margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto;"><br>
+        <textarea id="newsInput" placeholder="خبر کی سرخی یہاں لکھیں..." style="width: 450px; height: 100px; padding: 15px; font-family: 'Noto Nastaliq Urdu'; font-size: 18px; border-radius: 8px; border: 1px solid #ccc; direction: rtl;"></textarea><br>
+        
+        <button onclick="updateCard()" style="padding: 12px 25px; background: #222; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 10px;">🔄 اپ ڈیٹ کریں</button>
+        
+        <button onclick="downloadCard()" style="padding: 12px 25px; background: #bc0000; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin: 10px;">💾 تصویر ڈاؤن لوڈ کریں</button>
+    </div>
+</div>
+
+<script>
+function updateCard() {
+    var text = document.getElementById('newsInput').value;
+    if(text) document.getElementById('cardTitle').innerText = text;
+
+    var file = document.getElementById('imageInput').files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            document.getElementById('imagePreview').style.backgroundImage = 'url(' + reader.result + ')';
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+function downloadCard() {
+    updateCard(); // ڈاؤن لوڈ سے پہلے ایک بار اپ ڈیٹ کر لیں
+    const card = document.getElementById('captureCard');
+    
+    html2canvas(card, {
+        useCORS: true,
+        scale: 2 // بہتر کوالٹی کے لیے
+    }).then(canvas => {
+        let link = document.createElement('a');
+        link.download = 'SDN-News-Post.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+}
+</script>
