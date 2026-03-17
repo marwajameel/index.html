@@ -91,6 +91,49 @@
 <body>
 
 <header>
+<div style="text-align: center; margin: 10px;">
+    <button onclick="toggleDarkMode()" id="darkBtn" style="padding: 10px 20px; border-radius: 50px; border: none; cursor: pointer; background: #222; color: #fff; font-weight: bold;">
+        🌙 ڈارک موڈ آن کریں
+    </button>
+</div>
+/* ڈارک موڈ کے لیے مخصوص ڈیزائن */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+.dark-mode .news-card, .dark-mode .container {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 4px 8px rgba(255,255,255,0.05);
+}
+.dark-mode table {
+    background-color: #1e1e1e;
+    color: #fff;
+}
+.dark-mode td {
+    border: 1px solid #333;
+}
+.dark-mode #searchInput {
+    background: #2c2c2c;
+    color: white;
+    border-color: #444;
+}
+function toggleDarkMode() {
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+    
+    var btn = document.getElementById("darkBtn");
+    if (element.classList.contains("dark-mode")) {
+        btn.innerHTML = "☀️ لائٹ موڈ آن کریں";
+        btn.style.background = "#eee";
+        btn.style.color = "#222";
+    } else {
+        btn.innerHTML = "🌙 ڈارک موڈ آن کریں";
+        btn.style.background = "#222";
+        btn.style.color = "#fff";
+    }
+}
+
     <h1>SDN News Sarai Alamgir</h1>
     <p>باخبر، ہر لمحہ | جمیل احمد کلیال</p>
 </header><div class="container">
