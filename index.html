@@ -1,3 +1,31 @@
+<div class="container" style="margin-top: 20px; text-align: center;">
+    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="🔍 یہاں سے سرچ کریں (عنوان یا تفصیل)..." 
+    style="width: 100%; padding: 12px; border: 2px solid #bc0000; border-radius: 5px; font-family: 'Noto Nastaliq Urdu', serif; font-size: 16px;">
+</div>function filterData() {
+    let input = document.getElementById("searchInput");
+    let filter = input.value.toLowerCase();
+    let table = document.getElementById("dataTable");
+    let tr = table.getElementsByTagName("tr");
+
+    // ٹیبل کی ہر لائن (Row) کو چیک کرنا
+    for (let i = 1; i < tr.length; i++) {
+        let tdTitle = tr[i].getElementsByTagName("td")[0];
+        let tdDetails = tr[i].getElementsByTagName("td")[1];
+        
+        if (tdTitle || tdDetails) {
+            let titleText = tdTitle.textContent || tdTitle.innerText;
+            let detailsText = tdDetails.textContent || tdDetails.innerText;
+            
+            if (titleText.toLowerCase().indexOf(filter) > -1 || detailsText.toLowerCase().indexOf(filter) > -1) {
+                tr[i].style.display = ""; // اگر لفظ مل جائے تو دکھائیں
+            } else {
+                tr[i].style.display = "none"; // ورنہ چھپا دیں
+            }
+        }
+    }
+}
+
+
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
