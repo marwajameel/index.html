@@ -94,7 +94,52 @@
     <marquee behavior="scroll" direction="right" scrollamount="6">
         🌟 بریکنگ نیوز: SDN News Sarai Alamgir پر خوش آمدید... تازہ ترین خبروں کے لیے جڑے رہیں... جمیل احمد کلیال کی خصوصی رپورٹ... 
     </marquee>
+</div><div class="container" style="margin-top: 30px;">
+    <h2 style="text-align: center; color: #bc0000;">📊 حالیہ ٹرانزیکشنز اور ریکارڈ</h2>
+    <div style="overflow-x: auto;">
+        <table id="dataTable" style="width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+            <thead>
+                <tr style="background: #bc0000; color: white; text-align: right;">
+                    <th style="padding: 12px; border: 1px solid #ddd;">عنوان (Title)</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">تفصیل (Details)</th>
+                    <th style="padding: 12px; border: 1px solid #ddd;">وقت (Time)</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
+    </div>
 </div>
+window.onload = function() {
+    const scriptURL = 'YOUR_WEB_APP_URL'; // یہاں اپنا گوگل اسکرپٹ لنک ڈالیں
+
+    fetch(scriptURL)
+    .then(res => res.json())
+    .then(data => {
+        const tableBody = document.getElementById('tableBody');
+        const feed = document.getElementById('newsFeed');
+
+        data.reverse().forEach(row => {
+            // 1. ٹیبل میں ڈیٹا شامل کرنا
+            const tr = `<tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">${row[0]}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${row[1]}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${new Date(row[2]).toLocaleDateString('ur-PK')}</td>
+            </tr>`;
+            tableBody.insertAdjacentHTML('beforeend', tr);
+
+            // 2. نیوز فیڈ میں بھی دکھانا (اگر آپ چاہیں)
+            const newsHtml = `<div class="news-card">
+                <div class="news-header">🌟 ${row[0]}</div>
+                <p>${row[1]}</p>
+                <small style="color: #888;">تاریخ: ${new Date(row[2]).toLocaleString('ur-PK')}</small>
+            </div>`;
+            feed.insertAdjacentHTML('beforeend', newsHtml);
+        });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+};
+
 
 
 
