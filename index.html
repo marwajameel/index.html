@@ -3,121 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN News - لائیو ووٹنگ</title>
+    <title>SDN News Sarai Alamgir | باخبر، ہر لمحہ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
     <style>
         body {
-            background-image: url('1000271859.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            font-family: 'Noto Nastaliq Urdu', serif;
+            background-color: #f4f4f4;
             margin: 0;
-            font-family: sans-serif;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #bc0000;
             color: white;
-        }
-        .overlay {
-            background-color: rgba(0, 0, 0, 0.7);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 60px;
-        }
-        .news-ticker {
-            background: #cc0000;
-            width: 100%;
-            padding: 10px 0;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #ffcc00;
         }
         .container {
-            text-align: center;
-            padding: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 800px;
+            margin: 20px auto;
         }
-        .poll-card {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        .btn-vote {
+        .news-card {
             background: white;
-            color: #333;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            display: block;
-            border: none;
-            width: 100%;
-            font-size: 16px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-right: 8px solid #bc0000;
         }
-        .btn-vote:hover { background: #ffcc00; }
-        .result {
+        .news-header {
+            color: #bc0000;
+            font-size: 24px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .footer-card {
+            background: #222;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
             font-size: 14px;
-            color: #ffcc00;
-            margin-top: 5px;
-            display: block;
         }
-        #thank-you { display: none; color: #22c55e; font-weight: bold; margin-top: 15px; }
+        .btn-whatsapp {
+            display: inline-block;
+            background: #25d366;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="overlay">
-        <div class="news-ticker">
-            <marquee direction="right">📢 SDN News: حلقہ NA-62 کے مسائل پر اپنی رائے دیں اور ووٹ ریکارڈ کروائیں ۔۔۔ </marquee>
-        </div>
+<header>
+    <h1>SDN News Sarai Alamgir</h1>
+    <p>باخبر، ہر لمحہ | جمیل احمد کلیال</p>
+</header>
 
-        <div class="container">
-            <h1>عوامی رائے عامہ</h1>
-            <div class="poll-card">
-                <h3>آپ کے خیال میں سب سے اہم مسئلہ کیا ہے؟</h3>
-                
-                <button class="btn-vote" onclick="addVote('traffic')">🚗 جی ٹی روڈ فلائی اوور
-                    <span class="result" id="traffic-res">0 ووٹ</span>
-                </button>
-
-                <button class="btn-vote" onclick="addVote('sewerage')">💧 سیوریج کا نظام
-                    <span class="result" id="sewerage-res">0 ووٹ</span>
-                </button>
-
-                <button class="btn-vote" onclick="addVote('hospital')">🏥 ہسپتال کی بہتری
-                    <span class="result" id="hospital-res">0 ووٹ</span>
-                </button>
-
-                <p id="thank-you">آپ کا ووٹ ریکارڈ کر لیا گیا ہے! ✅</p>
-            </div>
-        </div>
+<div class="container">
+    <div class="news-card">
+        <div class="news-header">🌟 تازہ ترین اپ ڈیٹ</div>
+        <p>سرائے عالمگیر اور گردونواح کی تازہ ترین خبریں یہاں اپ لوڈ کی جائیں گی۔ آپ کا اپنا ڈیجیٹل نیوز پورٹل اب فعال ہے۔</p>
+        <a href="https://wa.me/923460008235" class="btn-whatsapp">واٹس ایپ پر رابطہ کریں</a>
     </div>
 
-    <script>
-        // ووٹ دکھانے کا فنکشن
-        function updateResults() {
-            document.getElementById('traffic-res').innerText = (localStorage.getItem('traffic') || 0) + " ووٹ";
-            document.getElementById('sewerage-res').innerText = (localStorage.getItem('sewerage') || 0) + " ووٹ";
-            document.getElementById('hospital-res').innerText = (localStorage.getItem('hospital') || 0) + " ووٹ";
-        }
+    <div class="footer-card">
+        <p>🌐 Explore SDN News: www.sdnnews.com</p>
+        <p>📱 Connect: @SDNNews | 📞 +92 346 0008235</p>
+        <p>رپورٹ: جمیل احمد کلیال</p>
+    </div>
+</div>
 
-        // ووٹ ڈالنے کا فنکشن
-        function addVote(type) {
-            let currentVotes = parseInt(localStorage.getItem(type) || 0);
-            localStorage.setItem(type, currentVotes + 1);
-            updateResults();
-            document.getElementById('thank-you').style.display = 'block';
-            
-            // بٹن عارضی طور پر ڈس ایبل کرنا
-            let buttons = document.getElementsByClassName('btn-vote');
-            for(let btn of buttons) { btn.disabled = true; btn.style.opacity = "0.7"; }
-        }
-
-        // پیج لوڈ ہوتے ہی رزلٹ دکھائیں
-        window.onload = updateResults;
-    </script>
 </body>
-</html
+</html>
+
 
