@@ -1,0 +1,34 @@
+name: Update News Data
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # یہ ہر روز رات 12 بجے خود بخود چلے گا
+  workflow_dispatch: # اس کا مطلب ہے کہ آپ اسے بٹن دبا کر خود بھی چلا سکتے ہیں
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Requests
+        run: pip install requests
+
+      - name: Run Script
+        env:
+          JAMIL: ${{ secrets.JAMIL }} # یہاں گٹ ہب آپ کا 'JAMIL' والا سیکرٹ استعمال کرے گا
+        run: python app_data.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "SDN News Bot"
+          git config --global user.email "sdnnews@gmail.com"
+          git add news_data.json
+          git commit -m "ڈیٹا اپ ڈیٹ کر دیا گیا ہے"
+          git push
