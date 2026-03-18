@@ -154,4 +154,54 @@ final_data = {
     "wallet_id": WALLET_NAME, # اب یہاں آپ کا نام نظر آئے گا
     "status": "ادائیگی کامیاب",
     "network": "Base Mainnet"
+import os
+import json
+import requests
+from datetime import datetime
+
+# آپ کی بلاک چین شناخت
+WALLET_NAME = "jamilahmed.base.eth"
+REPORTER = "جمیل احمد کلیال"
+
+def update_sdn_portal():
+    # یہاں ہم وہ ڈیٹا تیار کر رہے ہیں جو ویب سائٹ پر دکھانا ہے
+    portal_data = {
+        "reporter": REPORTER,
+        "ens_id": WALLET_NAME,
+        "status": "Verified / تصدیق شدہ",
+        "network": "Base Mainnet",
+        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "platform": "SDN News Official"
+    }
+
+    # ڈیٹا کو فائل میں محفوظ کرنا تاکہ ویب سائٹ اسے پڑھ سکے
+    try:
+        with open("news_data.json", "w", encoding='utf-8') as f:
+            json.dump(portal_data, f, ensure_ascii=False, indent=4)
+        print("✅ SDN News پورٹل کا ڈیٹا کامیابی سے اپ ڈیٹ ہو گیا!")
+    except Exception as e:
+        print(f"❌ خرابی: {e}")
+
+if __name__ == "__main__":
+    update_sdn_portal()
+<script>
+    async function refreshSDNPortal() {
+        try {
+            const response = await fetch('news_data.json');
+            const data = await response.json();
+            
+            // ڈیٹا کو اسکرین پر دکھانا
+            document.getElementById('reporter-name').innerText = data.reporter;
+            document.getElementById('ens-display').innerText = data.ens_id;
+            document.getElementById('update-time').innerText = data.last_updated;
+        } catch (err) {
+            console.error("ڈیٹا لوڈ کرنے میں دشواری:", err);
+        }
+    }
+
+    // ہر 1 منٹ بعد خود بخود چیک کرے
+    setInterval(refreshSDNPortal, 60000);
+    refreshSDNPortal(); // پہلی بار چلانے کے لیے
+</script>
+
 }
