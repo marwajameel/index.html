@@ -107,7 +107,51 @@ def get_crypto_balance(wallet_address):
         return round(balance, 4)
     except:
         return "0.00"
+<div class="crypto-id-card">
+    <div class="ens-name">🆔 @jamilahmed.base.eth</div>
+    <p>بلاک چین شناخت برائے: <strong>جمیل احمد کلیال</strong></p>
+    <div class="verify-tag">Base Network پر تصدیق شدہ</div>
+</div>
+
+<style>
+    .crypto-id-card {
+        direction: rtl;
+        font-family: 'Noto Nastaliq Urdu', serif;
+        background: linear-gradient(135deg, #0052ff, #00aaff); /* Base نیٹ ورک کا نیلا رنگ */
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        max-width: 350px;
+        margin: 20px auto;
+    }
+    .ens-name {
+        font-size: 18px;
+        font-weight: bold;
+        background: rgba(255,255,255,0.2);
+        padding: 5px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    .verify-tag {
+        font-size: 12px;
+        background: #28a745;
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 10px;
+    }
+</style>
 
 # آپ کا والٹ ایڈریس یہاں آئے گا
 wallet = "0x..." # اپنا ایڈریس یہاں لکھیں
 print(f"تازہ ترین بیلنس: {get_crypto_balance(wallet)} ETH")
+# آپ کا والٹ ایڈریس یا ENS نام
+WALLET_NAME = "jamilahmed.base.eth"
+
+final_data = {
+    "reporter": "جمیل احمد کلیال",
+    "wallet_id": WALLET_NAME, # اب یہاں آپ کا نام نظر آئے گا
+    "status": "ادائیگی کامیاب",
+    "network": "Base Mainnet"
+}
