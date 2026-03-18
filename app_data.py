@@ -1,4 +1,4 @@
-import os
+اimport os
 import requests
 import json
 
@@ -51,3 +51,63 @@ if __name__ == "__main__":
         })
         .catch(err => console.log('ڈیٹا لوڈ کرنے میں مسئلہ:', err));
 </script>
+import requests
+
+def get_crypto_balance(wallet_address):
+    # یہ Base یا Ethereum نیٹ ورک کے لیے ایک مثال ہے
+    api_url = f"https://api.basescan.org/api?module=account&action=balance&address={wallet_address}&tag=latest"
+    <div class="payment-card">
+    <div class="status-icon">✅</div>
+    <div class="payment-info">
+        <p class="status-text">SDN-TX: ادائیگی کامیاب!</p>
+        <p class="report-id">رپورٹ نمبر: 2026-03-19</p>
+        <p class="recipient">وصول کنندہ: <strong>جمیل احمد کلیال</strong></p>
+        <div class="amount-badge">1.00 USDC 🔍</div>
+    </div>
+    <a href="https://basescan.org/tx/..." target="_blank" class="verify-btn">بلاک چین پر تصدیق کریں</a>
+</div>
+
+<style>
+    .payment-card {
+        direction: rtl;
+        font-family: 'Noto Nastaliq Urdu', serif;
+        background: #f9fdf9;
+        border: 1px solid #c3e6cb;
+        padding: 20px;
+        border-radius: 15px;
+        max-width: 400px;
+        margin: 20px auto;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .status-icon { font-size: 40px; margin-bottom: 10px; }
+    .status-text { color: #28a745; font-weight: bold; font-size: 18px; }
+    .amount-badge {
+        background: #eef2f7;
+        padding: 5px 15px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-top: 10px;
+        color: #2c3e50;
+    }
+    .verify-btn {
+        display: block;
+        margin-top: 15px;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+</style>
+
+    try:
+        response = requests.get(api_url)
+        data = response.json()
+        # بیلنس کو ایتھر (Ether) یونٹ میں تبدیل کرنا
+        balance = int(data['result']) / 10**18 
+        return round(balance, 4)
+    except:
+        return "0.00"
+
+# آپ کا والٹ ایڈریس یہاں آئے گا
+wallet = "0x..." # اپنا ایڈریس یہاں لکھیں
+print(f"تازہ ترین بیلنس: {get_crypto_balance(wallet)} ETH")
