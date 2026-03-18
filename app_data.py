@@ -203,5 +203,48 @@ if __name__ == "__main__":
     setInterval(refreshSDNPortal, 60000);
     refreshSDNPortal(); // پہلی بار چلانے کے لیے
 </script>
+import os
+import json
+import requests
+from datetime import datetime
 
-}
+# --- آپ کی معلومات ---
+WALLET_NAME = "jamilahmed.base.eth"
+REPORTER = "جمیل احمد کلیال"
+CLIENT_ID = "jiGLYwrAPNshqIajzzEhbbgRCssZMwot"
+# یہ 'JAMIL' وہی سیکرٹ ہے جو آپ نے GitHub Settings میں محفوظ کیا ہے
+API_KEY = os.getenv("JAMIL")
+
+def update_sdn_portal():
+    print("SDN News سسٹم اپ ڈیٹ ہو رہا ہے...")
+    
+    # 1. بلاک چین اور پورٹل ڈیٹا تیار کرنا
+    portal_data = {
+        "reporter": REPORTER,
+        "ens_id": WALLET_NAME,
+        "status": "Verified / تصدیق شدہ",
+        "network": "Base Mainnet",
+        "platform": "SDN News Official",
+        "last_updated": datetime.now().strftime("%Y-%m-%d %I:%M %p"),
+        "msg": "SDN-TX: ادائیگی کامیاب! بلاک چین پر تصدیق شدہ"
+    }
+
+    # 2. ڈیٹا کو JSON فائل میں محفوظ کرنا
+    try:
+        # فائل کا نام وہی رکھا ہے جو آپ کے HTML میں استعمال ہو رہا ہے
+        with open("news_data.json", "w", encoding='utf-8') as f:
+            json.dump(portal_data, f, ensure_ascii=False, indent=4)
+        
+        print("✅ کامیابی: 'news_data.json' فائل اپ ڈیٹ ہو گئی ہے!")
+        
+    except Exception as e:
+        print(f"❌ خرابی: ڈیٹا محفوظ کرنے میں مسئلہ آیا: {e}")
+
+if __name__ == "__main__":
+    update_sdn_portal()
+
+}      - name: Run Script
+        env:
+          JAMIL: ${{ secrets.JAMIL }}
+        run: python app_data.py
+
