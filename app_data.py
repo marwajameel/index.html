@@ -38,3 +38,16 @@ def get_latest_data():
 
 if __name__ == "__main__":
     get_latest_data()
+<div id="news-container">آپ کا ڈیٹا لوڈ ہو رہا ہے...</div>
+
+<script>
+    // محفوظ کردہ ڈیٹا فائل کو پڑھنا
+    fetch('news_data.json')
+        .then(response => response.json())
+        .then(data => {
+            let container = document.getElementById('news-container');
+            // یہاں ڈیٹا کو اپنی مرضی سے ترتیب دیں
+            container.innerHTML = `<h3>تازہ ترین معلومات: ${data.name || 'SDN News'}</h3>`;
+        })
+        .catch(err => console.log('ڈیٹا لوڈ کرنے میں مسئلہ:', err));
+</script>
