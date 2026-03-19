@@ -1,0 +1,36 @@
+# SDN News - Git Ignore File
+# جمیل احمد کلیال - سی ای او
+
+# سسٹم فائلیں (System Files)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# عارضی فائلیں (Temporary Files)
+*.log
+*.tmp
+*.bak
+*.swp
+
+# سیکیورٹی اور خفیہ معلومات (Security & Env)
+.env
+.env.local
+config.php
+secrets.json
+auth_tokens.txt
+
+# ایڈیٹر سیٹنگز (Editor Settings)
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ویب ڈیولپمنٹ فولڈرز (Web Dev Folders)
+node_modules/
+dist/
+build/
+.cache/
+
+# گوگل شیٹ اور ڈیٹا بیک اپ (Backups)
+backup_data/
+temp_sheets/
