@@ -442,6 +442,34 @@ function castVote(choice) {
     </div>
 </div>
 
+<div style="background: #000; color: #fff; height: 40px; overflow: hidden; position: relative; display: flex; align-items: center; border-bottom: 2px solid #bc0000; direction: rtl; font-family: 'Urdu Typesetting', 'Jameel Noori Nastaleeq', serif;">
+    
+    <div style="background: #bc0000; padding: 0 20px; height: 100%; display: flex; align-items: center; font-weight: bold; font-size: 18px; position: relative; z-index: 10; box-shadow: 5px 0 15px rgba(0,0,0,0.5);">
+        بریکنگ نیوز
+    </div>
+
+    <div style="flex: 1; overflow: hidden; white-space: nowrap;">
+        <div style="display: inline-block; padding-right: 100%; animation: ticker 25s linear infinite; font-size: 17px;">
+            <span style="margin-left: 50px;">🔴 سرائے عالمگیر: ٹوٹ پھوٹ کا شکار سڑکیں حادثات کو دعوت دینے لگیں، شہریوں کا شدید احتجاج۔</span>
+            <span style="margin-left: 50px;">🔴 مہنگائی کا جن بے قابو: اشیائے ضروریہ کی قیمتوں میں ہوش ربا اضافہ۔</span>
+            <span style="margin-left: 50px;">🔴 SDN News سروے: 90% شہریوں نے انتظامیہ کی کارکردگی پر عدم اطمینان کا اظہار کر دیا۔</span>
+            <span style="margin-left: 50px;">🔴 باخبر، ہر لمحہ: تازہ ترین خبروں کے لیے SDN News دیکھتے رہیں۔</span>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+/* موبائل کے لیے تھوڑی تبدیلی تاکہ پڑھنے میں آسانی ہو */
+@media (max-width: 600px) {
+    div[style*="animation: ticker"] {
+        animation: ticker 15s linear infinite;
+    }
+}
+</style>
 
 
 
