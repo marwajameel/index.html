@@ -322,6 +322,17 @@ function updateCard() {
         console.log("صارف کی رائے: " + choice);
     }
 </script>
+function castVote(choice) {
+    // بٹن چھپائیں اور شکریہ کا پیغام دکھائیں
+    document.getElementById('poll-options').style.display = 'none';
+    document.getElementById('vote-result').style.display = 'block';
+    
+    // کمنٹ میں آپ کی برانڈنگ کا اضافہ
+    console.log("SDN News Poll - صارف کی رائے: " + choice);
+    
+    // یہاں آپ الرٹ کے ذریعے بھی شکریہ ادا کر سکتے ہیں
+    alert("SDN News: آپ کی رائے ریکارڈ کر لی گئی ہے! شکریہ جمیل احمد کلیال");
+}
 
 
 
