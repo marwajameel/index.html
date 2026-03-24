@@ -4,111 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN News - پائپ لائن رپورٹ</title>
+    <title>SDN News Official - سارائے عالمگیر</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; padding: 20px; text-align: center; color: #333; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 6px solid #d32f2f; }
-        h2 { color: #d32f2f; margin-bottom: 5px; font-size: 28px; }
-        #status-box { margin: 20px 0; padding: 15px; border-radius: 8px; background: #fff3f3; border: 1px solid #ffcdd2; font-weight: bold; font-size: 18px; }
-        .table-container { overflow-x: auto; margin-top: 25px; }
-        table { width: 100%; border-collapse: collapse; display: none; min-width: 600px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
-        th { background-color: #d32f2f; color: white; }
-        .news-card-footer { margin-top: 40px; padding: 20px; border-top: 2px solid #eee; text-align: right; background: #f9f9f9; border-radius: 10px; }
-        .highlight { color: #d32f2f; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; text-align: center; }
+        header { background-color: #003366; color: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .container { max-width: 800px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { margin: 10px 0; font-size: 28px; }
+        .status { color: green; font-weight: bold; margin-bottom: 20px; }
+        .news-card { border-right: 5px solid #003366; background: #e9f0f7; padding: 15px; margin: 15px 0; text-align: right; border-radius: 5px; }
+        .btn { display: inline-block; padding: 12px 25px; margin: 10px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; transition: 0.3s; }
+        .btn-whatsapp { background-color: #25D366; }
+        .btn-tiktok { background-color: #000000; }
+        .footer { margin-top: 30px; font-size: 14px; color: #777; padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
+<header>
+    <h1>SDN News Official</h1>
+    <p>سارائے عالمگیر اور گردونواح کی تازہ ترین خبریں</p>
+</header>
+
 <div class="container">
-    <h2>📊 SDN News - لائیو پائپ لائن رپورٹ</h2>
+    <div class="status">● ہماری ویب سائٹ اب لائیو ہے!</div>
     
-    <div id="status-box">کنکشن قائم کیا جا رہا ہے...</div>
-
-    <div class="table-container">
-        <table id="results-table">
-            <thead><tr id="table-header"></tr></thead>
-            <tbody id="table-body"></tbody>
-        </table>
+    <h2>تازہ ترین اپڈیٹس</h2>
+    
+    <div class="news-card">
+        <h3>📢 اہم اعلان</h3>
+        <p>ایس ڈی این نیوز (SDN News) اب ڈیجیٹل پلیٹ فارمز پر دستیاب ہے۔ تمام اہم خبروں کے لیے ہمارے واٹس ایپ چینل کو فالو کریں۔</p>
     </div>
 
-    <div class="news-card-footer">
-        <p><span class="highlight">SDN News:</span> باخبر، ہر لمحہ</p>
-        <p><span class="highlight">Online:</span> www.SDNNews.com</p>
-        <p><span class="highlight">Connect:</span> @SDNNews</p>
-        <p><span class="highlight">Contact:</span> +92 346 0008235</p>
-        <p><span class="highlight">رپورٹ:</span> جمیل احمد کلیال</p>
+    <div class="news-card">
+        <h3>📍 مقامی خبریں</h3>
+        <p>سارائے عالمگیر کے عوامی مسائل اور ترقیاتی کاموں کی مکمل رپورٹنگ کے لیے جڑے رہیں۔</p>
     </div>
+
+    <hr>
+    
+    <h3>ہم سے جڑیں</h3>
+    <a href="https://whatsapp.com/channel/0029Vb7TCU2I7Be5zmFDuA1g" class="btn btn-whatsapp" target="_blank">WhatsApp چینل جوائن کریں</a>
+    <a href="https://www.tiktok.com/@marwajameel12" class="btn btn-tiktok" target="_blank">TikTok پر فالو کریں</a>
 </div>
 
-<script>
-// آپ کی فراہم کردہ معلومات
-const API_KEY = '5rt2GYQdC7Two5P80scW5CSN447zRCl2';
-
-async function startPolling() {
-    const statusBox = document.getElementById('status-box');
-    const options = { headers: { 'X-DUNE-API-KEY': API_KEY } };
-
-    try {
-        // ایگزیکیوشن اسٹیٹس حاصل کریں
-        const response = await fetch(`https://api.dune.com/api/v1/execution/${EXECUTION_ID}/status`, options);
-        const data = await response.json();
-
-        statusBox.innerText = `موجودہ حالت: ${data.state}`;
-
-        // اگر اسٹیٹس COMPLETED ہے
-        if (data.state === 'QUERY_STATE_COMPLETED' || data.is_execution_finished) {
-            statusBox.innerHTML = "<span style='color: green;'>✅ ڈیٹا موصول ہو گیا! (خرچ: " + data.execution_cost_credits + " کریڈٹس)</span>";
-            displayResults();
-        } else if (data.state === 'QUERY_STATE_FAILED') {
-            statusBox.innerHTML = "<span style='color: red;'>❌ کوئری میں غلطی آگئی ہے۔</span>";
-        } else {
-            setTimeout(startPolling, 4000); 
-        }
-    } catch (err) {
-        statusBox.innerText = "رابطے میں خرابی یا غلط API Key!";
-    }
-}
-
-async function displayResults() {
-    const options = { headers: { 'X-DUNE-API-KEY': API_KEY } };
-    try {
-        const response = await fetch(`https://api.dune.com/api/v1/execution/${EXECUTION_ID}/results`, options);
-        const data = await response.json();
-
-        if (data.result && data.result.rows.length > 0) {
-            const rows = data.result.rows;
-            const columns = Object.keys(rows[0]);
-
-            const headerRow = document.getElementById('table-header');
-            columns.forEach(col => {
-                let th = document.createElement('th');
-                th.innerText = col.toUpperCase();
-                headerRow.appendChild(th);
-            });
-
-            const tableBody = document.getElementById('table-body');
-            rows.forEach(row => {
-                let tr = document.createElement('tr');
-                columns.forEach(col => {
-                    let td = document.createElement('td');
-                    td.innerText = row[col];
-                    tr.appendChild(td);
-                });
-                tableBody.appendChild(tr);
-            });
-
-            document.getElementById('results-table').style.display = 'table';
-        }
-    } catch (err) {
-        console.error("ڈیٹا دکھانے میں دشواری:", err);
-    }
-}
-
-startPolling();
-</script>
+<div class="footer">
+    <p>رپورٹ: جمیل احمد کلیال | SDN News - باخبر، ہر لمحہ</p>
+    <p>© 2026 SDN News Official. All Rights Reserved.</p>
+</div>
 
 </body>
 </html>
+
 
 
