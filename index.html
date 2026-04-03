@@ -47,7 +47,11 @@
         ];
 
         let container = document.getElementById('ideas-container');
-        links.forEach((link, index) => {
+        links.forEach((link, index) => {links.forEach((link, index) => {
+    let container = document.getElementById('ideas-container');
+    container.innerHTML += `<div class="card">آئیڈیا ${index + 1}<br><a href="${link}" target="_blank">دیکھیں</a></div>`;
+});
+
             container.innerHTML += `<div class="card">آئیڈیا ${index + 1}<br><a href="${link}" target="_blank">دیکھیں</a></div>`;
         });
     </script>
