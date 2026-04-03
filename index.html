@@ -3,49 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN Digital Hub</title>
+    <title>SDN ڈیجیٹل ڈیش بورڈ</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; direction: rtl; text-align: center; background-color: #f0f2f5; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #1a73e8; }
-        #result { margin: 20px 0; padding: 15px; background: #e7f3ff; border-radius: 8px; font-size: 20px; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; text-align: center; background-color: #f4f7f6; padding: 20px; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; }
+        #result { margin: 20px 0; padding: 15px; background: #d1ecf1; color: #0c5460; border-radius: 8px; font-size: 22px; font-weight: bold; }
         
-        /* لنکس کے کارڈز کا ڈیزائن */
-        #ideas-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; }
-        .card { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 120px; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: #1a73e8; }
-        .card a { text-decoration: none; color: #1a73e8; font-weight: bold; display: block; margin-top: 5px; }
+        #ideas-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px; }
+        .card { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 140px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card a { text-decoration: none; color: #007bff; font-weight: bold; display: block; margin-top: 10px; }
+        .card:hover { border-color: #007bff; transform: translateY(-3px); transition: 0.3s; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>SDN ڈیجیٹل ڈیش بورڈ</h2>
+    <h2>SDN نیوز ڈیجیٹل حب</h2>
     
-    <div id="result">حساب کتاب کیا جا رہا ہے...</div>
+    <div id="result">حساب ہو رہا ہے...</div>
 
     <hr>
-    <h3>میرے آئیڈیاز</h3>
+    <h3>اہم لنکس اور آئیڈیاز</h3>
+    
     <div id="ideas-container"></div>
 </div>
 
 <script>
-    // --- حصہ 1: فیس ٹوکن کیلکولیشن ---
-    let amt = 100; // آپ یہاں اپنی رقم تبدیل کر سکتے ہیں
+    // 1. فیس ٹوکن کیلکولیشن
+    let amt = 100; 
     let rate = 5;
     let denominator = 100;
-
     let fee = Math.floor((amt * rate) / denominator);
 
-    // اگر رقم ہو لیکن فیس 0 بنے تو اسے 1 کر دیں
     if (amt > 0 && fee === 0 && rate > 0) {
         fee = 1;
     }
-
     document.getElementById('result').innerHTML = `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
 
-
-    // --- حصہ 2: فیس بک لنکس دکھانا ---
+    // 2. فیس بک لنکس کی لسٹ
     const links = [
         "https://www.facebook.com/share/1J3iiNusTZ/",
         "https://www.facebook.com/share/1Ar7UaBriG/",
@@ -53,6 +49,7 @@
         "https://www.facebook.com/share/p/1bEcDkVFNk/"
     ];
 
+    // 3. لنکس کو پیج پر دکھانے کا درست طریقہ
     const container = document.getElementById('ideas-container');
 
     links.forEach((link, index) => {
@@ -66,5 +63,4 @@
 
 </body>
 </html>
-
 
