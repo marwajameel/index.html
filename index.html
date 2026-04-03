@@ -1,122 +1,59 @@
-
 <!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<html lang="ur">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN News Official - سارائے عالمگیر</title>
+    <title>SDN Digital Hub & Calculator</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; text-align: center; }
-        header { background-color: #003366; color: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .container { max-width: 800px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { margin: 10px 0; font-size: 28px; }
-        .status { color: green; font-weight: bold; margin-bottom: 20px; }
-        .news-card { border-right: 5px solid #003366; background: #e9f0f7; padding: 15px; margin: 15px 0; text-align: right; border-radius: 5px; }
-        .btn { display: inline-block; padding: 12px 25px; margin: 10px; border-radius: 50px; text-decoration: none; font-weight: bold; color: white; transition: 0.3s; }
-        .btn-whatsapp { background-color: #25D366; }
-        .btn-tiktok { background-color: #000000; }
-        .footer { margin-top: 30px; font-size: 14px; color: #777; padding-bottom: 20px; }
+        /* پرانا ڈیزائن یہاں موجود رہے گا */
+        body { font-family: sans-serif; direction: rtl; text-align: center; background: #f4f4f9; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .card { border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 8px; display: inline-block; width: 150px; }
+        #result { margin-top: 20px; font-size: 20px; color: #1a73e8; }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>SDN News Official</h1>
-    <p>سارائے عالمگیر اور گردونواح کی تازہ ترین خبریں</p>
-</header>
 
 <div class="container">
-    <div class="status">● ہماری ویب سائٹ اب لائیو ہے!</div>
+    <h1>SDN ڈیجیٹل حب</h1>
     
-    <h2>تازہ ترین اپڈیٹس</h2>
-    
-    <div class="news-card">
-        <h3>📢 اہم اعلان</h3>
-        <p>ایس ڈی این نیوز (SDN News) اب ڈیجیٹل پلیٹ فارمز پر دستیاب ہے۔ تمام اہم خبروں کے لیے ہمارے واٹس ایپ چینل کو فالو کریں۔</p>
-    </div>
+    <div id="ideas-container">
+        </div>
 
-    <div class="news-card">
-        <h3>📍 مقامی خبریں</h3>
-        <p>سارائے عالمگیر کے عوامی مسائل اور ترقیاتی کاموں کی مکمل رپورٹنگ کے لیے جڑے رہیں۔</p>
-    </div>
+    <div id="result"></div>
 
-    <hr>
-    
-    <h3>ہم سے جڑیں</h3>
-    <a href="https://whatsapp.com/channel/0029Vb7TCU2I7Be5zmFDuA1g" class="btn btn-whatsapp" target="_blank">WhatsApp چینل جوائن کریں</a>
-    <a href="https://www.tiktok.com/@marwajameel12" class="btn btn-tiktok" target="_blank">TikTok پر فالو کریں</a>
-</div>
+    <script>
+        // 1. وہی لاجک جو آپ نے بنائی تھی (تصویر والا کوڈ)
+        // فرض کریں کہ یہاں amt، rate اور denominator پہلے سے ڈیفائن ہیں
+        let amt = 100; // مثال کے طور پر
+        let rate = 5;
+        let denominator = 100;
 
-<div class="footer">
-    <p>رپورٹ: جمیل احمد کلیال | SDN News - باخبر، ہر لمحہ</p>
-    <p>© 2026 SDN News Official. All Rights Reserved.</p>
-</div>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ur" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سولانا فیس کیلکولیٹر - SDN News</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .calculator { background: #1e1e1e; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 350px; text-align: center; border: 1px solid #333; }
-        h2 { color: #14f195; margin-bottom: 20px; font-size: 24px; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #2a2a2a; color: white; text-align: center; font-size: 16px; }
-        button { width: 100%; padding: 12px; background: #14f195; border: none; border-radius: 8px; color: black; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 15px; transition: 0.3s; }
-        button:hover { background: #10c37a; }
-        #result { margin-top: 25px; padding: 15px; background: #252525; border-radius: 8px; border-right: 5px solid #14f195; font-size: 18px; }
-        .footer { margin-top: 20px; font-size: 12px; color: #888; border-top: 1px solid #333; pt: 10px; }
-    </style>
-</head>
-<body>
-
-<div class="calculator">
-    <h2>سولانا فیس کیلکولیٹر</h2>
-    <p style="font-size: 14px; color: #ccc;">رقم درج کریں (Tokens):</p>
-    <input type="number" id="amt" placeholder="مثلاً 2" value="2">
-    
-    <p style="font-size: 14px; color: #ccc;">فیس کی شرح (%):</p>
-    <input type="number" id="rate" placeholder="مثلاً 2" value="2">
-    
-    <button onclick="calculate()">فیس کا حساب لگائیں</button>
-
-    <div id="result">فیس کا نتیجہ یہاں آئے گا</div>
-
-    <div class="footer">
-        <p>SDN News: باخبر، ہر لمحہ</p>
-        <p>رپورٹ: جمیل احمد کلیال</p>
-    </div>
-</div>
-
-<script>
-    function calculate() {
-        const amt = parseFloat(document.getElementById('amt').value);
-        const rate = parseFloat(document.getElementById('rate').value);
-        const denominator = 100; // فیصد کے لیے
-
-        if (isNaN(amt) || isNaN(rate)) {
-            document.getElementById('result').innerHTML = "براہ کرم درست نمبر درج کریں۔";
-            return;
-        }
-
-        // وہی لاجک جو ہم نے بنائی تھی
         let fee = Math.floor((amt * rate) / denominator);
 
-        // Rounding Up: اگر رقم ہو لیکن فیس 0 آ رہی ہو تو اسے 1 کر دیں
+        // Rounding Up: اگر رقم ہو لیکن فیس 0 ہو تو اسے 1 کر دیں
         if (amt > 0 && fee === 0 && rate > 0) {
             fee = 1;
         }
 
-        document.getElementById('result').innerHTML = 
-            `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
-    }
-</script>
+        document.getElementById('result').innerHTML = `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
+
+        // 2. فیس بک آئیڈیاز دکھانے والا کوڈ
+        const links = [
+            "https://www.facebook.com/share/1J3iiNusTZ/",
+            "https://www.facebook.com/share/1Ar7UaBriG/",
+            "https://www.facebook.com/share/1BKUuPbVH9/",
+            "https://www.facebook.com/share/p/1bEcDkVFNk/"
+        ];
+
+        let container = document.getElementById('ideas-container');
+        links.forEach((link, index) => {
+            container.innerHTML += `<div class="card">آئیڈیا ${index + 1}<br><a href="${link}" target="_blank">دیکھیں</a></div>`;
+        });
+    </script>
+</div>
 
 </body>
 </html>
-
 
 
