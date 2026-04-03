@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN نیوز ڈیجیٹل حب</title>
+    <style>
+        /* ڈیزائن کا حصہ */
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; text-align: center; background-color: #f0f2f5; padding: 20px; margin: 0; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #1a73e8; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; margin-bottom: 20px; }
+        #result { margin: 20px 0; padding: 20px; background: #e8f0fe; color: #1967d2; border-radius: 12px; font-size: 24px; font-weight: bold; border: 1px solid #d2e3fc; }
+        
+        /* لنکس کے کارڈز کا ڈیزائن */
+        #ideas-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px; }
+        .card { background: #ffffff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 12px; width: 130px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: #1a73e8; }
+        .card a { text-decoration: none; color: white; background: #1a73e8; font-weight: bold; display: block; margin-top: 10px; padding: 8px; border-radius: 6px; font-size: 14px; }
+        .card a:hover { background: #1557b0; }
+        hr { border: 0; height: 1px; background: #eee; margin: 30px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SDN ڈیجیٹل پورٹل</h2>
+    
+    <div id="result">حساب کتاب جاری ہے...</div>
+
+    <hr>
+    <h3>اہم آئیڈیاز اور لنکس</h3>
+    
+    <div id="ideas-container"></div>
+</div>
+
+<script>
+    // 1. فیس ٹوکن کیلکولیشن (آپ کی لاجک)
+    let amt = 100; // یہاں اپنی رقم لکھیں
+    let rate = 5;
+    let denominator = 100;
+    let fee = Math.floor((amt * rate) / denominator);
+
+    // اگر رقم ہو لیکن فیس 0 بنے تو اسے 1 کر دیں
+    if (amt > 0 && fee === 0 && rate > 0) {
+        fee = 1;
+    }
+
+    // رزلٹ دکھانا (درست سپیلنگ کے ساتھ)
+    document.getElementById('result').innerHTML = `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
+
+
+    // 2. فیس بک لنکس کی لسٹ
+    const links = [
+        "https://www.facebook.com/share/1J3iiNusTZ/",
+        "https://www.facebook.com/share/1Ar7UaBriG/",
+        "https://www.facebook.com/share/1BKUuPbVH9/",
+        "https://www.facebook.com/share/p/1bEcDkVFNk/"
+    ];
+
+    // 3. لنکس کو کارڈز کی شکل میں دکھانا (صرف ایک بار لوپ چلے گا)
+    const container = document.getElementById('ideas-container');
+
+    links.forEach((link, index) => {
+        container.innerHTML += `
+            <div class="card">
+                <strong>آئیڈیا ${index + 1}</strong>
+                <a href="${link}" target="_blank">دیکھیں</a>
+            </div>`;
+    });
+</script>
+
+</body>
+</html>
