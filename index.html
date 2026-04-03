@@ -3,63 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN Digital Hub & Calculator</title>
+    <title>SDN Digital Hub</title>
     <style>
-        /* پرانا ڈیزائن یہاں موجود رہے گا */
-        body { font-family: sans-serif; direction: rtl; text-align: center; background: #f4f4f9; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .card { border: 1px solid #ddd; padding: 15px; margin: 10px; border-radius: 8px; display: inline-block; width: 150px; }
-        #result { margin-top: 20px; font-size: 20px; color: #1a73e8; }
+        body { font-family: 'Segoe UI', sans-serif; direction: rtl; text-align: center; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #1a73e8; }
+        #result { margin: 20px 0; padding: 15px; background: #e7f3ff; border-radius: 8px; font-size: 20px; font-weight: bold; }
+        
+        /* لنکس کے کارڈز کا ڈیزائن */
+        #ideas-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 30px; }
+        .card { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 120px; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: #1a73e8; }
+        .card a { text-decoration: none; color: #1a73e8; font-weight: bold; display: block; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>SDN ڈیجیٹل حب</h1>
+    <h2>SDN ڈیجیٹل ڈیش بورڈ</h2>
     
-    <div id="ideas-container">
-        </div>
+    <div id="result">حساب کتاب کیا جا رہا ہے...</div>
 
-    <div id="result"></div>
-
-    <script>
-        // 1. وہی لاجک جو آپ نے بنائی تھی (تصویر والا کوڈ)
-        // فرض کریں کہ یہاں amt، rate اور denominator پہلے سے ڈیفائن ہیں
-        let amt = 100; // مثال کے طور پر
-        let rate = 5;
-        let denominator = 100;
-
-        let fee = Math.floor((amt * rate) / denominator);
-
-        // Rounding Up: اگر رقم ہو لیکن فیس 0 ہو تو اسے 1 کر دیں
-        if (amt > 0 && fee === 0 && rate > 0) {
-            fee = 1;
-        }
-
-        document.getElementById('result').innerHTML = `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
-
-        // 2. فیس بک آئیڈیاز دکھانے والا کوڈ
-        const links = [
-            "https://www.facebook.com/share/1J3iiNusTZ/",
-            "https://www.facebook.com/share/1Ar7UaBriG/",
-            "https://www.facebook.com/share/1BKUuPbVH9/",
-            "https://www.facebook.com/share/p/1bEcDkVFNk/"
-        ];
-
-     let container = document.getElementById('ideas-container');
-
-links.forEach((link, index) => {
-    container.innerHTML += `
-    <div class="card">
-        آئیڈیا ${index + 1}<br>
-        <a href="${link}" target="_blank">دیکھیں</a>
-    </div>`;
-});
-
-            container.innerHTML += `<div class="card">آئیڈیا ${index + 1}<br><a href="${link}" target="_blank">دیکھیں</a></div>`;
-        });
-    </script>
+    <hr>
+    <h3>میرے آئیڈیاز</h3>
+    <div id="ideas-container"></div>
 </div>
+
+<script>
+    // --- حصہ 1: فیس ٹوکن کیلکولیشن ---
+    let amt = 100; // آپ یہاں اپنی رقم تبدیل کر سکتے ہیں
+    let rate = 5;
+    let denominator = 100;
+
+    let fee = Math.floor((amt * rate) / denominator);
+
+    // اگر رقم ہو لیکن فیس 0 بنے تو اسے 1 کر دیں
+    if (amt > 0 && fee === 0 && rate > 0) {
+        fee = 1;
+    }
+
+    document.getElementById('result').innerHTML = `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
+
+
+    // --- حصہ 2: فیس بک لنکس دکھانا ---
+    const links = [
+        "https://www.facebook.com/share/1J3iiNusTZ/",
+        "https://www.facebook.com/share/1Ar7UaBriG/",
+        "https://www.facebook.com/share/1BKUuPbVH9/",
+        "https://www.facebook.com/share/p/1bEcDkVFNk/"
+    ];
+
+    const container = document.getElementById('ideas-container');
+
+    links.forEach((link, index) => {
+        container.innerHTML += `
+            <div class="card">
+                آئیڈیا ${index + 1}
+                <a href="${link}" target="_blank">دیکھیں</a>
+            </div>`;
+    });
+</script>
 
 </body>
 </html>
