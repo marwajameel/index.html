@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN نیوز پورٹل</title>
+    <style>
+        body { font-family: sans-serif; direction: rtl; text-align: center; background-color: #f4f7f6; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #result { margin: 20px 0; padding: 15px; background: #e7f3ff; border-radius: 8px; font-size: 22px; font-weight: bold; color: #1a73e8; }
+        #ideas-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+        .card { border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: 120px; background: #fff; }
+        .card a { text-decoration: none; color: #1a73e8; font-weight: bold; display: block; margin-top: 5px; border: 1px solid #1a73e8; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>SDN ڈیجیٹل حب</h2>
+    <div id="result">حساب ہو رہا ہے...</div>
+    <hr>
+    <h3>آپ کے آئیڈیاز</h3>
+    <div id="ideas-container"></div>
+</div>
+
+<script>
+    // 1. فیس کیلکولیشن
+    let amt = 100; let rate = 5; let denominator = 100;
+    let fee = Math.floor((amt * rate) / denominator);
+    if (amt > 0 && fee === 0 && rate > 0) { fee = 1; }
+    document.getElementById('result').innerHTML = `آپ کی فیس: <strong>${fee}</strong> ٹوکن`;
+
+    // 2. لنکس کی لسٹ
+    const links = [
+        "https://www.facebook.com/share/1J3iiNusTZ/",
+        "https://www.facebook.com/share/1Ar7UaBriG/",
+        "https://www.facebook.com/share/1BKUuPbVH9/",
+        "https://www.facebook.com/share/p/1bEcDkVFNk/"
+    ];
+
+    // 3. لنکس دکھانا
+    const container = document.getElementById('ideas-container');
+    links.forEach((link, index) => {
+        container.innerHTML += `<div class="card">آئیڈیا ${index + 1}<a href="${link}" target="_blank">دیکھیں</a></div>`;
+    });
+</script>
+
+</body>
+</html>
