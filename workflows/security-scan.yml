@@ -1,0 +1,58 @@
+name: OpenTaint + ZAP Security Scan (Node.js Mode)
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # یہاں آپ اپنا نوڈ ورژن لکھ سکتے ہیں
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start Node.js application
+        run: |
+          npm start & # ایپلی کیشن کو بیک گراؤنڈ میں چلائیں
+          echo $! > app.pid
+          
+          # ایپلی کیشن کے تیار ہونے کا انتظار کریں
+          echo "Waiting for application to start..."
+          sleep 10 
+          
+          # چیک کریں کہ کیا ایپلی کیشن چل رہی ہے
+          if ! curl -s http://localhost:3000 > /dev/null; then
+            echo "Application failed to start on port 3000"
+            exit 1
+          fi
+
+      - name: Run OpenTaint + ZAP security scan
+        uses: seqra/opentaint/github/zap@v0
+        with:
+          mode: 'full'
+          template: 'template.yaml'
+          target: 'http://localhost:3000' # اپنی ایپلی کیشن کا پورٹ یہاں چیک کریں
+          artifact-name: 'opentaint-zap-scan-results'
+          upload-sarif: 'true'
+          zap-cmd-options: '-addonupdate -addoninstall ascanrulesBeta -addoninstall pscanrulesBeta'
+
+      - name: Stop application
+        if: always()
+        run: |
+          if [ -f app.pid ]; then
+            kill $(cat app.pid) || true
+            rm app.pid
+          fi
