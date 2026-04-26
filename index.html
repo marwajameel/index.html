@@ -1,3 +1,59 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <title>ادائیگی کا صفحہ</title>
+    <script src="https://pay.coinbase.com/sdk.js"></script>
+</head>
+<body>
+
+    <button onclick="handlePayment()" id="pay-button" style="padding: 10px 20px; cursor: pointer;">
+      ابھی ادائیگی کریں ($25)
+    </button>
+
+    <script>
+    async function handlePayment() {
+      const btn = document.getElementById('pay-button');
+      
+      // چیک کریں کہ کیا SDK لوڈ ہو چکا ہے
+      if (typeof pay === 'undefined') {
+        alert("SDK لوڈ نہیں ہو سکا، براہ کرم انٹرنیٹ چیک کریں یا لائبریری شامل کریں۔");
+        return;
+      }
+
+      try {
+        btn.disabled = true;
+        btn.innerText = "...پروسیسنگ ہو رہی ہے";
+
+        // ادائیگی کا فنکشن شروع
+        const payment = await pay({
+          amount: '25.00',
+          to: 'jamilahmed.base.eth', // آپ کا ENS والٹ
+          payerInfo: {
+            requests: [
+              { type: 'email' },
+              { type: 'phoneNumber', optional: true },
+              { type: 'physicalAddress', optional: true }
+            ]
+          }
+        });
+
+        if (payment.id) {
+          alert("کامیابی! ٹرانزیکشن آئی ڈی: " + payment.id);
+          window.location.href = '/success.html'; 
+        }
+      } catch (error) {
+        alert("ادائیگی نہیں ہو سکی: " + error.message);
+        btn.disabled = false;
+        btn.innerText = "دوبارہ کوشش کریں ($25)";
+      }
+    }
+    </script>
+
+</body>
+</html>
+
+
 <button onclick="handlePayment()" id="pay-button">
   ابھی ادائیگی کریں ($25)
 </button>
