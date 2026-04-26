@@ -1,3 +1,41 @@
+<button onclick="handlePayment()" id="pay-button">
+  ابھی ادائیگی کریں ($25)
+</button>
+
+<script>
+async function handlePayment() {
+  const btn = document.getElementById('pay-button');
+  
+  try {
+    btn.disabled = true; // ادائیگی کے دوران بٹن کو روک دیں
+    btn.innerText = "پروسیسنگ ہو رہی ہے...";
+
+    const payment = await pay({
+      amount: '25.00',
+      to: 'jamilahmed.base.eth', // آپ کا والٹ ایڈریس
+      payerInfo: {
+        requests: [
+          { type: 'email' },
+          { type: 'phoneNumber', optional: true },
+          { type: 'physicalAddress', optional: true }
+        ]
+      }
+    });
+
+    if (payment.id) {
+      alert("شکریہ! آپ کی ادائیگی موصول ہوگئی۔");
+      // یہاں آپ اپنی کامیابی کے صفحے کا لنک دے سکتے ہیں
+      // window.location.href = '/success.html'; 
+    }
+  } catch (error) {
+    alert("خرابی: " + error.message);
+    btn.disabled = false;
+    btn.innerText = "دوبارہ کوشش کریں";
+  }
+}
+</script>
+
+
 <!DOCTYPE html>
 <html lang="ur">
 <head>
