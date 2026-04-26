@@ -1,3 +1,40 @@
+<button onclick="handlePayment()" id="pay-button">
+  ابھی ادائیگی کریں ($25)
+</button>
+
+<script>
+async function handlePayment() {
+  const btn = document.getElementById('pay-button');
+  
+  try {
+    btn.disabled = true; // ادائیگی کے دوران بٹن کو روک دیں
+    btn.innerText = "پروسیسنگ ہو رہی ہے...";
+
+    const payment = await pay({
+      amount: '25.00',
+      to: 'jamilahmed.base.eth',
+      payerInfo: {
+        requests: [
+          { type: 'email' },
+          { type: 'phoneNumber', optional: true },
+          { type: 'physicalAddress', optional: true }
+        ]
+      }
+    });
+
+    if (payment.id) {
+      alert("شکریہ! آپ کی ادائیگی موصول ہوگئی۔");
+      window.location.href = '/success.html'; // یہاں اپنے کامیابی کے صفحے کا لنک دیں
+    }
+  } catch (error) {
+    alert("خرابی: " + error.message);
+    btn.disabled = false;
+    btn.innerText = "دوبارہ کوشش کریں";
+  }
+}
+</script>
+
+
 <div style="direction: rtl; text-align: right; font-family: 'Noori Nastaleeq', Arial, sans-serif; border: 2px solid #004a99; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; background-color: #f9f9f9;">
     <h2 style="color: #004a99; text-align: center;">آن لائن معلوماتی فارم</h2>
     <p style="text-align: center; font-size: 14px;">براہ کرم درج ذیل معلومات فراہم کریں، ہم جلد آپ سے رابطہ کریں گے۔</p>
