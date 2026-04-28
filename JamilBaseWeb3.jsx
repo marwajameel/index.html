@@ -1,23 +1,24 @@
 import { useWriteContracts } from 'wagmi/experimental'
 import { parseAbi } from 'viem'
  
-// یہ ABI آپ کے اسمارٹ اکاؤنٹ سے ٹوکنز کی منظوری اور منتقلی کے لیے ہے
+// ABI تعریف: ٹوکن اپروول اور ٹرانسفر کے لیے
 const abi = parseAbi([
   'function approve(address, uint256) returns (bool)',
   'function transferFrom(address, address, uint256) returns (bool)',
 ])
  
-function App() {
+function JamilBaseWeb3() {
   const { writeContracts } = useWriteContracts()
  
   // صارف کی شناخت: Jamilahmed.base.eth
   return (
     <button
+      className="web3-button"
       onClick={() =>
         writeContracts({
           contracts: [
             {
-              // ٹوکن کا کانٹریکٹ ایڈریس
+              // ٹوکن کا کانٹریکٹ ایڈریس (مثال کے طور پر USDC یا کوئی اور ٹوکن)
               address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
               abi,
               functionName: 'approve',
@@ -31,22 +32,24 @@ function App() {
               abi,
               functionName: 'transferFrom',
               args: [
-                '0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC', // بھیجنے والا
-                '0x0000000000000000000000000000000000000000', // وصول کرنے والا
+                '0xa5cc3c03994DB5b0d9A5eEdD10CabaB0813678AC',
+                '0x0000000000000000000000000000000000000000', 
                 100n
               ],
             },
           ],
           capabilities: { 
             paymasterService: { 
-              // پے ماسٹر کی مدد سے Jamilahmed.base.eth بغیر گیس فیس کے یہ کال کر سکے گا
+              // پے ماسٹر سروس (گیس فیس کے بغیر لین دین کے لیے)
               url: 'https://...' 
             } 
           } 
         })
       }
     >
-      Jamilahmed.base.eth کے ذریعے بھیجیں
+      Jamilahmed.base.eth کے ذریعے سپورٹ کریں
     </button>
   )
 }
+
+export default JamilBaseWeb3;
