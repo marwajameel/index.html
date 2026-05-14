@@ -1,0 +1,21 @@
+main.yml
+name: Update News from AI Agent
+on:
+  repository_dispatch:
+    types: [new_news_event]
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Update Script
+        env:
+          NEWS_CONTENT: ${{ github.event.client_payload.news }}
+        run: python update_news.py
+      - name: Commit and Push
+        run: |
+          git config --global user.name "SDN News Bot"
+          git config --global user.email "bot@sdnnews.com"
+          git add index.html
+          git commit -m "New news update"
+          git push
