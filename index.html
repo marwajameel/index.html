@@ -349,4 +349,47 @@ async function handlePayment() {
 
 </body>
 </html>
+<!-- Breaking News Section Start -->
+<div class="breaking-news-container">
+    <div class="breaking-label">بریکنگ نیوز</div>
+    <div class="news-marquee">
+        <marquee direction="right" onmouseover="this.stop();" onmouseout="this.start();">
+            ایس ڈی این نیوز: باخبر، ہر لمحہ... سرائے عالمگیر اور گردونواح کی تازہ ترین خبروں کے لیے وزٹ کریں www.SDNNews.com... جمیل احمد کلیال کی رپورٹ...
+        </marquee>
+    </div>
+</div>
+
+<style>
+    .breaking-news-container {
+        background-color: #f1f1f1;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-bottom: 2px solid #ff0000;
+        direction: rtl; /* اردو کے لیے دائیں سے بائیں ترتیب */
+        font-family: 'Noori Nastaleeq', 'Urdu Typesetting', Arial;
+    }
+
+    .breaking-label {
+        background-color: #ff0000;
+        color: white;
+        padding: 5px 15px;
+        font-weight: bold;
+        z-index: 1;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    .news-marquee {
+        width: 100%;
+        color: #333;
+        font-size: 18px;
+    }
+
+    .news-marquee marquee {
+        padding-top: 5px;
+    }
+</style>
+<!-- Breaking News Section End -->
 
