@@ -393,4 +393,125 @@ async function handlePayment() {
     }
 </style>
 <!-- Breaking News Section End -->
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN News - لائیو کرپٹو مارکیٹ اپڈیٹس</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            direction: rtl;
+            text-align: right;
+            padding: 20px;
+        }
+        .news-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border-top: 4px solid #0052ff;
+        }
+        h2 {
+            text-align: center;
+            color: #0052ff;
+        }
+        .crypto-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #333;
+        }
+        .crypto-name {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .crypto-price {
+            font-family: monospace;
+            color: #00ffcc;
+            font-size: 1.1em;
+            direction: ltr;
+        }
+        .refresh-btn {
+            display: block;
+            width: 100%;
+            background-color: #0052ff;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        .refresh-btn:hover {
+            background-color: #0040c7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="news-container">
+    <h2>📊 SDN News - لائیو کرپٹو ریٹس</h2>
+    <p style="text-align: center; color: #aaa; font-size: 0.9em;">ٹرسٹ والٹ API کے تعاون سے براہِ راست اپڈیٹس</p>
+    
+    <div id="crypto-rates">
+        <p style="text-align: center;">ڈیٹا لوڈ ہو رہا ہے...</p>
+    </div>
+
+    <button class="refresh-btn" onclick="fetchCryptoRates()">تازہ ترین ریٹس حاصل کریں 🔄</button>
+</div>
+
+<script>
+    // ٹرسٹ والٹ ایجنٹ کریڈنشلز کی بنیاد پر ٹوکن سرچ اور پرائس فنکشن
+    async function fetchCryptoRates() {
+        const ratesContainer = document.getElementById('crypto-rates');
+        
+        // یہاں آپ ان ٹوکنز کی لسٹ سیٹ کر سکتے ہیں جنہیں آپ دکھانا چاہتے ہیں
+        const tokens = [
+            { name: 'Bitcoin (BTC)', id: 'bitcoin', symbol: 'BTC' },
+            { name: 'Ethereum (ETH)', id: 'ethereum', symbol: 'ETH' },
+            { name: 'Binance Coin (BNB)', id: 'binancecoin', symbol: 'BNB' },
+            { name: 'Tether (USDT)', id: 'tether', symbol: 'USDT' }
+        ];
+
+        try {
+            // کوائن گیکو / ٹرسٹ والٹ کمپیٹیبل پبلک API اینڈ پوائنٹ برائے لائیو ڈیٹا
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,tether&vs_currencies=usd');
+            const data = await response.json();
+
+            let htmlContent = '';
+
+            tokens.forEach(token => {
+                const price = data[token.id].usd;
+                htmlContent += `
+                    <div class="crypto-row">
+                        <span class="crypto-name">🪙 ${token.name}</span>
+                        <span class="crypto-price">$${price.toLocaleString()}</span>
+                    </div>
+                `;
+            });
+
+            ratesContainer.innerHTML = htmlContent;
+
+        } catch (error) {
+            ratesContainer.innerHTML = '<p style="color: #ff3333; text-align: center;">ڈیٹا لوڈ کرنے میں دشواری پیش آ رہی ہے۔ دوبارہ کوشش کریں۔</p>';
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // پیج لوڈ ہوتے ہی ریٹس خود بخود چل جائیں
+    window.onload = fetchCryptoRates;
+</script>
+
+</body>
+</html>
+
 
