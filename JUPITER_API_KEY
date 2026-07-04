@@ -1,0 +1,28 @@
+name: Deploy SDN News Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run script with API Key
+        env:
+          JUPITER_API_KEY: ${{ jup_11c760c72c747cf1ffd428912ddcb670232437707bf459995f76cc5e3cef0fd9 }}
+        run: |
+          # آپ کا کوڈ یہاں چلے گا جو API KEY استعمال کرے گا
+          node index.js
