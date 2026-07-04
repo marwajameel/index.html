@@ -1,0 +1,13 @@
+name: Solana Program Verification
+on: [push]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Solana CLI
+        run: sh -c "$(curl -sSfL https://release.solana.com/v1.16.0/install)"
+      - name: Build Program
+        run: cargo build-bpf
+      - name: Verify
+        run: solana-verify verify-from-repo --program-id [آپ کا_پروگرام_ID]
