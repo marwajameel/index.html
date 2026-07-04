@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div id="integrated-terminal"></div>
+
+  <script src="https://terminal.jup.ag/main-v3.js"></script>
+  <script>
+    window.Jupiter.init({
+      displayMode: "integrated",
+      integratedTargetId: "integrated-terminal",
+      endpoint: "https://api.mainnet-beta.solana.com",
+      // یہاں آپ اپنا وائلٹ ایڈریس یا فیس وصول کرنے والا ایڈریس دے سکتے ہیں
+      feeAccount: "آپ کا_وائلٹ_ایڈریس_یہاں_لکھیں", 
+      platformFeeBps: 10, // یہ 0.1% فیس ہے جو آپ کو ملے گی
+    });
+  </script>
+</body>
+</html>
