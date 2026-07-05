@@ -1,28 +1,16 @@
-name: Deploy SDN News Project
+// یہاں اپنی نئی اور محفوظ API Key لگائیں
+const API_KEY = "YOUR_NEW_SECURE_API_KEY_HERE";jup_2c1dcdc2a0fc4e86c671713187e1ec4faee5395d7054f5d05c693cfe802f3b2d 
 
-on:
-  push:
-    branches:
-      - main
+async function fetchData(query) {
+    try {
+        const response = await fetch(`https://api.jup.ag/tokens/v1/search?query=${query}`, {
+            headers: { 'x-api-key': API_KEY }
+        });
+        const data = await response.json();
+        console.log("ڈیٹا کامیابی سے موصول ہوا:", data);
+        return data;
+    } catch (error) {
+        console.error("ڈیٹا فیچ کرنے میں غلطی ہوئی:", error);
+    }
+}
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run script with API Key
-        env:
-          JUPITER_API_KEY: ${{ jup_11c760c72c747cf1ffd428912ddcb670232437707bf459995f76cc5e3cef0fd9 }}
-        run: |
-          # آپ کا کوڈ یہاں چلے گا جو API KEY استعمال کرے گا
-          node index.js
