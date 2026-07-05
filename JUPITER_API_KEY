@@ -1,10 +1,12 @@
-// یہاں اپنی نئی اور محفوظ API Key لگائیں
-const API_KEY = "YOUR_NEW_SECURE_API_KEY_HERE";jup_2c1dcdc2a0fc4e86c671713187e1ec4faee5395d7054f5d05c693cfe802f3b2d 
+// یہاں اپنی محفوظ API Key لگائیں
+const API_KEY = "jup_2c1dcdc2a0fc4e86c671713187e1ec4faee5395d7054f5d05c693cfe802f3b2d"; 
 
 async function fetchData(query) {
     try {
         const response = await fetch(`https://api.jup.ag/tokens/v1/search?query=${query}`, {
-            headers: { 'x-api-key': API_KEY }
+            headers: { 
+                'x-api-key': API_KEY 
+            }
         });
         const data = await response.json();
         console.log("ڈیٹا کامیابی سے موصول ہوا:", data);
