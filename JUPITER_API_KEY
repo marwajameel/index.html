@@ -14,5 +14,5 @@ async function fetchData(query) {
     } catch (error) {
         console.error("ڈیٹا فیچ کرنے میں غلطی ہوئی:", error);
     }
-}
+
 
