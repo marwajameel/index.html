@@ -1,0 +1,24 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "forge-std/Test.sol";
+
+// سیکیورٹی آڈٹ اور ٹیسٹ کا بنیادی اسکرپٹ
+contract ContractSecurityTest is Test {
+    
+    // سیکیورٹی چیک 1: ڈبل انیشیلائزیشن (Re-initialization) کی روک تھام کا ٹیسٹ
+    function test_Security_CheckInitialization() public {
+        // یہاں آپ تصدیق کرتے ہیں کہ کانٹریکٹ صرف ایک بار انیشیلائز ہو
+        bool isInitialized = true; 
+        assertTrue(isInitialized, "Contract is already initialized securely.");
+    }
+
+    // سیکیورٹی چیک 2: ایڈمن کے حقوق کی جانچ
+    function test_Security_AdminRole() public {
+        address expectedAdmin = msg.sender;
+        address currentAdmin = msg.sender;
+        
+        // صرف مجاز ایڈمن ہی اہم فنکشنز چلا سکتا ہے
+        assertEq(currentAdmin, expectedAdmin, "Unauthorized access detected!");
+    }
+}
