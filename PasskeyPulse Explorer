@@ -1,0 +1,33 @@
+// پاسکی براؤزر سپورٹ اور AAGUID ویریفیکیشن کے لیے جدید فنکشن
+async function checkPasskeySupport() {
+  try {
+    if (window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+      const available = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+      if (available) {
+        console.log("Passkey platform authenticator is available.");
+        return true;
+      }
+    }
+    console.log("Passkey platform authenticator not available.");
+    return false;
+  } catch (error) {
+    console.error("Error checking passkey support:", error);
+    return false;
+  }
+}
+
+// AAGUID ڈیٹا کو فیچ اور ڈسپلے کرنے کا طریقہ
+async function loadAAGUIDExplorer() {
+  const isSupported = await checkPasskeySupport();
+  if (!isSupported) {
+    console.warn("WebAuthn / Passkeys are not fully supported on this device/browser.");
+  } else {
+    console.log("Initializing Passkey AAGUIDs Explorer...");
+    // یہاں آپ اپنے AAGUID ڈیٹا بیس یا JSON فائل کو لوڈ کرنے کا لاجک رکھ سکتے ہیں
+  }
+}
+
+// رن کرنے کے لیے
+document.addEventListener('DOMContentLoaded', () => {
+  loadAAGUIDExplorer();
+});
