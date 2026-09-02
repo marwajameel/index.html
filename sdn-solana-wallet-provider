@@ -1,0 +1,11 @@
+import { SDNWalletProvider } from '@sdn/solana-wallet-provider';
+
+function App({ Component, pageProps }) {
+  return (
+    <SDNWalletProvider network="mainnet-beta">
+      <Component {...pageProps} />
+    </SDNWalletProvider>
+  );
+}
+
+export default App;
