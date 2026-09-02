@@ -3,21 +3,21 @@ import json
 import requests
 from datetime import datetime
 
-# اصلی شناخت اور والیٹ
+# Wallet and Reporter Settings
 WALLET_NAME = "jamilahmed.base.eth"
-REPORTER = "جمیل احمد کلیال"
+REPORTER = "Jamil Ahmed Kalyal"
 
 def update_sdn_portal():
-    print("SDN News ڈیش بورڈ ڈیٹا اپ ڈیٹ ہو رہا ہے...")
+    print("SDN News Dashboard Data Updating...")
 
-    # بیس نیٹ ورک سے ڈیٹا بلاواسطہ حاصل کریں
+    # Fetch Data from Base Network
     try:
         url = f"https://base.blockscout.com/api/v2/addresses/{WALLET_NAME}"
         res = requests.get(url, timeout=5).json()
-    except:
-        res = {"status": "connected"}
+    except Exception as e:
+        res = {"status": "connected", "error": str(e)}
 
-    # پورٹ فولیو کا سادہ ڈیٹا
+    # Prepare Portfolio Data Structure
     portal_data = {
         "reporter": REPORTER,
         "wallet": WALLET_NAME,
@@ -26,11 +26,11 @@ def update_sdn_portal():
         "data": res
     }
 
-    # پورٹ فولیو کے لیے JSON فائل تیار کریں
+    # Output to JSON for Server/Portfolio Consumption
     with open("portal_data.json", "w", encoding="utf-8") as f:
         json.dump(portal_data, f, ensure_ascii=False, indent=2)
 
-    print("ڈیٹا کامیابی سے اپ ڈیٹ ہو گیا ہے!")
+    print("Data Updated Successfully in portal_data.json!")
 
 if __name__ == "__main__":
     update_sdn_portal()
