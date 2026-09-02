@@ -56,3 +56,15 @@ This repository provides a community-sourced mapping of **AAGUIDs** (Authenticat
 **SDN News: Informed, Every Moment** 🌐 [www.SDNNews.com](http://www.SDNNews.com) | 📞 +92 346 0008235  
 **Report by:** Jamil Ahmed Kalyal
 </div>
+
+---
+
+## 📊 SDN News Live Multi-Wallet Portal
+
+- **Maintainer:** Jamil Ahmed Kalyal
+- **Base Domain:** `jamilahmed.base.eth`
+- **Data Source:** `portal_data.json`
+- **Automation Script:** `app_data.py`
+
+### 🔒 Security & Wallet Aggregation
+This repository automatically calculates aggregated USD balances across multiple Solana and EVM (Base/Ethereum) accounts using `app_data.py` without exposing any sensitive private keys or seed phrases.
