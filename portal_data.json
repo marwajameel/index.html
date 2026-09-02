@@ -33,3 +33,38 @@
   ],
   "status": "Active"
 }
+{
+  "app_title": "SDN News Multi-Wallet Dashboard",
+  "reporter": "Jamil Ahmed Kalyal",
+  "last_updated": "2026-09-02 15:18:00",
+  "base_domain": "jamilahmed.base.eth",
+  "aggregated_balance_usd": 14072.00,
+  "accounts_count": 8,
+  "accounts": [
+    {
+      "name": "Jupiter Portfolio (JUPy...DvCN)",
+      "address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+      "blockchain": "solana",
+      "balance_usd": 11466.19
+    },
+    {
+      "name": "Jupiter Solana Portfolio",
+      "address": "So11111111111111111111111111111111111111112",
+      "blockchain": "solana",
+      "balance_usd": 2603.39
+    },
+    {
+      "name": "Backpack Account 1",
+      "address": "9ujA...QAeQ",
+      "blockchain": "solana",
+      "balance_usd": 2.33
+    },
+    {
+      "name": "Backpack Primary (iGgN)",
+      "address": "iGgNJhmyQEnSMean7NfHgEm4RAU72hSNBWvYb1ybynq",
+      "blockchain": "solana",
+      "balance_usd": 0.0905
+    }
+  ],
+  "status": "Active"
+}
