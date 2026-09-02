@@ -71,8 +71,15 @@ def sync_live_app_data():
         "status": "Active"
     }
 
-    # لائیو ایپ اور پورٹل کے لیے portal_data.json میں محفوظ کریں
+    #     # Save payload to portal_data.json
     with open("portal_data.json", "w", encoding="utf-8") as f:
+        json.dump(live_portal_payload, f, ensure_ascii=False, indent=2)
+
+    print("Live app data updated successfully in portal_data.json!")
+
+if __name__ == "__main__":
+    sync_live_app_data()
+
         json.dump(live_portal_payload, f, ensure_ascii=False, indent=2)
 
     print("لائیو ایپ کا ڈیٹا کامیابی سے portal_data.json میں محفوظ ہو گیا ہے!")
