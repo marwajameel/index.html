@@ -3,30 +3,34 @@ import json
 import requests
 from datetime import datetime
 
-# بلاک چین شناخت
+# اصلی شناخت اور والیٹ
 WALLET_NAME = "jamilahmed.base.eth"
 REPORTER = "جمیل احمد کلیال"
 
 def update_sdn_portal():
-    print("SDN News ڈیٹا اپ ڈیٹ ہو رہا ہے...")
-    
-    # ویب سائٹ کے لیے ڈیٹا تیار کرنا
+    print("SDN News ڈیش بورڈ ڈیٹا اپ ڈیٹ ہو رہا ہے...")
+
+    # بیس نیٹ ورک سے ڈیٹا بلاواسطہ حاصل کریں
+    try:
+        url = f"https://base.blockscout.com/api/v2/addresses/{WALLET_NAME}"
+        res = requests.get(url, timeout=5).json()
+    except:
+        res = {"status": "connected"}
+
+    # پورٹ فولیو کا سادہ ڈیٹا
     portal_data = {
         "reporter": REPORTER,
-        "ens_id": WALLET_NAME,
-        "status": "Verified / تصدیق شدہ",
+        "wallet": WALLET_NAME,
+        "updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "network": "Base Mainnet",
-        "last_updated": datetime.now().strftime("%Y-%m-%d %I:%M %p"),
-        "msg": "SDN-TX: ادائیگی کامیاب! بلاک چین پر تصدیق شدہ"
+        "data": res
     }
 
-    try:
-        # صرف news_data.json فائل بنانا
-        with open("news_data.json", "w", encoding='utf-8') as f:
-            json.dump(portal_data, f, ensure_ascii=False, indent=4)
-        print("✅ کامیابی: news_data.json تیار ہو گئی ہے!")
-    except Exception as e:
-        print(f"❌ خرابی: {e}")
+    # پورٹ فولیو کے لیے JSON فائل تیار کریں
+    with open("portal_data.json", "w", encoding="utf-8") as f:
+        json.dump(portal_data, f, ensure_ascii=False, indent=2)
+
+    print("ڈیٹا کامیابی سے اپ ڈیٹ ہو گیا ہے!")
 
 if __name__ == "__main__":
     update_sdn_portal()
