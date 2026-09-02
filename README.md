@@ -67,4 +67,4 @@ This repository provides a community-sourced mapping of **AAGUIDs** (Authenticat
 - **Automation Script:** `app_data.py`
 
 ### 🔒 Security & Wallet Aggregation
-This repository automatically calculates aggregated USD balances across multiple Solana and EVM (Base/Ethereum) accounts using `app_data.py` without exposing any sensitive private keys or seed phrases.
+This repository automatically calculates aggregated USD balances across multiple Solana and EVM (Base/Ethereum) accounts using `app_data.py` without exposing any sensitive private keys or seed phrases
