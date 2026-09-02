@@ -18,3 +18,16 @@ export const Wallet = ({ children }) => {
         </ConnectionProvider>
     );
 };
+const { Connection, PublicKey } = require('@solana/web3.js');
+
+// JSON ڈیٹا سے پبلک کی
+const solanaAddress = "iGgNJhmyQEnSMean7NfHgEm4RAU72hSNBWvYb1ybynq";
+const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+
+async function getWalletBalance() {
+    const publicKey = new PublicKey(solanaAddress);
+    const balance = await connection.getBalance(publicKey);
+    console.log(`Solana Balance: ${balance / 1e9} SOL`);
+}
+
+getWalletBalance();
