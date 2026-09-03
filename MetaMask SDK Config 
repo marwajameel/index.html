@@ -1,0 +1,6 @@
+Project: SDN Web3 / Marwajameel
+Environment: Sapphire Devnet
+Client ID: BGsMccw30ZR_QCj5utCp1FcpYYxmPs1E65poV24OzoDryyaT7fTa0p16UVoyKtt4UL01liGNDxrqtOimDxbSMl0
+
+.env Variable:
+NEXT_PUBLIC_WEB3AUTH_CLIENT_ID=BGsMccw30ZR_QCj5utCp1FcpYYxmPs1E65poV24OzoDryyaT7fTa0p16UVoyKtt4UL01liGNDxrqtOimDxbSMl0
