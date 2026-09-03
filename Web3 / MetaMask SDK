@@ -1,0 +1,79 @@
+import { useState, useEffect } from "react";
+import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
+
+export default function Web3Connect() {
+  const [web3auth, setWeb3auth] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [address, setAddress] = useState("");
+  const [balance, setBalance] = useState("");
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const web3authInstance = new Web3Auth({
+          clientId: process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID,
+          web3AuthNetwork: "sapphire_devnet",
+          chainConfig: {
+            chainNamespace: "eip155",
+            chainId: "0x2105", // Base Mainnet (8453)
+            rpcTarget: "https://mainnet.base.org",
+          },
+        });
+
+        await web3authInstance.initModal();
+        setWeb3auth(web3authInstance);
+
+        if (web3authInstance.provider) {
+          setProvider(web3authInstance.provider);
+          fetchAccountDetails(web3authInstance.provider);
+        }
+      } catch (error) {
+        console.error("Web3Auth Initialization Error:", error);
+      }
+    };
+
+    init();
+  }, []);
+
+  const login = async () => {
+    if (!web3auth) return;
+    const web3authProvider = await web3auth.connect();
+    setProvider(web3authProvider);
+    fetchAccountDetails(web3authProvider);
+  };
+
+  const fetchAccountDetails = async (web3Provider) => {
+    const ethersProvider = new ethers.BrowserProvider(web3Provider);
+    const signer = await ethersProvider.getSigner();
+    const userAddress = await signer.getAddress();
+    const rawBalance = await ethersProvider.getBalance(userAddress);
+
+    setAddress(userAddress);
+    setBalance(ethers.formatEther(rawBalance));
+  };
+
+  return (
+    <div style={{ padding: "20px", border: "1px solid #ccc", borderRadius: "10px", maxWidth: "400px" }}>
+      <h3>Web3 Wallet Status</h3>
+      {!address ? (
+        <button onClick={login} style={{ padding: "10px 20px", cursor: "pointer" }}>
+          Connect MetaMask / Web3
+        </button>
+      ) : (
+        <div>
+          <p><strong>Address:</strong> {address.substring(0, 6)}...{address.substring(address.length - 4)}</p>
+          <p><strong>ETH Balance:</strong> {balance} ETH</p>
+          <a 
+            href={`https://basescan.org/address/${address}`} 
+            target="_blank" 
+            rel="noreferrer"
+            style={{ color: "#0070f3", textDecoration: "underline" }}
+          >
+            BaseScan پر تمام ٹوکنز دیکھیں
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
