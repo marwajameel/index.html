@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Mj04 is ERC20, Ownable {
+    uint256 public immutable maxSupply;
+
+    constructor(uint256 initialSupply, uint256 _maxSupply) 
+        ERC20("Mj04", "MJ04") 
+        Ownable(msg.sender) 
+    {
+        require(_maxSupply > 0, "Max supply must be greater than zero");
+        require(initialSupply <= _maxSupply, "Initial supply exceeds max supply");
+        
+        maxSupply = _maxSupply * 10 ** decimals();
+        _mint(msg.sender, initialSupply * 10 ** decimals());
+    }
+
+    function mint(address to, uint256 amount) public onlyOwner {
+        require(totalSupply() + amount <= maxSupply, "Supply ceiling reached");
+        _mint(to, amount);
+    }
+}
