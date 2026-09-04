@@ -1,78 +1,169 @@
-<button onclick="handlePayment()" id="pay-button">
-  ابھی ادائیگی کریں ($25)
-</button>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mj04 Token - بیس نیٹ ورک</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 32px 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+        }
+        h1 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            color: var(--accent-color);
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .info-box {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        .label {
+            color: var(--text-muted);
+        }
+        .value {
+            font-weight: 600;
+        }
+        .btn {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .footer-note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
 
-<script>
-async function handlePayment() {
-  const btn = document.getElementById('pay-button');
-  
-  try {
-    btn.disabled = true; // ادائیگی کے دوران بٹن کو روک دیں
-    btn.innerText = "پروسیسنگ ہو رہی ہے...";
+    <div class="container">
+        <div class="card">
+            <h1>Mj04 ٹوکن</h1>
+            <div class="subtitle">بیس نیٹ ورک کا آفیشل ایسٹ ٹوکن</div>
 
-    const payment = await pay({
-      amount: '25.00',
-      to: 'jamilahmed.base.eth',
-      payerInfo: {
-        requests: [
-          { type: 'email' },
-          { type: 'phoneNumber', optional: true },
-          { type: 'physicalAddress', optional: true }
-        ]
-      }
-    });
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="value">MJ04</span>
+                    <span class="label">ٹوکن سمبل:</span>
+                </div>
+                <div class="info-row">
+                    <span class="value">Base</span>
+                    <span class="label">نیٹ ورک:</span>
+                </div>
+                <div class="info-row">
+                    <span class="value">B20 ایسٹ</span>
+                    <span class="label">اسٹینڈرڈ:</span>
+                </div>
+            </div>
 
-    if (payment.id) {
-      alert("شکریہ! آپ کی ادائیگی موصول ہوگئی۔");
-      window.location.href = '/success.html'; // یہاں اپنے کامیابی کے صفحے کا لنک دیں
-    }
-  } catch (error) {
-    alert("خرابی: " + error.message);
-    btn.disabled = false;
-    btn.innerText = "دوبارہ کوشش کریں";
-  }
-}
-</script>
+            <!-- والٹ کنیکٹ بٹن -->
+            <button class="btn" onclick="connectWallet()" id="connect-btn" style="margin-bottom: 12px;">والٹ کنیکٹ کریں</button>
 
-
-<div style="direction: rtl; text-align: right; font-family: 'Noori Nastaleeq', Arial, sans-serif; border: 2px solid #004a99; padding: 20px; border-radius: 10px; max-width: 500px; margin: 20px auto; background-color: #f9f9f9;">
-    <h2 style="color: #004a99; text-align: center;">آن لائن معلوماتی فارم</h2>
-    <p style="text-align: center; font-size: 14px;">براہ کرم درج ذیل معلومات فراہم کریں، ہم جلد آپ سے رابطہ کریں گے۔</p>
-    
-    <form action="https://formspree.io/f/YOUR_ID" method="POST"> <div style="margin-bottom: 15px;">
-            <label>آپ کا نام:</label><br>
-            <input type="text" name="name" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;" required>
+            <!-- ادائیگی کا بٹن (جو آپ نے فراہم کیا تھا) -->
+            <button class="btn" onclick="handlePayment()" id="pay-button">
+                ابھی ادائیگی کریں (25$)
+            </button>
+            
+            <div class="footer-note">
+                اسمارٹ کانٹریکٹ کے ذریعے محفوظ اور کمیونٹی کے لیے تیار کردہ۔
+            </div>
         </div>
-
-        <div style="margin-bottom: 15px;">
-            <label>فون نمبر (WhatsApp):</label><br>
-            <input type="tel" name="phone" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;" required>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-            <label>مطلوبہ سروس:</label><br>
-            <select name="service" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
-                <option value="visa">اسٹڈی ویزہ گائیڈنس</option>
-                <option value="business">بزنس کنسلٹنسی</option>
-                <option value="legal">قانونی درخواست / نوٹس</option>
-                <option value="other">دیگر معلومات</option>
-            </select>
-        </div>
-
-        <div style="margin-bottom: 15px;">
-            <label>اپنا مسئلہ یا سوال لکھیں:</label><br>
-            <textarea name="message" rows="4" style="width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
-        </div>
-
-        <button type="submit" style="width: 100%; background-color: #004a99; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">فارم جمع کروائیں</button>
-    </form>
-
-    <hr style="margin: 20px 0;">
-    
-    <div style="text-align: center;">
-        <p>یا براہ راست واٹس ایپ پر رابطہ کریں:</p>
-        <a href="https://wa.me/923460008235" style="background-color: #25D366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-            <i class="fa fa-whatsapp"></i> واٹس ایپ پر بات کریں
-        </a>
     </div>
-</div>
+
+    <script>
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    alert('والٹ کامیابی سے جڑ گیا ہے: ' + accounts[0]);
+                } catch (error) {
+                    alert('کنکشن مسترد کر دیا گیا۔');
+                }
+            } else {
+                alert('براہ کرم میٹا ماسک یا کوئی دوسرا ویب 3 والٹ انسٹال کریں!');
+            }
+        }
+
+        async function handlePayment() {
+            const btn = document.getElementById('pay-button');
+            
+            try {
+                btn.disabled = true; // ادائیگی کے دوران بٹن کو روک دیں
+                btn.innerText = "پروسیسنگ ہو رہی ہے . . .";
+                
+                // یہاں آپ اپنی پیمائش یا ٹرانزیکشن کا کوڈ شامل کر سکتے ہیں
+                await new Promise(resolve => setTimeout(testTimeout = resolve, 2000)); // فرضی ڈیلے
+                alert('ادائیگی کی درخواست پروسیس ہو گئی ہے!');
+                
+            } catch (error) {
+                console.error("Payment error:", error);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "ابھی ادائیگی کریں (25$)";
+            }
+        }
+    </script>
+</body>
+</html>
