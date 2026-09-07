@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Grading Quiz App</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; line-height: 1.25; }
+        .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        .question { margin-bottom: 20px; }
+        label { display: block; margin: 8px 0; cursor: pointer; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 15px; font-size: 16px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 15px; }
+        button:hover { background-color: #0056b3; }
+        #result { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 5px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Self-Grading Quiz</h1>
+    <div id="quiz-form">
+        <div class="question">
+            <p><strong>1. What is the primary purpose of Gemini API?</strong></p>
+            <label><input type="radio" name="q1" value="a"> Image editing</label>
+            <label><input type="radio" name="q1" value="b"> AI model integration and prompting</label>
+            <label><input type="radio" name="q1" value="c"> Database management</label>
+        </div>
+        
+        <div class="question">
+            <p><strong>2. Which tool is used for automated code hosting and deployment?</strong></p>
+            <label><input type="radio" name="q2" value="a"> Vercel</label>
+            <label><input type="radio" name="q2" value="b"> Notepad</label>
+            <label><input type="radio" name="q2" value="c"> Calculator</label>
+        </div>
+
+        <button onclick="gradeQuiz()">Submit & Grade</button>
+    </div>
+
+    <div id="result">
+        <h3>Results & Analysis</h3>
+        <p id="score-text"></p>
+        <p id="missed-topics"></p>
+    </div>
+</div>
+
+<script>
+    function gradeQuiz() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        
+        let score = 0;
+        let missed = [];
+
+        if (q1 && q1.value === 'b') {
+            score += 50;
+        } else {
+            missed.push("Gemini API Integration Concepts");
+        }
+
+        if (q2 && q2.value === 'a') {
+            score += 50;
+        } else {
+            missed.push("Deployment Platforms (Vercel)");
+        }
+
+        const resultDiv = document.getElementById('result');
+        const scoreText = document.getElementById('score-text');
+        const missedText = document.getElementById('missed-topics');
+
+        scoreText.innerHTML = `Your Score: <strong>${score}%</strong>`;
+        if (missed.length > 0) {
+            missedText.innerHTML = `Topics to review: <span style="color: red;">${missed.join(', ')}</span>`;
+        } else {
+            missedText.innerHTML = `<span style="color: green;">Great job! No missed topics.</span>`;
+        }
+
+        resultDiv.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
