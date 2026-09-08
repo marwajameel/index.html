@@ -2,9 +2,11 @@ import { WalletConnect } from "@/components/WalletConnect";
 import { motion } from "framer-motion";
 
 export default function Home() {
+  const userWalletAddress = "jamilahmed.base.eth";
+
   return (
     <div
-      className="min-h-screen bg-slate-950 text-white p-4 sm:p-6 lg:p-8 relative overflow-hidden text-right"
+      className="min-h-screen bg-slate-950 text-white p-4 sm:p-6 lg:p-8 relative overflow-hidden text-right font-sans"
       dir="rtl"
     >
       {/* Top Header / Wallet Connection Section */}
@@ -14,7 +16,7 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-md mx-auto space-y-6">
-        {/* Binance Live Wallet Balance Card */}
+        {/* 1. Binance Live Wallet Balance Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -45,7 +47,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* BNB Chain & RWA Market Analytics Widget */}
+        {/* 2. On-Chain Wallet & Locked Assets Scanner Widget */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,37 +55,106 @@ export default function Home() {
           className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md"
         >
           <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+            <span className="text-xs bg-cyan-500/10 text-cyan-400 px-2.5 py-1 rounded-full border border-cyan-500/20 font-medium">
+              On-Chain Live Tracker
+            </span>
+            <h2 className="text-sm font-semibold text-slate-300">آن-چین والٹ و ٹوکنز سکینر</h2>
+          </div>
+
+          <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 mb-4 text-center">
+            <div className="text-xs text-slate-400 mb-1">ایکٹیو بلاک چین ایڈریس:</div>
+            <div className="text-sm font-mono font-bold text-cyan-400 dir-ltr tracking-wide">
+              {userWalletAddress}
+            </div>
+          </div>
+
+          <div className="space-y-2.5">
+            <a
+              href={`https://debank.com/profile/${userWalletAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-between items-center bg-slate-950/40 hover:bg-slate-800/60 p-3 rounded-xl border border-slate-800/50 transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-emerald-400">🔍</span>
+                <span className="text-xs text-slate-200 group-hover:text-amber-400 transition-colors">
+                  پھنسے/اٹکے ہوئے ٹوکنز سکین کریں (DeBank)
+                </span>
+              </div>
+              <span className="text-xs text-slate-400 dir-ltr font-mono">فتح کریں ↗</span>
+            </a>
+
+            <a
+              href={`https://basescan.org/address/${userWalletAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-between items-center bg-slate-950/40 hover:bg-slate-800/60 p-3 rounded-xl border border-slate-800/50 transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-blue-400">🌐</span>
+                <span className="text-xs text-slate-200 group-hover:text-amber-400 transition-colors">
+                  Base Chain ہسٹری اور ٹرانزیکشنز
+                </span>
+              </div>
+              <span className="text-xs text-slate-400 dir-ltr font-mono">BaseScan ↗</span>
+            </a>
+
+            <a
+              href={`https://bscscan.com/address/${userWalletAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-between items-center bg-slate-950/40 hover:bg-slate-800/60 p-3 rounded-xl border border-slate-800/50 transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-amber-400">⚡</span>
+                <span className="text-xs text-slate-200 group-hover:text-amber-400 transition-colors">
+                  BNB Chain (BSC) بیلنس اور ٹوکنز
+                </span>
+              </div>
+              <span className="text-xs text-slate-400 dir-ltr font-mono">BscScan ↗</span>
+            </a>
+          </div>
+        </motion.div>
+
+        {/* 3. BNB Chain Real-Time RWA Analytics Widget */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md"
+        >
+          <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
             <span className="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full border border-amber-500/20 font-medium">
-              RWA.xyz Market Data
+              RWA.xyz Live Data
             </span>
             <h2 className="text-sm font-semibold text-slate-300">BNB Chain RWA مارکیٹ</h2>
           </div>
 
           <div className="space-y-3">
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-400">ٹوپ پلیٹ فارم (Binance Bridge)</span>
-              <span className="text-sm font-bold text-amber-400 dir-ltr font-mono">$11.1B</span>
+              <span className="text-xs text-slate-400">تقسیم شدہ RWA قدر (Distributed Value)</span>
+              <span className="text-sm font-bold text-amber-400 dir-ltr font-mono">$5.62B</span>
             </div>
 
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-400">کل اسٹیبل کوئنز (Stablecoins)</span>
-              <span className="text-sm font-bold text-emerald-400 dir-ltr font-mono">$9.18B</span>
+              <span className="text-xs text-slate-400">اسٹیبل کوئن مارکیٹ کیپ (Stablecoin)</span>
+              <span className="text-sm font-bold text-emerald-400 dir-ltr font-mono">$14.31B</span>
             </div>
 
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-400">ٹریژری فنڈز (US Treasury)</span>
-              <span className="text-sm font-bold text-blue-400 dir-ltr font-mono">$2.58B</span>
+              <span className="text-xs text-slate-400">RWA ہولڈرز (Holders)</span>
+              <span className="text-sm font-bold text-blue-400 dir-ltr font-mono">1.41M</span>
             </div>
           </div>
 
           <div className="mt-4 text-center">
             <a 
-              href="https://app.rwa.xyz" 
+              href="https://app.rwa.xyz/networks/bnb-chain" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-xs text-slate-400 hover:text-amber-400 transition-colors underline"
             >
-              RWA.xyz پر تفصیلات دیکھیں ↗
+              RWA.xyz پر BNB Chain اینالیٹکس دیکھیں ↗
             </a>
           </div>
         </motion.div>
