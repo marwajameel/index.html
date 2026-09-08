@@ -47,3 +47,43 @@ export default function Home() {
     </div>
   );
 }
+import { motion } from 'framer-motion';
+
+export default function CryptoBalanceDashboard() {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white p-4 font-sans text-right" dir="rtl">
+      {/* Wallet Summary Card with Responsive Zoom Scale */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="max-w-md mx-auto bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md transition-all hover:scale-[1.02]"
+      >
+        <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+          <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/20 font-medium">
+            ● بائنانس لائیو ایکٹیو
+          </span>
+          <h2 className="text-sm font-semibold text-slate-400">کل تخمینہ قدر</h2>
+        </div>
+
+        {/* Balance Display with Dynamic Text Zoom */}
+        <div className="my-4">
+          <div className="text-3xl md:text-4xl font-extrabold text-amber-400 tracking-tight">
+            2.44711679 <span className="text-lg text-slate-300">USDT</span>
+          </div>
+          <div className="text-sm text-slate-400 mt-1">
+            ≈ $2.45 USD
+          </div>
+        </div>
+
+        {/* PnL Indicator Box */}
+        <div className="flex items-center justify-between bg-slate-950/60 rounded-xl p-3 border border-slate-800/80 mt-4">
+          <span className="text-xs text-slate-400">آج کا منافع / نقصان (PnL)</span>
+          <span className="text-sm font-bold text-emerald-400 dir-ltr font-mono">
+            +$0.02 (+1.00%) ↑
+          </span>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
