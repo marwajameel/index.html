@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   const userWalletAddress = "jamilahmed.base.eth";
+  // آپ کا سولانا والٹ ایڈریس یا ٹوکن ٹریکر ایڈریس
+  const solanaWalletAddress = "jamilahmed.base.eth"; 
 
   return (
     <div
@@ -47,7 +49,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* 2. On-Chain Wallet & Locked Assets Scanner Widget */}
+        {/* 2. On-Chain Tracker (Multi-Chain: Solana, Base, BNB) */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -56,13 +58,13 @@ export default function Home() {
         >
           <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
             <span className="text-xs bg-cyan-500/10 text-cyan-400 px-2.5 py-1 rounded-full border border-cyan-500/20 font-medium">
-              On-Chain Live Tracker
+              Multi-Chain Tracker
             </span>
-            <h2 className="text-sm font-semibold text-slate-300">آن-چین والٹ و ٹوکنز سکینر</h2>
+            <h2 className="text-sm font-semibold text-slate-300">آن-چین والٹ و اٹکے ٹوکنز سکینر</h2>
           </div>
 
           <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 mb-4 text-center">
-            <div className="text-xs text-slate-400 mb-1">ایکٹیو بلاک چین ایڈریس:</div>
+            <div className="text-xs text-slate-400 mb-1">ایکٹیو آن-چین ایڈریس:</div>
             <div className="text-sm font-mono font-bold text-cyan-400 dir-ltr tracking-wide">
               {userWalletAddress}
             </div>
@@ -82,6 +84,22 @@ export default function Home() {
                 </span>
               </div>
               <span className="text-xs text-slate-400 dir-ltr font-mono">فتح کریں ↗</span>
+            </a>
+
+            {/* Solana Explorer Link */}
+            <a
+              href={`https://solscan.io/account/${solanaWalletAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex justify-between items-center bg-slate-950/40 hover:bg-slate-800/60 p-3 rounded-xl border border-purple-800/40 transition-colors group"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-purple-400">🟣</span>
+                <span className="text-xs text-slate-200 group-hover:text-amber-400 transition-colors">
+                  سولانا بلاک چین والٹ (Solscan Explorer)
+                </span>
+              </div>
+              <span className="text-xs text-purple-400 dir-ltr font-mono">Solscan ↗</span>
             </a>
 
             <a
@@ -116,50 +134,53 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* 3. BNB Chain Top RWA Assets Analytics Widget */}
+        {/* 3. Solana & BABE Theme Ecosystem Card */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-md"
+          className="bg-slate-900/90 border border-purple-900/50 rounded-2xl p-6 shadow-2xl backdrop-blur-md"
         >
           <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
-            <span className="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full border border-amber-500/20 font-medium">
-              RWA Assets List
+            <span className="text-xs bg-purple-500/10 text-purple-400 px-2.5 py-1 rounded-full border border-purple-500/20 font-medium">
+              Solana Ecosystem & BABE
             </span>
-            <h2 className="text-sm font-semibold text-slate-300">BNB Chain RWA اثاثے</h2>
+            <h2 className="text-sm font-semibold text-purple-300">سولانا و BABE تھیم ٹوکنز</h2>
           </div>
 
           <div className="space-y-2.5">
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-200">Tether USDT (Binance Bridge)</span>
-              <span className="text-xs font-bold text-emerald-400 dir-ltr font-mono">Stablecoin</span>
+              <span className="text-xs text-purple-200">Chill Babe ($BABE) / Baby Solana</span>
+              <span className="text-xs font-bold text-pink-400 dir-ltr font-mono">Solana Meme</span>
             </div>
 
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-200">Binance-Peg BUSD / USDC</span>
-              <span className="text-xs font-bold text-emerald-400 dir-ltr font-mono">Stablecoin</span>
+              <span className="text-xs text-purple-200">Ondo USDY & Solana RWA</span>
+              <span className="text-xs font-bold text-purple-400 dir-ltr font-mono">Treasuries</span>
             </div>
 
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-200">Tether Gold (XAUT)</span>
-              <span className="text-xs font-bold text-amber-400 dir-ltr font-mono">Commodity</span>
-            </div>
-
-            <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-200">bStocks (SpaceX, Alphabet)</span>
+              <span className="text-xs text-purple-200">Solana xStocks (SPYx, Tesla)</span>
               <span className="text-xs font-bold text-blue-400 dir-ltr font-mono">Tokenized Stocks</span>
             </div>
           </div>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4 flex justify-between items-center text-xs text-slate-400 underline">
             <a 
-              href="https://app.rwa.xyz/networks/bnb-chain" 
+              href="https://solscan.io" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-xs text-slate-400 hover:text-amber-400 transition-colors underline"
+              className="hover:text-purple-400 transition-colors"
             >
-              RWA.xyz پر تمام 1,321 اثاثے دیکھیں ↗
+              Solscan ایکسپلورر ↗
+            </a>
+            <a 
+              href="https://app.rwa.xyz/networks/solana" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-purple-400 transition-colors"
+            >
+              Solana RWA مارکیٹ ↗
             </a>
           </div>
         </motion.div>
