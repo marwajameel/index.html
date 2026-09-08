@@ -9,7 +9,7 @@ export default function Home() {
       className="min-h-screen bg-slate-950 text-white p-4 sm:p-6 lg:p-8 relative overflow-hidden text-right font-sans"
       dir="rtl"
     >
-      {/* Top Header / Wallet Connection Section */}
+      {/* Header Section */}
       <div className="w-full max-w-md mx-auto mb-6 flex justify-between items-center">
         <h1 className="text-xl font-bold text-amber-400">SDN کرپٹو ڈیش بورڈ</h1>
         <WalletConnect />
@@ -116,7 +116,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* 3. BNB Chain Real-Time RWA Analytics Widget */}
+        {/* 3. BNB Chain Top RWA Assets Analytics Widget */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -125,25 +125,30 @@ export default function Home() {
         >
           <div className="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
             <span className="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full border border-amber-500/20 font-medium">
-              RWA.xyz Live Data
+              RWA Assets List
             </span>
-            <h2 className="text-sm font-semibold text-slate-300">BNB Chain RWA مارکیٹ</h2>
+            <h2 className="text-sm font-semibold text-slate-300">BNB Chain RWA اثاثے</h2>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-400">تقسیم شدہ RWA قدر (Distributed Value)</span>
-              <span className="text-sm font-bold text-amber-400 dir-ltr font-mono">$5.62B</span>
+              <span className="text-xs text-slate-200">Tether USDT (Binance Bridge)</span>
+              <span className="text-xs font-bold text-emerald-400 dir-ltr font-mono">Stablecoin</span>
             </div>
 
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-400">اسٹیبل کوئن مارکیٹ کیپ (Stablecoin)</span>
-              <span className="text-sm font-bold text-emerald-400 dir-ltr font-mono">$14.31B</span>
+              <span className="text-xs text-slate-200">Binance-Peg BUSD / USDC</span>
+              <span className="text-xs font-bold text-emerald-400 dir-ltr font-mono">Stablecoin</span>
             </div>
 
             <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
-              <span className="text-xs text-slate-400">RWA ہولڈرز (Holders)</span>
-              <span className="text-sm font-bold text-blue-400 dir-ltr font-mono">1.41M</span>
+              <span className="text-xs text-slate-200">Tether Gold (XAUT)</span>
+              <span className="text-xs font-bold text-amber-400 dir-ltr font-mono">Commodity</span>
+            </div>
+
+            <div className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-800/50">
+              <span className="text-xs text-slate-200">bStocks (SpaceX, Alphabet)</span>
+              <span className="text-xs font-bold text-blue-400 dir-ltr font-mono">Tokenized Stocks</span>
             </div>
           </div>
 
@@ -154,7 +159,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="text-xs text-slate-400 hover:text-amber-400 transition-colors underline"
             >
-              RWA.xyz پر BNB Chain اینالیٹکس دیکھیں ↗
+              RWA.xyz پر تمام 1,321 اثاثے دیکھیں ↗
             </a>
           </div>
         </motion.div>
