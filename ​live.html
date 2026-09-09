@@ -1,0 +1,46 @@
+<!-- Live Stream Player Integration -->
+<script>
+  // 1. User Device & IP Detection
+  async function setupLiveStream() {
+    try {
+      // Get User IP Address
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipResponse.json();
+      const userIP = ipData.ip;
+      
+      console.log("User IP Address:", userIP);
+
+      // Check if User is on Mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      // Select Stream URL based on requirement
+      let streamUrl = "https://your-domain.com/live/stream.m3u8";
+
+      if (isMobile) {
+        console.log("Mobile device detected. Optimizing stream for mobile IP...");
+        // اگر موبائل کے لیے الگ کوالٹی یا پاتھ دینا ہو
+        streamUrl = "https://your-domain.com/live/mobile-stream.m3u8";
+      }
+
+      // Initialize Player (e.g., Video.js or HLS)
+      loadPlayer(streamUrl);
+
+    } catch (error) {
+      console.error("Error detecting IP or setting up stream:", error);
+    }
+  }
+
+  function loadPlayer(url) {
+    const video = document.getElementById('liveVideo');
+    if (video) {
+      video.src = url;
+      video.play().catch(e => console.log("Autoplay blocked:", e));
+    }
+  }
+
+  // Run on Page Load
+  window.onload = setupLiveStream;
+</script>
+
+<!-- Video Element -->
+<video id="liveVideo" controls autoplay playsinline style="width:100%; max-width:800px; height:auto;"></video>
