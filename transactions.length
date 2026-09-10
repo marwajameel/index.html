@@ -1,0 +1,147 @@
+import React, { useEffect, useState } from 'react';
+
+export default function TransactionsCard() {
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const walletAddress = "0x565F0fe9715E3cb0Df579f186C299D6707887E83";
+
+  useEffect(() => {
+    async function fetchTxData() {
+      try {
+        setLoading(true);
+        // درست Routescan API URL
+        const url = `https://api.routescan.io/v2/network/mainnet/evm/all/address/${walletAddress}/transactions?ecosystem=ethereum&categories=evm_tx&sort=desc&limit=25`;
+        
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("ڈیٹا حاصل کرنے میں ناکامی ہوئی۔");
+        
+        const data = await res.json();
+        setTransactions(data.items || data.data || []);
+      } catch (err) {
+        console.error("خطا:", err);
+        setError("ٹرانزیکشن ہسٹری لوڈ کرنے میں مسئلہ پیش آیا۔");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchTxData();
+  }, []);
+
+  // مختصر ایڈریس دکھانے کا فنکشن
+  const shortenAddress = (addr) => {
+    if (!addr) return "N/A";
+    return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
+  };
+
+  return (
+    <div style={{ maxWidth: '800px', margin: '20px auto', padding: '15px', fontFamily: 'sans-serif' }}>
+      <h2 style={{ textAlign: 'center', color: '#1e293b', marginBottom: '20px' }}>
+        حالیہ ٹرانزیکشنز ہسٹری (Recent Transactions)
+      </h2>
+
+      {loading && (
+        <div style={{ textAlign: 'center', padding: '40px', fontSize: '18px', color: '#64748b' }}>
+          ⏳ ٹرانزیکشنز لوڈ ہو رہی ہیں...
+        </div>
+      )}
+
+      {error && (
+        <div style={{ padding: '15px', backgroundColor: '#fef2f2', color: '#dc2626', borderRadius: '8px', textAlign: 'center' }}>
+          {error}
+        </div>
+      )}
+
+      {!loading && !error && transactions.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '30px', backgroundColor: '#f8fafc', borderRadius: '8px' }}>
+          کوئی ٹرانزیکشن نہیں ملی۔
+        </div>
+      )}
+
+      {!loading && !error && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          {transactions.map((tx, index) => {
+            const isSuccess = tx.status === 1 || tx.status === "success" || tx.status === true;
+            const fromAddr = tx.from?.address || tx.from || "N/A";
+            const toAddr = tx.to?.address || tx.to || "Contract Interaction";
+
+            return (
+              <div 
+                key={tx.hash || index}
+                style={{
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                  transition: 'transform 0.2s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px'
+                }}
+              >
+                {/* کارڈ کا اوپری حصہ: ہیش اور اسٹیٹس */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span 
+                      style={{
+                        padding: '4px 10px',
+                        borderRadius: '20px',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        backgroundColor: isSuccess ? '#dcfce7' : '#fee2e2',
+                        color: isSuccess ? '#15803d' : '#b91c1c'
+                      }}
+                    >
+                      {isSuccess ? "✓ کامیاب (Success)" : "✗ ناکام (Failed)"}
+                    </span>
+                    <span style={{ fontSize: '13px', color: '#64748b', fontWeight: '500' }}>
+                      Chain ID: {tx.chainId || "EVM"}
+                    </span>
+                  </div>
+
+                  <a 
+                    href={`https://routescan.io/tx/${tx.hash}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ fontSize: '13px', color: '#2563eb', textDecoration: 'none', fontWeight: '600' }}
+                  >
+                    ایکسپلورر پر دیکھیں ↗
+                  </a>
+                </div>
+
+                {/* ٹرانزیکشن ہیش */}
+                <div style={{ fontSize: '14px', wordBreak: 'break-all', color: '#334155' }}>
+                  <strong>Tx Hash:</strong> <code style={{ backgroundColor: '#f1f5f9', padding: '2px 6px', borderRadius: '4px' }}>{tx.hash}</code>
+                </div>
+
+                {/* ایڈریس کی تفصیلات (From / To) */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', backgroundColor: '#f8fafc', padding: '10px', borderRadius: '8px', fontSize: '13px' }}>
+                  <div>
+                    <span style={{ color: '#64748b' }}>ارسال کنندہ (From):</span>
+                    <br />
+                    <strong>{shortenAddress(fromAddr)}</strong>
+                  </div>
+                  <div>
+                    <span style={{ color: '#64748b' }}>موصول کنندہ (To):</span>
+                    <br />
+                    <strong>{shortenAddress(toAddr)}</strong>
+                  </div>
+                </div>
+
+                {/* وقت یا دیگر معلومات */}
+                {tx.timestamp && (
+                  <div style={{ fontSize: '12px', color: '#94a3b8', textAlign: 'left' }}>
+                    📅 {new Date(tx.timestamp * 1000).toLocaleString('ur-PK')}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
