@@ -1,7 +1,8 @@
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/marwajameel/passkey-authenticator-aaguids/main/1000234455.jpg" alt="Jamil Ahmed Kalyal" width="150" height="150" style="border-radius: 50%; border: 4px solid #0078D4; object-fit: cover; margin-bottom: 15px;" />
-# 🔐 Passkey Authenticator AAGUIDs Explorer
+# 🔐 Passkey Authenticator
+ AAGUIDs Explorer
 
 ### 🚀 A Comprehensive Community-Driven List of Passkey Provider AAGUIDs
 
