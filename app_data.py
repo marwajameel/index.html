@@ -502,4 +502,23 @@ def sync_live_app_data():
     print(f"Success! Updated aggregated balance of ${total_balance_usd} to portal_data.json")
 
 if __name__ == "__main__":
-    sync_live_app_data()
+    sync_live_app_data(
+
+WALLET_ADDRESS = "9ujAEDhbzA7DSEiABC8bKD6qtemMmD8bQ7fp6GyuQAeQ"
+
+# اگر آپ اسے live_portal_payload میں شامل کرنا چاہتے ہیں:
+live_portal_payload = {
+    "address": WALLET_ADDRESS,
+    "total_balance_usd": total_balance_usd,
+    # دیگر ڈیٹا...
+}
+
+json.dump(
+    live_portal_payload, f
+    , ensure_ascii=False,
+    indent=2
+)
+
+print(
+    f"Success! Updated aggregated balance of ${total_balance_usd} with address {WALLET_ADDRESS} to portal_data.json")
+
