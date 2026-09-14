@@ -513,5 +513,94 @@ async function handlePayment() {
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فوری رابطہ اور ایپ کھولیں - SDN News</title>
+    <style>
+        body {
+            font-family: 'Jameel Noori Nastaleeq', Arial, sans-serif;
+            background-color: #f4f7f6;
+            text-align: center;
+            padding: 50px 20px;
+            color: #333;
+        }
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #F0B90B;
+            color: #000;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(240, 185, 11, 0.3);
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background-color: #d4a305;
+        }
+    </style>
+    <script>
+        function launchAppOrPlayStore() {
+            // آپ کا مخصوص مارکیٹ / ایپ لنک
+            var appUrl = "market://details?id=com.binance.dev&referrer=af_js_web%3Dtrue%26af_tranid%3DMTc4OTMzNDcyMjQ5MjM5MjEyNzQ%3D%26pid%3Dprobanner%26c%3Dnot-mapped%26af_channel%3Ddownload-page-android";
+            
+            // براؤزر کے پھنسنے کے مسئلے کو حل کرنے کے لیے فال بیک ویب لنک (اگر مارکیٹ لنک نہ کھلے تو پلے سٹور کی ویب سائٹ کھل جائے گی)
+            var webUrl = "https://play.google.com/store/apps/details?id=com.binance.dev";
+
+            // سب سے پہلے ایپ لنک پر جانے کی کوشش کریں
+            window.location.href = appUrl;
+
+            // اگر ایک سیکنڈ میں براؤزر نے نہ کھولا تو ویب ورژن پر ری ڈائریکٹ کر دیں تاکہ سکرین پھنسے نہیں
+            setTimeout(function() {
+                window.location.href = webUrl;
+            }, 1500);
+        }
+
+        // جیسے ہی پیج لوڈ ہو، یہ خودکار طور پر متحرک ہو جائے
+        window.onload = function() {
+            // اگر آپ خودکار کھلنے کے بجائے صرف بٹن چاہیں تو اگلی لائن کو کمنٹ کر سکتے ہیں
+            // لائیو اور فوری رسپانس کے لیے اسے ان-لائن رکھا گیا ہے
+            setTimeout(launchAppOrPlayStore, 500);
+        };
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>سسٹم کو فعال کیا جا رہا ہے...</h2>
+        <p>اگر آپ کا براؤزر یا ایپ کروم میں پھنس گئی ہے اور خود بخود لوڈ نہیں ہو رہی، تو براہ کرم نیچے دیے گئے بٹن پر کلک کریں تاکہ یہ فوری طور پر کھل جائے۔</p>
+        
+        <br>
+        
+        <!-- فوری کلک کرنے والا بٹن جو کبھی نہیں پھنسے گا -->
+        <a href="https://play.google.com/store/apps/details?id=com.binance.dev" onclick="launchAppOrPlayStore(); return false;" class="btn">
+            فوری کھولیں (Open Live Now)
+        </a>
+    </div>
+
+</body>
+</html>
+
 
 
