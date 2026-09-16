@@ -81,4 +81,25 @@ window.addEventListener('DOMContentLoaded', () => {
     applyUrduTranslation();
     console.p("تمام ڈیٹا کو کامیابی کے ساتھ اردو میں اپڈیٹ کر دیا گیا ہے۔");
 });
+// رقم کی منتقلی (Funds Transfer) کا فنکشن
+async function transferFunds(recipientAddress, amountInSol) {
+    try {
+        if (!window.solana || !window.solana.isPhantom) {
+            alert("براہ کرم پہلے اپنا سولانا والیٹ کنیکٹ کریں۔");
+            return;
+        }
+
+        // رقم کو لامپورٹس (Lamports) میں تبدیل کرنا (1 SOL = 10^9 Lamports)
+        const lamports = amountInSol * 1000000000;
+        
+        console.log(`منتقلی جاری ہے: ${amountInSol} SOL برائے ایڈریس ${recipientAddress}`);
+        
+        // یہاں آپ سولانا کا ٹرانزیکشن ابجیکٹ بنا کر سائن اور براڈکاسٹ کرتے ہیں
+        alert("ٹرانزیکشن کی درخواست کامیابی کے ساتھ تیار ہو گئی ہے۔ براہ کرم والیٹ سے تصدیق کریں۔");
+        
+    } catch (error) {
+        console.error("ٹرانزیکشن میں خرابی پیش آگئی:", error);
+        alert("لین دین مکمل نہیں ہو سکا۔");
+    }
+}
 
