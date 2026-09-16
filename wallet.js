@@ -243,3 +243,43 @@ async function transferFunds(recipientAddress, amountInSol) {
         alert("والیٹ ٹرانزیکشن نہیں بھیج سکا۔ براہ کرم دوبارہ کوشش کریں۔");
     }
 }
+// مستحکم سولانا آر پی سی کنفیگریشن
+const SOLANA_RPC_ENDPOINT = "https://api.mainnet-beta.solana.com";
+const USER_SOLANA_ADDRESS = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
+
+// لائیو بیلنس اور اکاؤنٹ کی تفصیلات چیک کرنے کا فنکشن
+async function fetchSolanaBalance() {
+    try {
+        console.log("سولانا نیٹ ورک سے بیلنس ریفرش کیا جا रहा ہے...");
+        
+        const response = await fetch(SOLANA_RPC_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jsonrpc: "2.0",
+                id: 1,
+                method: "getBalance",
+                params: [USER_SOLANA_ADDRESS]
+            })
+        });
+
+        const data = await response.json();
+        if (data.result && data.result.value !== undefined) {
+            const solBalance = data.result.value / 1e9; // Lamports کو SOL میں تبدیل کرنا
+            console.log(`کامیابی! لائیو سولانا بیلنس: ${solBalance} SOL`);
+            
+            // UI پر بیلنس اپ ڈیٹ کرنے کے لیے
+            const balanceElement = document.getElementById('wallet-balance');
+            if (balanceElement) {
+                balanceElement.textContent = `${solBalance} SOL`;
+            }
+        }
+    } catch (error) {
+        console.error("آر پی سی کنکشن میں خرابی:", error);
+    }
+}
+
+// صفحہ لوڈ ہوتے ہی بیلنس چیک کریں
+window.addEventListener('DOMContentLoaded', () => {
+    fetchSolanaBalance();
+});
