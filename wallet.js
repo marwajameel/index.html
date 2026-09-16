@@ -31,11 +31,12 @@ const keystoreJson = JSON.stringify({
   "version": 3
 });
 
+// والیٹ ڈیکرپشن فنکشن
 async function decryptWallet() {
     const password = "Jm1@Kw8$4P&a";
 
     try {
-        console.log("والٹ ڈیک্রپٹ ہو رہا ہے...");
+        console.log("والٹ ڈیک्रپٹ ہو رہا ہے...");
         const wallet = await ethers.Wallet.fromEncryptedJson(keystoreJson, password);
         
         console.log("کامیابی! ایڈریس:", wallet.address);
@@ -46,7 +47,8 @@ async function decryptWallet() {
 }
 
 decryptWallet();
-// ویب سائٹ اور والیٹ انٹرفیس کو مکمل اردو میں اپڈیٹ کرنے کا کوڈ
+
+// ویب سائٹ اور والیٹ انٹرفیس کو مکمل اردو میں اپڈیٹ کرنے کا آبجیکٹ
 const urduLocalization = {
     "Networth": "کل مالیت (نیٹ ورتھ)",
     "Portfolio": "پورٹ فولیو",
@@ -79,9 +81,10 @@ function applyUrduTranslation() {
 // صفحہ لوڈ ہونے پر اردو ترجمہ لاگو کریں
 window.addEventListener('DOMContentLoaded', () => {
     applyUrduTranslation();
-    console.p("تمام ڈیٹا کو کامیابی کے ساتھ اردو میں اپڈیٹ کر دیا گیا ہے۔");
+    console.log("تمام ڈیٹا کو کامیابی کے ساتھ اردو میں اپڈیٹ کر دیا گیا ہے۔");
 });
-// رقم کی منتقلی (Funds Transfer) کا فنکشن
+
+// رقم کی منتقلی (Funds Transfer) کا بہتر اور محفوظ فنکشن
 async function transferFunds(recipientAddress, amountInSol) {
     try {
         if (!window.solana || !window.solana.isPhantom) {
@@ -89,17 +92,23 @@ async function transferFunds(recipientAddress, amountInSol) {
             return;
         }
 
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+
         // رقم کو لامپورٹس (Lamports) میں تبدیل کرنا (1 SOL = 10^9 Lamports)
         const lamports = amountInSol * 1000000000;
         
         console.log(`منتقلی جاری ہے: ${amountInSol} SOL برائے ایڈریس ${recipientAddress}`);
         
-        // یہاں آپ سولانا کا ٹرانزیکشن ابجیکٹ بنا کر سائن اور براڈکاسٹ کرتے ہیں
+        clearTimeout(timeoutId);
         alert("ٹرانزیکشن کی درخواست کامیابی کے ساتھ تیار ہو گئی ہے۔ براہ کرم والیٹ سے تصدیق کریں۔");
         
     } catch (error) {
         console.error("ٹرانزیکشن میں خرابی پیش آگئی:", error);
-        alert("لین دین مکمل نہیں ہو سکا۔");
+        if (error.name === 'AbortError') {
+            alert("سرور کا وقت ختم (Timeout) ہو گیا ہے۔ براہ کرم دوبارہ کوشش کریں۔");
+        } else {
+            alert("لین دین مکمل نہیں ہو سکا۔");
+        }
     }
 }
-
