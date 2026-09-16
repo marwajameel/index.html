@@ -46,3 +46,39 @@ async function decryptWallet() {
 }
 
 decryptWallet();
+// ویب سائٹ اور والیٹ انٹرفیس کو مکمل اردو میں اپڈیٹ کرنے کا کوڈ
+const urduLocalization = {
+    "Networth": "کل مالیت (نیٹ ورتھ)",
+    "Portfolio": "پورٹ فولیو",
+    "Transactions": "ٹرانزیکشنز",
+    "Info": "معلومات",
+    "Add to Group": "گروپ میں شامل کریں",
+    "Chat": "چیٹ",
+    "Assets": "اثاثے",
+    "Allocation": "تقسیم",
+    "Solana": "سولانا",
+    "Connected": "مربوط / کنیکٹڈ",
+    "Wallet Address": "والیٹ ایڈریس",
+    "Send": "بھیجیں",
+    "Receive": "وصول کریں",
+    "Balance": "بیلنس"
+};
+
+// عناصر کو اردو میں تبدیل کرنے کا فنکشن
+function applyUrduTranslation() {
+    document.querySelectorAll('*').forEach(element => {
+        if (element.children.length === 0 && element.textContent.trim() !== '') {
+            let text = element.textContent.trim();
+            if (urduLocalization[text]) {
+                element.textContent = urduLocalization[text];
+            }
+        }
+    });
+}
+
+// صفحہ لوڈ ہونے پر اردو ترجمہ لاگو کریں
+window.addEventListener('DOMContentLoaded', () => {
+    applyUrduTranslation();
+    console.p("تمام ڈیٹا کو کامیابی کے ساتھ اردو میں اپڈیٹ کر دیا گیا ہے۔");
+});
+
