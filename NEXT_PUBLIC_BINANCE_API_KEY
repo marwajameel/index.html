@@ -1,0 +1,154 @@
+import { ethers } from "ethers";
+
+// ---------------------------------------------------------------------------
+// 1. معلومات اور تصدیق شدہ ملٹی چین والٹ ایڈریسز
+// ---------------------------------------------------------------------------
+const DISTRICT_INFO = {
+  district: "Gujrat, Pakistan",
+  bureauChief: "Jamil Ahmad Kalyal",
+  officialAddress: "Nizamabad, Kalyal House 182, Sarai Alamgir, Gujrat"
+};
+
+const USER_SOLANA_ADDRESS = "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM";
+const USER_EVM_ADDRESS = "0x2AbD1232a3ce7545Aadc6216Dd609AA665069e28";
+const SOLANA_RPC_ENDPOINT = "https://api.mainnet-beta.solana.com";
+const BSC_RPC_URL = "https://bsc-dataseed.binance.org/";
+
+const USER_WALLETS = {
+  evm: USER_EVM_ADDRESS,
+  solana: USER_SOLANA_ADDRESS,
+  bitcoin: "bc1qt44xaw4shq3zazjxvzfhqnjszk6yggjl6excmy"
+};
+
+// ---------------------------------------------------------------------------
+// 2. پروجیکٹ کنفیگریشن (اینوائرمنٹ ویری ایبلز کے ساتھ)
+// ---------------------------------------------------------------------------
+const CONFIG = {
+  BINANCE_API_KEY: process.env.NEXT_PUBLIC_BINANCE_API_KEY || "",
+  BINANCE_API_SECRET: process.env.BINANCE_API_SECRET || "",
+  AGENT_WALLET_PRIVATE_KEY: process.env.AGENT_WALLET_PRIVATE_KEY || "",
+  RPC_URL: BSC_RPC_URL,
+  CHAIN_ID: 56
+};
+
+// ---------------------------------------------------------------------------
+// 3. لائیو بیلنس چیک کرنے کا فنکشن
+// ---------------------------------------------------------------------------
+async function checkAllNetworkBalances() {
+    console.log(`--- ضلع گجرات (${DISTRICT_INFO.district}) ملٹی چین بیلنس سنک جاری ہے ---`);
+
+    // سولانا بیلنس
+    try {
+        const solResponse = await fetch(SOLANA_RPC_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jsonrpc: "2.0",
+                id: 1,
+                method: "getBalance",
+                params: [USER_SOLANA_ADDRESS]
+            })
+        });
+        const solData = await solResponse.json();
+        if (solData.result && solData.result.value !== undefined) {
+            const solBalance = solData.result.value / 1e9;
+            const balanceEl = document.getElementById('wallet-balance');
+            if (balanceEl) balanceEl.textContent = `${solBalance.toLocaleString()} SOL`;
+            console.log(`سولانا بیلنس: ${solBalance} SOL`);
+        }
+    } catch (e) {
+        console.error("سولانا بیلنس سنک خرابی:", e);
+    }
+
+    // بی ایس سی (BSC) بیلنس
+    try {
+        const provider = new ethers.JsonRpcProvider(CONFIG.RPC_URL);
+        const bnbBalanceWei = await provider.getBalance(USER_EVM_ADDRESS);
+        const bnbBalance = ethers.formatEther(bnbBalanceWei);
+        console.log(`بی ایس سی / ای وی ایم بیلنس: ${bnbBalance} BNB`);
+    } catch (e) {
+        console.error("ای وی ایم بیلنس سنک خرابی:", e);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 4. اردو لوکلائزیشن
+// ---------------------------------------------------------------------------
+const urduLocalization = {
+    "Networth": "کل مالیت (نیٹ ورتھ)",
+    "Portfolio": "پورٹ فولیو",
+    "Transactions": "ٹرانزیکشنز",
+    "Info": "معلومات",
+    "Assets": "اثاثے",
+    "Solana": "سولانا",
+    "Connected": "مربوط / کنیکٹڈ",
+    "Send": "بھیجیں",
+    "Receive": "وصول کریں",
+    "Balance": "بیلنس"
+};
+
+function applyUrduTranslationAndAddress() {
+    if (typeof document === 'undefined') return;
+
+    document.querySelectorAll('*').forEach(element => {
+        if (element.children.length === 0 && element.textContent.trim() !== '') {
+            let text = element.textContent.trim();
+            if (urduLocalization[text]) {
+                element.textContent = urduLocalization[text];
+            }
+        }
+    });
+
+    document.querySelectorAll('.wallet-address, #wallet-address').forEach(el => {
+        el.textContent = USER_SOLANA_ADDRESS;
+    });
+}
+
+// ---------------------------------------------------------------------------
+// 5. بائنانس ایجنٹک والیٹ کلاس
+// ---------------------------------------------------------------------------
+class BinanceAgenticWalletSkill {
+  constructor() {
+    this.apiKey = CONFIG.BINANCE_API_KEY;
+    this.provider = new ethers.JsonRpcProvider(CONFIG.RPC_URL);
+    this.wallets = USER_WALLETS;
+    this.districtInfo = DISTRICT_INFO;
+
+    if (CONFIG.AGENT_WALLET_PRIVATE_KEY) {
+      this.wallet = new ethers.Wallet(CONFIG.AGENT_WALLET_PRIVATE_KEY, this.provider);
+    } else {
+      this.wallet = null;
+    }
+  }
+
+  async getBalance() {
+    try {
+      if (!this.wallet) {
+        throw new Error("والٹ کی پرائیویٹ کی سیٹ نہیں ہے۔");
+      }
+      
+      const balanceWei = await this.provider.getBalance(this.wallet.address);
+      const balanceBnb = ethers.formatEther(balanceWei);
+      
+      return {
+        address: this.wallet.address,
+        balance: balanceBnb,
+        networks: this.wallets,
+        district: this.districtInfo
+      };
+    } catch (error) {
+      console.error("بیلنس حاصل کرنے میں خرابی:", error.message);
+      throw error;
+    }
+  }
+}
+
+// براؤزر میں ایونٹ لسٹنر چلانا
+if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => {
+        applyUrduTranslationAndAddress();
+        checkAllNetworkBalances();
+    });
+}
+
+export default BinanceAgenticWalletSkill;
