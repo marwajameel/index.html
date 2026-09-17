@@ -1,93 +1,44 @@
-import { ethers } from 'ethers';
+Import { ethers } from 'ethers';
 
-// ------------------------------------------------------------------
-// 1. پروجیکٹ کنفیگریشن اور کریڈنشیلز (Project Credentials & Config)
-// ------------------------------------------------------------------
-
-const CONFIG = {
-  // Binance API Credentials
-  BINANCE_API_KEY: process.env.BINANCE_API_KEY || "YOUR_BINANCE_API_KEY",
-  BINANCE_SECRET_KEY: process.env.BINANCE_SECRET_KEY || "YOUR_BINANCE_SECRET_KEY",
-
-  // Web3 & RPC Configurations
-  RPC_URL: process.env.RPC_URL || "https://bsc-dataseed.binance.org/",
-  CHAIN_ID: 56, // BNB Smart Chain Mainnet
-
-  // Application Details
-  APP_NAME: "SDN Agentic Wallet",
-  VERSION: "1.0.0"
+// ---------------------------------------------------------------------------
+// 1. آپ کے اصل ملٹی چین والٹ ایڈریسز (User Wallet Addresses)
+// ---------------------------------------------------------------------------
+const USER_WALLETS = {
+  evm: "0xcBcA630521176E76D8a5F55F78703B92336A1411", // Smart Account / EVM
+  solana: "DtY9ntn8FtxWgUnir28tHnRJ2XME5rM9vRMfHHBE2hHa", // Solana Address
+  bitcoin: "bc1qt44xaw4shq3zazjxvzfhqnjszk6yggjl6excmy"  // Bitcoin Address
 };
 
-// ------------------------------------------------------------------
-// 2. ایجنٹک والٹ کلاس (Agentic Wallet Logic)
-// ------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// 2. پروجیکٹ کنفیگریشن اور کریڈنشیلز (Project Credentials & Config)
+// ---------------------------------------------------------------------------
+const CONFIG = {
+  BINANCE_API_KEY: process.env.BINANCE_API_KEY || "your_binance_api_key_here",
+  BINANCE_API_SECRET: process.env.BINANCE_API_SECRET || "your_binance_api_secret_here",
+  AGENT_WALLET_PRIVATE_KEY: process.env.AGENT_WALLET_PRIVATE_KEY || "your_wallet_private_key_here",
+  RPC_URL: "https://bsc-dataseed.binance.org/", // BNB Chain RPC
+  CHAIN_ID: 56
+};
 
-class BinanceAgenticWallet {
-  constructor(config = CONFIG) {
-    this.config = config;
-    this.provider = new ethers.JsonRpcProvider(this.config.RPC_URL);
-    this.wallet = null;
-  }
+// ---------------------------------------------------------------------------
+// 3. بائنانس ایجنٹک والٹ اسکل کلاس (Binance Agentic Wallet Skill Class)
+// ---------------------------------------------------------------------------
+class BinanceAgenticWalletSkill {
+  constructor() {
+    this.apiKey = CONFIG.BINANCE_API_KEY;
+    this.privateKey = CONFIG.AGENT_WALLET_PRIVATE_KEY;
+    this.provider = new ethers.JsonRpcProvider(CONFIG.RPC_URL);
+    this.wallets = USER_WALLETS;
 
-  // والٹ انیشیلائزیشن
-  async initializeWallet(privateKey) {
-    try {
-      if (!privateKey) {
-        throw new Error("پرائیویٹ کی (Private Key) فراہم نہیں کی گئیہ۔");
-      }
-      this.wallet = new ethers.Wallet(privateKey, this.provider);
-      console.log(`والٹ کامیابی سے کنیکٹ ہو گیا: ${this.wallet.address}`);
-      return this.wallet.address;
-    } catch (error) {
-      console.error("والٹ کنیکٹ کرنے میں ناکامی:", error.message);
-      throw error;
+    if (this.privateKey && this.privateKey !== "your_wallet_private_key_here") {
+      this.wallet = new ethers.Wallet(this.privateKey, this.provider);
+    } else {
+      this.wallet = null;
     }
   }
 
-  // بیلنس چیک کرنے کا فنکشن
-  async getBalance(address = null) {
-    try {
-      const targetAddress = address || (this.wallet ? this.wallet.address : null);
-      if (!targetAddress) {
-        throw new Error("والٹ ایڈریس موجود نہیں ہے۔");
-      }
-      const balance = await this.provider.getBalance(targetAddress);
-      return ethers.formatEther(balance);
-    } catch (error) {
-      console.error("بیلنس معلوم کرنے میں مسئلہ:", error.message);
-      throw error;
-    }
-  }
-
-  // خودمختار / ایجنٹک ٹرانزیکشن کی عملداری
-  async executeAgentTransaction(toAddress, amountInBnb) {
-    try {
-      if (!this.wallet) {
-        throw new Error("پہلے والٹ کو کنیکٹ کریں۔");
-      }
-
-      console.log(`${amountInBnb} BNB کی ٹرانزیکشن بھیجی جا رہی ہے ایڈریس: ${toAddress}`);
-
-      const tx = await this.wallet.sendTransaction({
-        to: toAddress,
-        value: ethers.parseEther(amountInBnb.toString())
-      });
-
-      console.log(`ٹرانزیکشن بھیج دی گئی! ہیش: ${tx.hash}`);
-      await tx.wait();
-      console.log("ٹرانزیکشن بلاک چین پر کنفرم ہو گئی ہے۔");
-      
-      return tx.hash;
-    } catch (error) {
-      console.error("ٹرانزیکشن کی عملداری میں ناکامی:", error.message);
-      throw error;
-    }
-  }
-}
-
-// ------------------------------------------------------------------
-// 3. ماڈیول ایکسپورٹ
-// ------------------------------------------------------------------
-
-export default BinanceAgenticWallet;
-export { CONFIG, BinanceAgenticWallet };
+  // والٹ بیلنس چیک کرنے کا فنکشن
+  async getBalance() {
+    if (!this.wallet) {
+      throw new Error("والٹ کی پرائیویٹ کی (Private Key) سیٹ نہیں ہے۔");
+اس کو بھی دیکھیں ذرا درست کرلیں
