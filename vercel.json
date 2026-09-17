@@ -1,5 +1,4 @@
 {
-  "rewrites": [
-    { "source": "/((?!index.html).*)", "destination": "/index.html" }
-  ]
+  "version": 2,
+  "cleanUrls": true
 }
