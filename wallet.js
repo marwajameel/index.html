@@ -386,3 +386,18 @@ async function transferFunds(recipientAddress, amountInSol) {
         alert("لین دین مکمل نہیں ہو سکا۔");
     }
 }
+// Coinbase Smart Wallet & Base Network Configuration
+export const APP_CONFIG = {
+  appName: "Jamil Wallet & AI Agent",
+  primaryEvmAddress: "0x2AbD1232a3ce7545Aadc6216Dd609AA665069e28",
+  primarySolanaAddress: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+  supportedNetworks: ["base", "solana", "monad"],
+  defaultRpc: "https://mainnet.base.org"
+};
+
+export function getAccountDetails() {
+  return {
+    evm: APP_CONFIG.primaryEvmAddress,
+    solana: APP_CONFIG.primarySolanaAddress
+  };
+}
