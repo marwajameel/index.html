@@ -99,3 +99,29 @@ async function main() {
 }
 
 main();
+import { TatumSDK, Network, Ethereum } from '@tatumio/tatum';
+
+const TATUM_API_KEY = 'T-6aada5ee2e4a995e01b3fdf6-edd59d5d95ee46688291765c';
+
+export async function getEnsWalletInsights(ensDomain: string) {
+  try {
+    const tatum = await TatumSDK.init<Ethereum>({
+      network: Network.ETHEREUM,
+      apiKey: { v4: TATUM_API_KEY },
+    });
+
+    // 1. ENS سے والیٹ کا لائیو پورٹ فولیو اور بیلنس فیچ کریں
+    const balance = await tatum.address.getBalance({
+      addresses: [ensDomain],
+    });
+
+    console.log(`[Data Insights] ${ensDomain} Balance:`, balance.data);
+    return balance.data;
+  } catch (error) {
+    console.error('❌ Data Insights Fetch Error:', error);
+  }
+}
+
+// استعمال کرنے کا طریقہ:
+// getEnsWalletInsights('punk6529.eth');
+
