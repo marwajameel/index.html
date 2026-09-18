@@ -124,4 +124,27 @@ export async function getEnsWalletInsights(ensDomain: string) {
 
 // استعمال کرنے کا طریقہ:
 // getEnsWalletInsights('punk6529.eth');
+import { TatumSDK, Network, Ethereum } from '@tatumio/tatum';
+
+const TATUM_API_KEY = 'T-6aada5ee2e4a995e01b3fdf6-edd59d5d95ee46688291765c';
+
+export async function getWalletNfts(walletAddress: string) {
+  try {
+    const tatum = await TatumSDK.init<Ethereum>({
+      network: Network.ETHEREUM,
+      apiKey: { v4: TATUM_API_KEY },
+    });
+
+    // والٹ میں موجود تمام NFTs کا لائیو ڈیٹا فیچ کریں
+    const nftBalances = await tatum.nft.getBalance({
+      addresses: [walletAddress],
+    });
+
+    console.log(`[NFT Holdings] ${walletAddress}:`, nftBalances.data);
+    return nftBalances.data;
+  } catch (error) {
+    console.error('❌ NFT Fetch Error:', error);
+  }
+}
+
 
