@@ -21,3 +21,4 @@ if response.status_code == 200:
     print(f"Current Block Number: {latest_block}")
 else:
     print("Connection Failed:", response.text)
+python check_attestation.py
