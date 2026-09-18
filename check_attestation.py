@@ -1,8 +1,9 @@
 import requests
 
-# Base Mainnet RPC URL (Coinbase Developer Platform)
+# Base Mainnet RPC URL
 RPC_URL = "https://api.developer.coinbase.com/rpc/v1/base/CEuN7z8myGVgJo1Op29D4nbyvRAggXcy"
 
+# Request Payload
 payload = {
     "jsonrpc": "2.0",
     "id": 1,
@@ -12,10 +13,14 @@ payload = {
 
 headers = {"Content-Type": "application/json"}
 
+# Send Request
 response = requests.post(RPC_URL, json=payload, headers=headers)
 
+# Output Result
 if response.status_code == 200:
     data = response.json()
     latest_block = int(data['result'], 16)
-    print(f"Base Mainnet Connected successfully!")
+    print("Base Mainnet Connected successfully!")
     print(f"Current Block Number: {latest_block}")
+else:
+    print("Connection Failed:", response.text)
