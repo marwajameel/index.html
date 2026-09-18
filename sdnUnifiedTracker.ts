@@ -146,5 +146,7 @@ export async function getWalletNfts(walletAddress: string) {
     console.error('❌ NFT Fetch Error:', error);
   }
 }
+NEXT_PUBLIC_APP_URL=https://jamil-wallet-app.vercel.app
+NEXT_PUBLIC_TATUM_API_KEY=T-6aada5ee2e4a995e01b3fdf6-edd59d5d95ee46688291765c
 
 
