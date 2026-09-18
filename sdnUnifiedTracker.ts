@@ -148,5 +148,29 @@ export async function getWalletNfts(walletAddress: string) {
 }
 NEXT_PUBLIC_APP_URL=https://jamil-wallet-app.vercel.app
 NEXT_PUBLIC_TATUM_API_KEY=T-6aada5ee2e4a995e01b3fdf6-edd59d5d95ee46688291765c
+import { TatumSDK, Network, Ethereum } from '@tatumio/tatum';
+
+const TATUM_API_KEY = 'T-6aada5ee2e4a995e01b3fdf6-edd59d5d95ee46688291765c';
+
+export async function getNftMetadataDetails(contractAddress: string, tokenId: string) {
+  try {
+    const tatum = await TatumSDK.init<Ethereum>({
+      network: Network.ETHEREUM,
+      apiKey: { v4: TATUM_API_KEY },
+    });
+
+    // NFT کا مکمل میٹا ڈیٹا فیچ کریں
+    const nftData = await tatum.nft.getNftMetadata({
+      contractAddress: contractAddress,
+      tokenId: tokenId,
+    });
+
+    console.log('[NFT Metadata]:', nftData.data);
+    return nftData.data;
+  } catch (error) {
+    console.error('❌ Metadata Fetch Error:', error);
+  }
+}
+
 
 
