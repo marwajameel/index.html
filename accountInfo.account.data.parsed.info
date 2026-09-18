@@ -1,0 +1,100 @@
+import fs from 'fs';
+import csv from 'csv-parser';
+import { Connection, PublicKey } from '@solana/web3.js';
+
+// QuickNode کا Solana RPC Endpoint (انوائرمنٹ سے یا ڈیفالٹ)
+const QUICKNODE_RPC_URL = process.env.QUICKNODE_SOLANA_RPC || 'https://api.mainnet-beta.solana.com';
+const connection = new Connection(QUICKNODE_RPC_URL, 'confirmed');
+
+interface TransactionRecord {
+  signature: string;
+  owner: string;
+  blockTime: string;
+  platformId: string;
+  serviceName: string;
+  ticker: string;
+  address: string;
+  postBalance: string;
+  balanceChange: string;
+}
+
+const transactions: TransactionRecord[] = [];
+
+/**
+ * CSV فائل پڑھنے کا فنکشن
+ * @param filePath CSV فائل کا لوکل پاتھ
+ */
+export async function processCsvData(filePath: string) {
+  console.log(`فائل پڑھنا شروع: ${filePath}...`);
+
+  if (!fs.existsSync(filePath)) {
+    console.error(`ایرر: فائل "${filePath}" نہیں ملی! براہ کرم درست پاتھ فراہم کریں۔`);
+    return;
+  }
+
+  fs.createReadStream(filePath)
+    .pipe(csv())
+    .on('data', (row: any) => {
+      // صرف انہی سطروں کو شامل کریں جن میں ایڈریس موجود ہو
+      if (row.address && row.address.trim() !== '') {
+        transactions.push({
+          signature: row.Signature || row.signature || '',
+          owner: row.owner || '',
+          blockTime: row.blockTime || '',
+          platformId: row.platformId || '',
+          serviceName: row.serviceName || '',
+          ticker: row.ticker ? row.ticker.trim() : 'N/A',
+          address: row.address.trim(),
+          postBalance: row.postBalance || '0',
+          balanceChange: row.balanceChange || '0',
+        });
+      }
+    })
+    .on('end', async () => {
+      console.log(`کامیابی! کل ${transactions.length} ریکارڈر پروسیسنگ کے لیے تیار ہیں۔\n`);
+      await syncOnChainBalances();
+    });
+}
+
+/**
+ * آن چین ڈیٹا اور لائیو بیلنس سنکرونائز کرنے کا فنکشن
+ */
+async function syncOnChainBalances() {
+  for (let i = 0; i < transactions.length; i++) {
+    const item = transactions[i];
+    console.log(`[${i + 1}/${transactions.length}] چیکنگ: ${item.ticker} (ایڈریس: ${item.address})`);
+
+    try {
+      const pubKey = new PublicKey(item.address);
+
+      if (item.ticker === 'SOL' || item.ticker === '' || item.ticker === 'N/A') {
+        // SOL کا نیٹو بیلنس لائیو چیک کریں
+        const balance = await connection.getBalance(pubKey);
+        const solBalance = balance / 1e9;
+        console.log(` -> لائیو SOL بیلنس: ${solBalance} SOL (ریکارڈ بیلنس: ${item.postBalance})`);
+      } else {
+        // SPL ٹوکنز کا آن چین بیلنس چیک کریں
+        const tokenAccounts = await connection.getParsedTokenAccountsByOwner(pubKey, {
+          programId: new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+        });
+
+        let tokenFound = false;
+        tokenAccounts.value.forEach((accountInfo) => {
+          const parsedData = accountInfo.account.data.parsed.info;
+          console.log(` -> ٹوکن اکاؤنٹ (Mint: ${parsedData.mint}): ${parsedData.tokenAmount.uiAmount}`);
+          tokenFound = true;
+        });
+
+        if (!tokenFound) {
+          console.log(` -> اس ایڈریس پر فعال ٹوکن اکاؤنٹ نہیں ملا۔`);
+        }
+      }
+    } catch (error) {
+      console.error(` -> غلطی: ایڈریس ${item.address} کا ڈیٹا فیچ نہیں ہو سکا:`, error);
+    }
+    console.log('--------------------------------------------------');
+  }
+}
+
+// اگر فائل ڈائریکٹ چلانی ہو تو CSV کا نام یہاں دیں
+processCsvData('./transactions.csv');
