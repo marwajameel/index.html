@@ -171,6 +171,45 @@ export async function getNftMetadataDetails(contractAddress: string, tokenId: st
     console.error('❌ Metadata Fetch Error:', error);
   }
 }
+import { ethers } from 'ethers';
+
+const TATUM_ETH_RPC = 'https://ethereum-mainnet.gateway.tatum.io';
+const TATUM_API_KEY = 'T-6aada5ee2e4a995e01b3fdf6-edd59d5d95ee46688291765c';
+
+// Tatum Provider
+const provider = new ethers.JsonRpcProvider({
+  url: TATUM_ETH_RPC,
+  headers: { 'x-api-key': TATUM_API_KEY },
+});
+
+export async function resolveEnsAndFetchBalance(ensName: string) {
+  try {
+    // 1. ENS ڈومین سے اصل 0x والٹ ایڈریس حاصل کریں
+    const walletAddress = await provider.resolveName(ensName);
+    
+    if (!walletAddress) {
+      console.log(`❌ ENS Domain ${ensName} ناٹ فاؤنڈ!`);
+      return null;
+    }
+
+    // 2. والٹ کا لائیو ETH بیلنس حاصل کریں
+    const balance = await provider.getBalance(walletAddress);
+    const formattedBalance = ethers.formatEther(balance);
+
+    console.log(`[ENS Insight] ${ensName} (${walletAddress}) -> Balance: ${formattedBalance} ETH`);
+    
+    return {
+      ensName,
+      walletAddress,
+      balance: formattedBalance,
+    };
+  } catch (error) {
+    console.error('❌ ENS Resolve Error:', error);
+  }
+}
+
+// استعمال کرنے کی مثال:
+// resolveEnsAndFetchBalance('vitalik.eth');
 
 
 
