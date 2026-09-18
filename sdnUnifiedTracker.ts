@@ -210,6 +210,47 @@ export async function resolveEnsAndFetchBalance(ensName: string) {
 
 // استعمال کرنے کی مثال:
 // resolveEnsAndFetchBalance('vitalik.eth');
+// 1. کریپٹو کی موجودہ قیمت PKR میں حاصل کرنے کا فنکشن
+export async function getCryptoPricesInPKR() {
+  try {
+    const response = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,solana,binancecoin&vs_currencies=pkr,usd'
+    );
+    const data = await response.json();
+    
+    return {
+      ETH_PKR: data.ethereum.pkr,
+      SOL_PKR: data.solana.pkr,
+      BNB_PKR: data.binancecoin.pkr,
+    };
+  } catch (error) {
+    console.error('❌ PKR Price Fetch Error:', error);
+    return null;
+  }
+}
+
+// 2. والٹ کا تمام بیلنس PKR میں ٹرانسفر / تبدیل کرنے کا فنکشن
+export async function getWalletPortfolioInPKR(ethBalance: number, solBalance: number) {
+  const prices = await getCryptoPricesInPKR();
+  
+  if (!prices) return null;
+
+  const ethInPkr = ethBalance * prices.ETH_PKR;
+  const solInPkr = solBalance * prices.SOL_PKR;
+  const totalPkr = ethInPkr + solInPkr;
+
+  console.log(`--- 🇵🇰 پاکستانی روپے میں کل مالیات ---`);
+  console.log(`ETH Value: Rs. ${ethInPkr.toLocaleString('ur-PK')}`);
+  console.log(`SOL Value: Rs. ${solInPkr.toLocaleString('ur-PK')}`);
+  console.log(`Total Value: Rs. ${totalPkr.toLocaleString('ur-PK')}`);
+
+  return {
+    ethInPkr,
+    solInPkr,
+    totalPkr,
+  };
+}
+
 
 
 
