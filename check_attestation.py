@@ -19,6 +19,3 @@ if response.status_code == 200:
     latest_block = int(data['result'], 16)
     print(f"Base Mainnet Connected successfully!")
     print(f"Current Block Number: {latest_block}")
-else:
-    print("Connection Failed:", response.text)
-python check_attestation.py
