@@ -521,4 +521,7 @@ json.dump(
 
 print(
     f"Success! Updated aggregated balance of ${total_balance_usd} with address {WALLET_ADDRESS} to portal_data.json")
+# آپ کے نئے بائنینس یا نئے فینٹم والٹ کا ایڈریس
+DESTINATION_ADDRESS=1mGRiNd5QgddUpASfGRftpQRKMB2peE5hj1gMF6f5Hp
+
 
