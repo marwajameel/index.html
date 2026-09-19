@@ -67,6 +67,9 @@ async function runCdpAgent() {
 
     console.log("\n==========================================");
     console.log("✅ تمام پروسیس کامیابی سے مکمل ہو گیا ہے!");
+npm install @solana/web3.js csv-parser
+npm install -D typescript @types/node ts-node
+
     console.log("==========================================");
 
   } catch (error) {
