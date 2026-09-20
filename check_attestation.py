@@ -64,4 +64,3 @@ def verify_base_network():
 
 if __name__ == "__main__":
     verify_base_network()
-
