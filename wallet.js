@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 // ---------------------------------------------------------------------------
 const DISTRICT_INFO = {
   district: "Gujrat, Pakistan",
-  bureauChief: "Jamil Ahmad Kalyal",
+  bureauChief: "JAMIL AHMED KALYAL",
   officialAddress: "Nizamabad, Kalyal House 182, Sarai Alamgir, Gujrat"
 };
 
