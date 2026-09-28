@@ -1,0 +1,72 @@
+import React, { useState } from 'react';
+import { executeStakeAndDeploy } from './lombardService';
+
+export default function LombardStakingWidget() {
+  const [amount, setAmount] = useState('0.1');
+  const [recipient, setRecipient] = useState('0xcBcA630521176E76D8a5F55F78703B92336A1411');
+  const [depositAddress, setDepositAddress] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleStake = async () => {
+    setLoading(true);
+    setError('');
+    setDepositAddress('');
+
+    try {
+      const address = await executeStakeAndDeploy(amount, recipient);
+      setDepositAddress(address);
+    } catch (err) {
+      setError('ایڈریس جنریٹ کرنے میں ناکامی ہوئی۔ برائے مہربانی دوبارہ کوشش کریں۔');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '8px', maxWidth: '450px', margin: 'auto' }}>
+      <h3>Lombard BTC Staking</h3>
+      
+      <div style={{ marginBottom: '10px' }}>
+        <label>BTC مقدار: </label>
+        <input 
+          type="text" 
+          value={amount} 
+          onChange={(e) => setAmount(e.target.value)} 
+          style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+        />
+      </div>
+
+      <div style={{ marginBottom: '10px' }}>
+        <label>ETH وصول کنندہ کا ایڈریس: </label>
+        <input 
+          type="text" 
+          value={recipient} 
+          onChange={(e) => setRecipient(e.target.value)} 
+          style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+        />
+      </div>
+
+      <button 
+        onClick={handleStake} 
+        disabled={loading}
+        style={{ width: '100%', padding: '10px', backgroundColor: '#0070f3', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+      >
+        {loading ? 'پروسیسنگ جاری ہے...' : 'ڈپازٹ ایڈریس حاصل کریں'}
+      </button>
+
+      {depositAddress && (
+        <div style={{ marginTop: '15px', padding: '10px', backgroundColor: '#e6fffa', border: '1px solid #319795', borderRadius: '4px' }}>
+          <strong>بی ٹی سی (BTC) اس ایڈریس پر بھیجیں:</strong>
+          <p style={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>{depositAddress}</p>
+        </div>
+      )}
+
+      {error && (
+        <div style={{ marginTop: '15px', color: 'red' }}>
+          {error}
+        </div>
+      )}
+    </div>
+  );
+}
