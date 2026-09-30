@@ -1,0 +1,54 @@
+from solana.rpc.api import Client
+from solana.rpc.commitment import Confirmed
+from solana.transaction import Transaction
+from solders.keypair import Keypair
+from solders.pubkey import Pubkey
+
+# سولانا نیٹ ورک سے کنکشن قائم کریں
+solana_client = Client("https://api.mainnet-beta.solana.com")
+
+def pay_gas_fee(sender_private_key_bytes, recipient_address, amount_in_sol):
+    try:
+        # والٹ کی پرائیویٹ کی سے کیپئر بنائیں
+        sender_keypair = Keypair.from_bytes(sender_private_key_bytes)
+        
+        # وصول کرنے والے کا پبلک ایڈریس
+        recipient_pubkey = Pubkey.from_string(recipient_address)
+        
+        # لامبپورٹس (Lamports) میں رقم تبدیل کریں (1 SOL = 1,000,000,000 Lamports)
+        lamports = int(amount_in_sol * 1_000_000_000)
+        
+        # حالیہ بلاک ہیش حاصل کریں
+        blockhash_resp = solana_client.get_latest_blockhash(commitment=Confirmed)
+        recent_blockhash = blockhash_resp.value.blockhash
+        
+        # نئی ٹرانزیکشن بنائیں
+        transaction = Transaction()
+        
+        # ٹرانزیکشن کی تفصیلی ہدایات درج کریں (یہاں SOL کی منتقلی اور گیس فیس شامل ہے)
+        from solana.system_program import TransferParams, transfer
+        transaction.add(
+            transfer(
+                TransferParams(
+                    from_pubkey=sender_keypair.pubkey(),
+                    to_pubkey=recipient_pubkey,
+                    lamports=lamports
+                )
+            )
+        )
+        
+        # ٹرانزیکشن سائن کر کے نیٹ ورک پر بھیجیں
+        result = solana_client.send_transaction(
+            transaction,
+            sender_keypair,
+            opts={"skip_preflight": False}
+        )
+        
+        return f"ٹرانزیکشن کامیابی سے بھیج دی گئی! سگنچر: {result.value}"
+        
+    except Exception as e:
+        return f"ٹرانزیکشن میں خرابی پیش آگئی: {str.valueOf(e) if hasattr(e, 'valueOf') else str(e)}"
+
+# مثال کے طور پر استعمال:
+# sender_key = [آپ کے والٹ کی پرائیویٹ کی باٹس فارمیٹ میں]
+# print(pay_gas_fee(sender_key, "وصول کرنے والے کا ایڈریس", 0.001))
