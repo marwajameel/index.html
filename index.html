@@ -635,6 +635,57 @@ async function handlePayment() {
         transferFunds(address, parseFloat(amount));
     }
 </script>
+# app_data.py - Based GM Web Portal Script
+
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+import os
+
+# ویب سائٹ کا ایچ ٹی ایم ایل ڈیٹا
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Based GM Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #0b0e14; color: #ffffff; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #161b22; padding: 20px; border-radius: 12px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #30363d; padding-bottom: 10px; margin-bottom: 20px; }
+        .wallet-id { background: #21262d; padding: 6px 12px; border-radius: 6px; font-family: monospace; color: #58a6ff; }
+        .card { background: #21262d; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .btn { background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>BASED GM</h2>
+        <div class="wallet-id">0xcBcA...1411</div>
+    </div>
+    <div class="card">
+        <h3>Active Event: Base Cobalt NFT</h3>
+        <p>Celebrate Base Cobalt with a free limited-time NFT mint on Based GM.</p>
+        <button class="btn" onclick="alert('Transaction requested on Base Network')">Mint Free NFT</button>
+    </div>
+</div>
+</body>
+</html>
+"""
+
+# انڈیکس فائل بنانا
+def create_website_file():
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(html_content)
+    print("index.html successfully created!")
+
+if __name__ == "__main__":
+    create_website_file()
+    
+    # لوکل سرور شروع کرنا (پورٹ 8080)
+    server_address = ('', 8080)
+    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    print("Server running at http://localhost:8080")
+    httpd.serve_forever()
 
 
 
