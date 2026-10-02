@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN Crypto Exchange & Live Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background: linear-gradient(135deg, #0b0e14 0%, #1a2332 100%); color: #ffffff; font-family: sans-serif; min-height: 100vh; }
+        .glow-card { background: rgba(26, 32, 44, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- Top Bar / Brand -->
+        <div class="flex flex-col md:flex-row justify-between items-center bg-gray-900/80 glow-card p-5 rounded-2xl mb-6 shadow-2xl">
+            <div class="flex items-center space-x-3 space-x-reverse mb-4 md:mb-0">
+                <div class="w-12 h-12 bg-gradient-to-tr from-blue-600 to-cyan-400 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg">SDN</div>
+                <div>
+                    <h1 class="text-xl font-bold text-white">ایس ڈی این گلوبل ایکسچینج</h1>
+                    <p class="text-xs text-gray-400">لائیو سمارٹ کانٹریکٹ اور پرافٹ پورٹل</p>
+                </div>
+            </div>
+            <button id="connectWalletBtn" onclick="connectWallet()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold px-6 py-3 rounded-xl transition duration-300 shadow-xl w-full md:w-auto">
+                والٹ کنیکٹ کریں (Connect Wallet)
+            </button>
+        </div>
+
+        <!-- Smart Contract Info Banner -->
+        <div class="glow-card p-4 rounded-xl mb-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-300">
+            <div><span class="text-blue-400 font-semibold">نیٹ ورک:</span> Base Chain (ID: 8453)</div>
+            <div class="truncate mt-2 md:mt-0"><span class="text-blue-400 font-semibold">اسمارٹ کانٹریکٹ:</span> <span class="font-mono text-yellow-400">0xf9bd...CcBA</span></div>
+        </div>
+
+        <!-- Live Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+            <div class="glow-card p-6 rounded-2xl text-center shadow-lg border-t-4 border-green-500">
+                <p class="text-gray-400 text-sm mb-1">کل پورٹ فولیو (Gross Balance)</p>
+                <h3 class="text-3xl font-extrabold text-green-400" id="gross-balance">$0.00</h3>
+            </div>
+            <div class="glow-card p-6 rounded-2xl text-center shadow-lg border-t-4 border-red-500">
+                <p class="text-gray-400 text-sm mb-1">خودکار گیس فیس (Gas Deducted)</p>
+                <h3 class="text-3xl font-extrabold text-red-400" id="gas-deducted">$0.00</h3>
+            </div>
+            <div class="glow-card p-6 rounded-2xl text-center shadow-lg border-t-4 border-cyan-500">
+                <p class="text-gray-400 text-sm mb-1">صافی منافع (Net Profit)</p>
+                <h3 class="text-3xl font-extrabold text-cyan-400" id="net-profit">$0.00</h3>
+            </div>
+        </div>
+
+        <!-- Wallet Connected Status Box -->
+        <div class="glow-card p-6 rounded-2xl mb-6">
+            <h2 class="text-lg font-semibold mb-3 text-gray-200 border-b border-gray-800 pb-2">سیشن کی تفصیلات</h2>
+            <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-400">صارف کا والٹ ایڈریس:</span>
+                <span class="text-sm text-yellow-400 font-mono bg-gray-900/50 px-3 py-1 rounded-lg" id="wallet-address">کوئی والٹ جڑا ہوا نہیں ہے</span>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <div class="text-center text-gray-500 text-xs">
+            © 2026 SDN News & Crypto Technologies. All Rights Reserved.
+        </div>
+    </div>
+
+    <script>
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    
+                    const shortAddr = account.substring(0, 6) + '...' + account.substring(account.length - 4);
+                    document.getElementById('wallet-address').innerText = shortAddr;
+                    
+                    const btn = document.getElementById('connectWalletBtn');
+                    btn.innerText = 'کنیکٹڈ ✓';
+                    btn.classList.remove('from-blue-600', 'to-indigo-600');
+                    btn.classList.add('from-green-600', 'to-emerald-600');
+
+                    // فرضی لائیو ڈیٹا لوڈنگ جو ایکسچینجز پر ہوتی ہے
+                    loadLivePortfolioData();
+                } catch (error) {
+                    alert('والٹ کنیکٹ کرنے میں خرابی پیش آئی!');
+                }
+            } else {
+                alert('براہ کرم میٹاماسک یا کوئی سپورٹڈ کرپٹو والٹ انسٹال کریں!');
+            }
+        }
+
+        function loadLivePortfolioData() {
+            const mockGross = 24580.90;
+            const mockGas = 12.40;
+            const mockNet = mockGross - mockGas;
+
+            document.getElementById('gross-balance').innerText = '$' + mockGross.toLocaleString();
+            document.getElementById('gas-deducted').innerText = '-$' + mockGas.toFixed(2);
+            document.getElementById('net-profit').innerText = '$' + mockNet.toLocaleString();
+        }
+    </script>
+</body>
+</html>
