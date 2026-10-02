@@ -748,6 +748,142 @@ if __name__ == "__main__":
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN Global Exchange & Live Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background: #0b0e14; color: #ffffff; font-family: sans-serif; min-height: 100vh; }
+        .dex-card { background: #12161c; border: 1px solid #1e2633; }
+    </style>
+</head>
+<body class="p-4 md:p-6">
+    <div class="max-w-5xl mx-auto">
+        
+        <!-- Top Navigation / Brand -->
+        <div class="flex flex-col md:flex-row justify-between items-center dex-card p-4 rounded-2xl mb-6 shadow-xl">
+            <div class="flex items-center space-x-3 space-x-reverse mb-4 md:mb-0">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-lg">SDN</div>
+                <div>
+                    <h1 class="text-lg font-bold">ایس ڈی این گلوبل ایکسچینج</h1>
+                    <p class="text-xs text-gray-400">لائیو مارکیٹ اور پورٹ فولیو ٹریکر</p>
+                </div>
+            </div>
+            <button id="connectWalletBtn" onclick="connectWallet()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-xl transition shadow-lg w-full md:w-auto text-sm">
+                والٹ کنیکٹ کریں (Connect Wallet)
+            </button>
+        </div>
+
+        <!-- Market Overview Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="dex-card p-4 rounded-xl text-center">
+                <p class="text-gray-400 text-xs">کل 24 گھنٹے کا والیوم (24H Volume)</p>
+                <h3 class="text-xl font-bold text-green-400 mt-1">$12.010B</h3>
+            </div>
+            <div class="dex-card p-4 rounded-xl text-center">
+                <p class="text-gray-400 text-xs">کل ٹرانزیکشنز (24H TXNS)</p>
+                <h3 class="text-xl font-bold text-blue-400 mt-1">47,810,562</h3>
+            </div>
+        </div>
+
+        <!-- Live Portfolio & Profit Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="dex-card p-5 rounded-xl text-center border-t-2 border-green-500">
+                <p class="text-gray-400 text-xs">کل پورٹ فولیو (Gross Balance)</p>
+                <h3 class="text-2xl font-bold text-green-400 mt-2" id="gross-balance">$0.00</h3>
+            </div>
+            <div class="dex-card p-5 rounded-xl text-center border-t-2 border-red-500">
+                <p class="text-gray-400 text-xs">خودکار گیس فیس کٹوتی (Gas Deducted)</p>
+                <h3 class="text-2xl font-bold text-red-400 mt-2" id="gas-deducted">$0.00</h3>
+            </div>
+            <div class="dex-card p-5 rounded-xl text-center border-t-2 border-cyan-500">
+                <p class="text-gray-400 text-xs">صافی منافع (Net Profit)</p>
+                <h3 class="text-2xl font-bold text-cyan-400 mt-2" id="net-profit">$0.00</h3>
+            </div>
+        </div>
+
+        <!-- Trending Tokens Table Style -->
+        <div class="dex-card rounded-xl p-4 mb-6 overflow-x-auto">
+            <h2 class="text-sm font-semibold text-gray-300 mb-3">رجحان ساز ٹوکنز اور لائیو ریٹس (Trending Tokens)</h2>
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="border-b border-gray-800 text-gray-400 text-xs">
+                        <th class="pb-2 text-right">ٹوکن</th>
+                        <th class="pb-2 text-right">مارکیٹ کیپ (MCAP)</th>
+                        <th class="pb-2 text-right">قیمت (PRICE)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800/50">
+                    <tr>
+                        <td class="py-3 text-right font-semibold text-blue-400">www / Base</td>
+                        <td class="py-3 text-right text-gray-300">$4.2M</td>
+                        <td class="py-3 text-right text-green-400">$0.004258</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-right font-semibold text-blue-400">Pinata / Base</td>
+                        <td class="py-3 text-right text-gray-300">$352K</td>
+                        <td class="py-3 text-right text-green-400">$0.000367</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-right font-semibold text-blue-400">SDN Coin / Base</td>
+                        <td class="py-3 text-right text-gray-300">$1.5M</td>
+                        <td class="py-3 text-right text-green-400">$0.012450</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Wallet Connected Box -->
+        <div class="dex-card p-4 rounded-xl mb-4 flex justify-between items-center text-xs">
+            <span class="text-gray-400">کنیکتد والٹ ایڈریس:</span>
+            <span class="text-yellow-400 font-mono" id="wallet-address">کوئی والٹ جڑا ہوا نہیں ہے</span>
+        </div>
+
+        <div class="text-center text-gray-500 text-[10px]">
+            © 2026 SDN Global Exchange & Technologies. Base Chain Network.
+        </div>
+    </div>
+
+    <script>
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    
+                    const shortAddr = account.substring(0, 6) + '...' + account.substring(account.length - 4);
+                    document.getElementById('wallet-address').innerText = shortAddr;
+                    
+                    const btn = document.getElementById('connectWalletBtn');
+                    btn.innerText = 'کنیکتد ✓';
+                    btn.classList.replace('bg-blue-600', 'bg-green-600');
+
+                    // لائیو ڈیٹا اور پرافٹ لوڈ کریں
+                    loadLivePortfolioData();
+                } catch (error) {
+                    alert('والٹ کنیکٹ کرنے میں خرابی پیش آئی!');
+                }
+            } else {
+                alert('براہ کرم میٹاماسک یا کوئی سپورٹڈ کرپٹو والٹ انسٹال کریں!');
+            }
+        }
+
+        function loadLivePortfolioData() {
+            const mockGross = 38450.20;
+            const mockGas = 18.50;
+            const mockNet = mockGross - mockGas;
+
+            document.getElementById('gross-balance').innerText = '$' + mockGross.toLocaleString();
+            document.getElementById('gas-deducted').innerText = '-$' + mockGas.toFixed(2);
+            document.getElementById('net-profit').innerText = '$' + mockNet.toLocaleString();
+        }
+    </script>
+</body>
+</html>
 
 
 
