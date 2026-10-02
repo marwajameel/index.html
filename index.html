@@ -686,6 +686,69 @@ if __name__ == "__main__":
     httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
     print("Server running at http://localhost:8080")
     httpd.serve_forever()
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN Crypto Live Net Profit & Gas Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background-color: #0b0e14; color: #ffffff; font-family: sans-serif; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-3xl mx-auto bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-xl">
+        <h1 class="text-2xl font-bold text-center text-blue-500 mb-6">SDN Live Portfolio & Net Profit Tracker</h1>
+        
+        <!-- Live Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 text-center">
+                <p class="text-gray-400 text-sm">کل پورٹ فولیو (Gross Balance)</p>
+                <h3 class="text-2xl font-bold text-green-400 mt-2" id="gross-balance">$0.00</h3>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 text-center">
+                <p class="text-gray-400 text-sm">خودکار کٹوتی (Gas Fee Deducted)</p>
+                <h3 class="text-2xl font-bold text-red-400 mt-2" id="gas-deducted">$0.00</h3>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 text-center">
+                <p class="text-gray-400 text-sm">صافی منافع (Net Profit)</p>
+                <h3 class="text-2xl font-bold text-cyan-400 mt-2" id="net-profit">$0.00</h3>
+            </div>
+        </div>
+
+        <!-- Wallet Status -->
+        <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 mb-6">
+            <h2 class="text-lg font-semibold mb-2 text-gray-200">فعال والٹ اور نیٹ ورک</h2>
+            <p class="text-sm text-gray-400">چین (Chain): <span class="text-blue-400 font-mono">Base (8453)</span></p>
+            <p class="text-sm text-gray-400 truncate">والٹ ایڈریس: <span class="text-yellow-400 font-mono" id="wallet-address">0xcBcA...1411</span></p>
+        </div>
+
+        <button onclick="updateLiveStats()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition duration-200">
+            ڈیٹا ریفریش کریں (Refresh Live Data)
+        </button>
+    </div>
+
+    <script>
+        // لائیو ڈیٹا اپ ڈیٹ کرنے کا فنکشن
+        function updateLiveStats() {
+            // یہ حصہ آپ کی API یا والٹ ڈیٹا کے ساتھ منسلک ہوگا
+            const gross = 2077148.73; // مجموعی رقم
+            const estimatedGas = 12.50; // خودکار مائنس گیس فیس
+            const net = gross - estimatedGas;
+
+            document.getElementById('gross-balance').innerText = '$' + gross.toLocaleString();
+            document.getElementById('gas-deducted').innerText = '-$' + estimatedGas.toFixed(2);
+            document.getElementById('net-profit').innerText = '$' + net.toLocaleString();
+        }
+
+        // صفحہ لوڈ ہوتے ہی لائیو ڈیٹا چلائیں
+        window.onload = updateLiveStats;
+    </script>
+</body>
+</html>
+
 
 
 
