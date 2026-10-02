@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جمال والٹ - لائیو پورٹ فولیو اور نیٹ پرافٹ ڈیش بورڈ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { background-color: #0b0e14; color: #ffffff; font-family: sans-serif; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-4xl mx-auto bg-gray-900 border border-gray-800 p-6 rounded-2xl shadow-2xl">
+        
+        <!-- Header & Connect Button -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-800 pb-4">
+            <h1 class="text-2xl font-bold text-blue-500 mb-4 md:mb-0">ایس ڈی این / جمال کرپٹو ایکسچینج پورٹل</h1>
+            <button id="connectWalletBtn" onclick="connectWallet()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition duration-200 shadow-lg">
+                والٹ کنیکٹ کریں (Connect Wallet)
+            </button>
+        </div>
+        
+        <!-- Live Status Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 text-center shadow-md">
+                <p class="text-gray-400 text-sm">کل پورٹ فولیو (Gross Balance)</p>
+                <h3 class="text-2xl font-bold text-green-400 mt-2" id="gross-balance">$0.00</h3>
+            </div>
+            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 text-center shadow-md">
+                <p class="text-gray-400 text-sm">خودکار گیس فیس کٹوتی (Gas Deducted)</p>
+                <h3 class="text-2xl font-bold text-red-400 mt-2" id="gas-deducted">$0.00</h3>
+            </div>
+            <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 text-center shadow-md">
+                <p class="text-gray-400 text-sm">صافی منافع (Net Profit)</p>
+                <h3 class="text-2xl font-bold text-cyan-400 mt-2" id="net-profit">$0.00</h3>
+            </div>
+        </div>
+
+        <!-- Wallet & Network Status -->
+        <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 mb-6">
+            <h2 class="text-lg font-semibold mb-2 text-gray-200">صارف کا سেশন اور نیٹ ورک</h2>
+            <p class="text-sm text-gray-400 mb-1">نیٹ ورک (Network): <span class="text-blue-400 font-mono">Base Chain (8453)</span></p>
+            <p class="text-sm text-gray-400 truncate">کنیکتد والٹ: <span class="text-yellow-400 font-mono" id="wallet-address">کوئی والٹ جڑا ہوا نہیں ہے</span></p>
+        </div>
+
+        <div class="text-center text-gray-500 text-xs">
+            بلاک چین کی دنیا کا انتہائی محفوظ اور خودکار ٹریڈنگ و پرافٹ ٹریکنگ سسٹم
+        </div>
+    </div>
+
+    <script>
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    
+                    // ڈسپلے ایڈریس چھوٹا کر کے دکھائیں
+                    const shortAddr = account.substring(0, 6) + '...' + account.substring(account.length - 4);
+                    document.getElementById('wallet-address').innerText = shortAddr;
+                    document.getElementById('connectWalletBtn').innerText = 'کنیکٹڈ';
+                    document.getElementById('connectWalletBtn').classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    document.getElementById('connectWalletBtn').classList.add('bg-green-600');
+
+                    // فرضی لائیو ڈیٹا لوڈ کریں (جب والٹ جڑ جائے)
+                    loadLivePortfolioData(account);
+                } catch (error) {
+                    alert('والٹ کنیکٹ کرنے میں خرابی پیش آئی!');
+                }
+            } else {
+                alertبرائے مہربانی براؤزر میں میٹاماسک یا کوئی سپورٹڈ کرپٹو والٹ انسٹال کریں!');
+            }
+        }
+
+        function loadLivePortfolioData(address) {
+            // یہاں یوزر کے بیلنس اور گیس فیس کی خودکار کیلکولیشن شو ہوگی
+            const mockGross = 15420.50;
+            const mockGas = 4.25;
+            const mockNet = mockGross - mockGas;
+
+            document.getElementById('gross-balance').innerText = '$' + mockGross.toLocaleString();
+            document.getElementById('gas-deducted').innerText = '-$' + mockGas.toFixed(2);
+            document.getElementById('net-profit').innerText = '$' + mockNet.toLocaleString();
+        }
+    </script>
+</body>
+</html>
