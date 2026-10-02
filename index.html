@@ -7,6 +7,12 @@
     <script src="https://pay.coinbase.com/sdk.js"></script>
 </head>
 <body>
+// BlockVision یا QuickNode سے ملنے والا Base Network RPC URL یہاں درج کریں
+const BASE_RPC_URL = "YOUR_BASE_RPC_URL_HERE";
+
+// Ethers پرووائیڈر کو کنیکٹ کریں
+const provider = new ethers.providers.JsonRpcProvider(BASE_RPC_URL);
+
 
     <button onclick="handlePayment()" id="pay-button" style="padding: 10px 20px; cursor: pointer;">
       ابھی ادائیگی کریں ($25)
