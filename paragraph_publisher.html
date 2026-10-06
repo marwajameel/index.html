@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN News & Web3 Wallet Auto-Publisher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-2xl">
+        <!-- Header -->
+        <div class="border-b border-gray-800 pb-4 mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-red-500">SDN News Auto-Publisher</h1>
+                <p class="text-xs text-gray-400 mt-1">بیورو چیف گجرات | باخبر، ہر لمحہ</p>
+            </div>
+            <span class="bg-blue-900/40 text-blue-400 border border-blue-700/50 text-xs px-3 py-1 rounded-full">
+                Paragraph.xyz Web3 Active
+            </span>
+        </div>
+
+        <!-- Form Section -->
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1 text-gray-300">پوسٹ کا عنوان (Title)</label>
+                <input type="text" id="postTitle" placeholder="عنوان درج کریں..." 
+                       class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1 text-gray-300">خبر یا مضمون کا مواد (Content - Markdown)</label>
+                <textarea id="postContent" rows="6" placeholder="یہاں اپنی خبر یا مضمون تحریر کریں..." 
+                          class="w-full bg-gray-800 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500"></textarea>
+            </div>
+
+            <button onclick="publishToParagraph()" 
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                🚀 Paragraph.xyz پر لائیو پوسٹ کریں
+            </button>
+        </div>
+
+        <!-- Status Output -->
+        <div id="statusBox" class="mt-6 hidden p-4 rounded-lg text-sm border"></div>
+    </div>
+
+    <script>
+        // آپ کی کنفیگریشن
+        const PARAGRAPH_API_KEY = "Para_CiHwRnJayi4VC-PrWgGB7o1egf3SomkP8_Iamkftg-E";
+        const SDN_FOOTER = `
+---
+🌐 **SDN News Sarai Alamgir**
+🌐 **Official Portal:** marwajameel.github.io/sdn-news
+📱 **Connect:** @SDNNews
+📞 **Contact:** +92 346 0008235
+👤 **رپورٹ:** جمیل احمد کلیال (بیورو چیف گجرات)`;
+
+        async function publishToParagraph() {
+            const title = document.getElementById('postTitle').value;
+            const rawContent = document.getElementById('postContent').value;
+            const statusBox = document.getElementById('statusBox');
+
+            if (!title || !rawContent) {
+                alert('براہ کرم عنوان اور مواد دونوں درج کریں۔');
+                return;
+            }
+
+            statusBox.className = "mt-6 p-4 rounded-lg text-sm border bg-yellow-900/30 border-yellow-700 text-yellow-300";
+            statusBox.innerText = "پوسٹ شائع کی جا رہی ہے، براہ کرم انتظار کریں...";
+            statusBox.classList.remove('hidden');
+
+            const fullContent = rawContent + "\n\n" + SDN_FOOTER;
+
+            try {
+                const response = await fetch("https://api.paragraph.xyz/v1/posts", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${PARAGRAPH_API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        markdown: fullContent,
+                        published: true
+                    })
+                });
+
+                if (response.ok) {
+                    statusBox.className = "mt-6 p-4 rounded-lg text-sm border bg-green-900/30 border-green-700 text-green-300";
+                    statusBox.innerText = "✅ پوسٹ کامیابی سے Paragraph.xyz پر لائیو شائع ہو گئی ہے!";
+                    document.getElementById('postTitle').value = '';
+                    document.getElementById('postContent').value = '';
+                } else {
+                    const err = await response.text();
+                    statusBox.className = "mt-6 p-4 rounded-lg text-sm border bg-red-900/30 border-red-700 text-red-300";
+                    statusBox.innerText = `❌ غلطی پیش آئی: ${response.status} - ${err}`;
+                }
+            } catch (error) {
+                statusBox.className = "mt-6 p-4 rounded-lg text-sm border bg-red-900/30 border-red-700 text-red-300";
+                statusBox.innerText = `⚠️ نیٹ ورک کنکشن میں مسئلہ: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
