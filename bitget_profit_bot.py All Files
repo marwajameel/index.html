@@ -1,0 +1,125 @@
+import time
+import hmac
+import hashlib
+import json
+import requests
+from datetime import datetime
+
+# ==========================================
+# 1. API اور بنیادی ترتیبات (Credentials)
+# ==========================================
+{"apiKey":"bg_aedf4ff6e168bf83aaafddbfd6e61690","secretKey":"425c9ca12cc4550fe5328ce857859a9a00c5b2c5dc75889460ea0438991bae59"}
+
+# جو پاس ورڈ آپ نے API بناتے وقت (8-32 حروف والا) رکھا تھا وہ یہاں درج کریں
+PASSPHRASE = "YOUR_API_PASSPHRASE"
+
+# آپ کا بنیادی سرمایہ / اصل انویسٹمنٹ (USDT میں)
+INITIAL_CAPITAL = 1000.0 
+
+BASE_URL = "https://api.bitget.com"
+
+# ==========================================
+# 2. Bitget v2 سائننگ فنکشن (Authentication)
+# ==========================================
+def get_signature(timestamp, method, request_path, query_string="", body=""):
+    message = timestamp + method.upper() + request_path + query_string + body
+    mac = hmac.new(SECRET_KEY.encode('utf-8'), message.encode('utf-8'), hashlib.sha256)
+    return mac.hexdigest()
+
+def get_headers(method, request_path, query_string="", body=""):
+    timestamp = str(int(time.time() * 1000))
+    sign = get_signature(timestamp, method, request_path, query_string, body)
+    
+    headers = {
+        "ACCESS-KEY": API_KEY,
+        "ACCESS-SIGN": sign,
+        "ACCESS-TIMESTAMP": timestamp,
+        "ACCESS-PASSPHRASE": PASSPHRASE,
+        "Content-Type": "application/json",
+        "locale": "en-US"
+    }
+    return headers
+
+# ==========================================
+# 3. فیوچرز والٹ بیلنس چیک کرنا
+# ==========================================
+def get_futures_balance():
+    path = "/api/v2/mix/account/accounts"
+    query = "?productType=USDT-FUTURES"
+    headers = get_headers("GET", path, query_string=query)
+    
+    url = BASE_URL + path + query
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    
+    if data.get("code") == "00000":
+        for asset in data.get("data", []):
+            if asset.get("marginCoin") == "USDT":
+                # 'available' یا 'maxTransferAmount' حاصل کرنا
+                return float(asset.get("available", 0.0))
+    else:
+        print(f"❌ بیلنس حاصل کرنے میں غلطی: {data.get('msg')}")
+    return 0.0
+
+# ==========================================
+# 4. فیوچرز سے اسپاٹ والٹ میں منافع منتقل کرنا
+# ==========================================
+def transfer_profit_to_spot(amount):
+    path = "/api/v2/account/transfer"
+    
+    body_data = {
+        "fromType": "usdt_futures",  # فیوچرز اکاؤنٹ
+        "toType": "spot",           # اسپاٹ اکاؤنٹ
+        "coin": "USDT",
+        "amount": str(round(amount, 2))
+    }
+    
+    body_str = json.dumps(body_data)
+    headers = get_headers("POST", path, body=body_str)
+    
+    url = BASE_URL + path
+    response = requests.post(url, headers=headers, data=body_str)
+    data = response.json()
+    
+    if data.get("code") == "00000":
+        print(f"✅ کامیا بی! {amount:.2f} USDT کامیا بی سے Spot Wallet میں منتقل کر دیے گئے ہیں۔")
+        print(f"ٹرانسفر ID: {data.get('data', {}).get('transferId')}")
+    else:
+        print(f"❌ ٹرانسفر میں ناکامی: {data.get('msg')}")
+
+# ==========================================
+# 5. خودکار چیکنگ اور عمل درآمد
+# ==========================================
+def auto_profit_transfer():
+    print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] چیکنگ کا عمل شروع کیا جا رہا ہے...")
+    
+    futures_balance = get_futures_balance()
+    print(f"موجودہ فیوچرز دستیاب بیلنس: {futures_balance:.2f} USDT")
+    print(f"مقررہ اصل سرمایہ (Capital): {INITIAL_CAPITAL:.2f} USDT")
+    
+    if futures_balance > INITIAL_CAPITAL:
+        profit = futures_balance - INITIAL_CAPITAL
+        print(f"🎯 نیا منافع تیار ہے: {profit:.2f} USDT")
+        
+        if profit >= 1.0:  # کم از کم 1 USDT ٹرانسفر کے لیے شرط
+            transfer_profit_to_spot(profit)
+        else:
+            print("⚠️ منافع 1.0 USDT سے کم ہے، اس لیے اگلی باری تک ملتوی کیا گیا۔")
+    else:
+        print("ℹ️ فی الحال بنیادی سرمایہ کے اوپر کوئی نیا منافع موجود نہیں ہے۔")
+
+# ==========================================
+# 6. مین سائیکل (24 گھنٹے کا لوپ)
+# ==========================================
+if __name__ == "__main__":
+    print("🚀 خودکار پرافٹ سائڈ پے کرنے والا سسٹم فعال ہو چکا ہے...")
+    
+    while True:
+        try:
+            auto_profit_transfer()
+        except Exception as e:
+            print(f"❌ سسٹم میں غلطی: {str(e)}")
+            
+        # 24 گھنٹے = 86400 سیکنڈ
+        print("\n⏳ اگلی چیکنگ 24 گھنٹے بعد ہوگی...")
+        time.sleep(86400)
