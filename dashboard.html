@@ -1,0 +1,20 @@
+<!-- ٹریڈنگ کلوز کرنے اور رقم ظاہر کرنے کا سیکشن -->
+<div style="background-color: #0b1426; color: #ffffff; padding: 20px; border-radius: 10px; font-family: sans-serif; max-width: 400px;">
+    <h3>آٹو ٹریڈنگ کنٹرول پینل</h3>
+    <p>دستیاب بیلنس / رقم: <span id="userBalance" style="color: #00ffcc; font-weight: bold;">0.00 USDT</span></p>
+    
+    <!-- ٹریڈنگ کلوز اور رقم نکالنے کا بٹن -->
+    <button onclick="closeTradesAndWithdraw()" style="background-color: #f6465d; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; width: 100%;">
+        ٹریڈنگ بند کریں اور رقم واپس لیں
+    </button>
+</div>
+
+<script>
+    function closeTradesAndWithdraw() {
+        // یہاں آپ اپنے بیک اینڈ یا سمارٹ کانٹریکٹ کا فنکشن کال کریں گے جو ٹریڈنگ کلوز کرے گا
+        alert("آپ کی تمام ٹریڈنگ بند کر دی گئی ہے اور رقم آپ کے بیلنس میں منتقل کی جا رہی ہے!");
+        
+        // فرضی مثال کے طور پر بیلنس اپڈیٹ کرنا
+        document.getElementById("userBalance").innerText = "100.00 USDT";
+    }
+</script>
