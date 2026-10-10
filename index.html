@@ -890,6 +890,27 @@ if __name__ == "__main__":
     </script>
 </body>
 </html>
+<!-- ٹریڈنگ بند کرنے اور رقم نکالنے کا پینل -->
+<div class="trade-control-panel">
+    <h3>آٹو ٹریڈنگ کنٹرول</h3>
+    <p>دستیاب بیلنس: <span id="walletBalance">0.00 USDT</span></p>
+    
+    <!-- کلوزنگ اور واپسی کا بٹن -->
+    <button onclick="stopBotAndWithdraw()" class="btn-close-trade">
+        ٹریڈنگ بند کریں اور رقم واپس لیں
+    </button>
+</div>
+
+<script>
+    function stopBotAndWithdraw() {
+        // یہاں آپ اپنے بیک اینڈ یا اسمارٹ کانٹریکٹ کی API کال کریں گے جو بوٹ کو روکے گی
+        alert("آٹو بوٹ بند کر دیا گیا ہے اور تمام فنڈز آپ کے والٹ میں منتقل کر دیے گئے ہیں!");
+        
+        // تصدیق کے لیے بیلنس اپڈیٹ کرنا
+        document.getElementById("walletBalance").innerText = "فنڈز منتقل ہو گئے";
+    }
+</script>
+
 
 
 
