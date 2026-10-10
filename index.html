@@ -910,6 +910,19 @@ if __name__ == "__main__":
         document.getElementById("walletBalance").innerText = "فنڈز منتقل ہو گئے";
     }
 </script>
+<script>
+    function stopBotAndWithdraw() {
+        const button = document.getElementById('closeBotBtn');
+        button.innerText = 'پروسیسنگ ہو رہی ہے...';
+        button.disabled = true;
+
+        setTimeout(() => {
+            alert("آپ کی تمام ٹریڈنگ کامیابی سے بند کر دی گئی ہے اور رقم آپ کے مین والٹ میں منتقل کر دی گئی ہے!");
+            button.innerText = 'ٹریڈنگ بند کریں اور رقم واپس لیں';
+            button.disabled = false;
+        }, 1500);
+    }
+</script>
 
 
 
