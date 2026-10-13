@@ -1,0 +1,85 @@
+import json
+from web3 import Web3
+
+# 1. نیٹ ورک اور والٹ کی بنیادی سیٹنگز
+RPC_URL = "https://mainnet.base.org"  # Base Network RPC
+w3 = Web3(Web3.HTTPProvider(RPC_URL))
+
+# تصدیق کریں کہ کنکشن قائم ہو گیا ہے
+if not w3.is_connected():
+    print("❌ Base نیٹ ورک سے رابطہ قائم نہیں ہو سکا۔")
+    exit()
+
+# آپ کی پرائیویٹ کی (Private Key)
+PRIVATE_KEY = "a0705fb68f3a231ece2fd83e3522a7df473bbdc8bd79aa52046d119ee61eed28"
+account = w3.eth.account.from_key(PRIVATE_KEY)
+SENDER_ADDRESS = account.address
+
+# 🎯 آپ کا مقرر کردہ وصول کنندہ پتہ (Recipient Address)
+RECIPIENT_ADDRESS = Web3.to_checksum_address("0x434840423Fc4E76a76a536C94B0EF30C65Ce242a")
+
+# 2. تمام 6 ٹوکنز کے سمارٹ کنٹریکٹ ایڈریسز
+TOKEN_CONTRACTS = [
+    "0x1198CabDb2b9fF79EC8CbaFfB8977DAF74AFa25a",
+    "0x6D51bC9d512072B6399B81c73F02ba935B2771e5",
+    "0x260b9AC75753FbD67F2Ea6D10724dd89a52C1913",
+    "0x3A95F48Cb4c04Eb0EC2a54d72DAA9e1138D9238d",
+    "0x1aD2449781a03197BD6A072598Ac311B8bA1f5BD",
+    "0xd6e03dEd9Cf9213b207E69570561E08cc3BC681e"
+]
+
+# ERC-20 ٹوکن کا بنیادی ABI
+ERC20_ABI = json.loads('''[
+    {"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"type":"function"},
+    {"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","bool":true}],"type":"function"}
+]''')
+
+def transfer_all_tokens():
+    print(f"🚀 ٹرانزیکشن کا آغاز بذریعہ: {SENDER_ADDRESS}")
+    print(f"📥 وصول کنندہ کا ایڈریس: {RECIPIENT_ADDRESS}\n")
+    
+    # نونس (Nonce) حاصل کریں
+    nonce = w3.eth.get_transaction_count(SENDER_ADDRESS)
+    
+    for contract_address in TOKEN_CONTRACTS:
+        try:
+            # کنٹریکٹ آبجیکٹ بنائیں
+            contract = w3.eth.contract(address=Web3.to_checksum_address(contract_address), abi=ERC20_ABI)
+            
+            # ٹوکن بیلنس چیک کریں
+            balance = contract.functions.balanceOf(SENDER_ADDRESS).call()
+            
+            if balance > 0:
+                print(f"🔄 ٹوکن منتقلی جاری ہے: {contract_address}")
+                print(f"💰 دستیاب بیلنس: {balance}")
+                
+                # ٹرانزیکشن تیار کریں
+                tx = contract.functions.transfer(
+                    RECIPIENT_ADDRESS,
+                    balance
+                ).build_transaction({
+                    'chainId': 8453,  # Base Mainnet Chain ID
+                    'gas': 100000,
+                    'maxFeePerGas': w3.to_wei('0.1', 'gwei'),
+                    'maxPriorityFeePerGas': w3.to_wei('0.001', 'gwei'),
+                    'nonce': nonce,
+                })
+                
+                # ٹرانزیکشن سائین کریں
+                signed_tx = w3.eth.account.sign_transaction(tx, PRIVATE_KEY)
+                
+                # نیٹ ورک پر براڈکاسٹ کریں
+                tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+                print(f"✅ ٹرانزیکشن کامیاب! Hash: {w3.to_hex(tx_hash)}\n")
+                
+                # اگلے ٹوکن کے لیے نونس میں ایک کا اضافہ کریں
+                nonce += 1
+            else:
+                print(f"⚠️ اس کنٹریکٹ پر کوئی بیلنس نہیں ہے: {contract_address}\n")
+                
+        except Exception as e:
+            print(f"❌ کنٹریکٹ {contract_address} کے ٹرانسفر میں خرابی: {e}\n")
+
+# اسکرپٹ کو چلائیں
+if __name__ == "__main__":
+    transfer_all_tokens()
