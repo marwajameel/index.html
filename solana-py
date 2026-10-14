@@ -1,0 +1,64 @@
+from solders.keypair import Keypair
+from solders.pubkey import Pubkey
+from solders.transaction import Transaction
+from solana.rpc.api import Client
+from solana.rpc.commitment import Confirmed
+from spl.token.instructions import transfer_checked, TransferCheckedParams
+
+# 1. نیٹ ورک کنکشن قائم کریں (Solana Mainnet RPC)
+rpc_url = "https://api.mainnet-beta.solana.com"
+client = Client(rpc_url)
+
+# 2. سینڈر (Sender) کی پرائیویٹ کلید (Secret Key) یہاں درج کریں
+# (نوٹ: پرائیویٹ کی کو ہمیشہ خفیہ رکھیں اور لسٹ یا با이트س کی شکل میں دیں)
+sender_private_key_bytes = [/* اپنی پرائیویٹ کی کے نمبرز یہاں درج کریں */]
+sender_keypair = Keypair.from_bytes(sender_private_key_bytes)
+
+# 3. ٹوکن اور اکاؤنٹس کی تفصیلات
+# ٹوکن کا منٹ ایڈریس (مفروضہ: pupu69$ کا ایڈریس)
+mint_address = Pubkey.from_string("27pLeUemQJmxYGxsxzUTEkvi2e9eMs2xkBNB85u4pump")
+
+# رسیور (Receiver) کا پبلک ایڈریس
+recipient_pubkey = Pubkey.from_string("یہاں_ریسیور_کا_پبلک_ایڈریس_لکھیں")
+
+# سینڈر اور رسیور کے ایس پی ایل ٹوکن اکاؤنٹ (Associated Token Accounts)
+sender_token_account = Pubkey.from_string("یہاں_اپنا_ٹوکن_اکاؤنٹ_ایڈریس_لکھیں")
+recipient_token_account = Pubkey.from_string("یہاں_وصول_کرنے_والے_کا_ٹوکن_اکاؤنٹ_لکھیں")
+
+# ٹرانسفر کی جانے والی مقدار (بمطابق ڈیسیملز)
+# مثال کے طور پر اگر ڈیسیمل 6 ہیں تو 1 ٹوکن کے لیے 1000000 لکھیں
+amount_to_send = 1000000  # 1 Token (اگر decimals = 6 ہوں)
+decimals = 6
+
+try:
+    # 4. ٹرانسفر انسٹرکشن تیار کریں
+    transfer_instruction = transfer_checked(
+        TransferCheckedParams(
+            program_id=Pubkey.from_string("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+            source=sender_token_account,
+            mint=mint_address,
+            dest=recipient_token_account,
+            owner=sender_keypair.pubkey(),
+            amount=amount_to_send,
+            decimals=decimals,
+            signers=[]
+        )
+    )
+
+    # 5. تازہ ترین بلاک ہیش حاصل کریں
+    recent_blockhash = client.get_latest_blockhash(commitment=Confirmed).value.blockhash
+
+    # 6. ٹرانزیکشن بنائیں اور سائن کریں
+    txn = Transaction.new_signed_with_payer(
+        [transfer_instruction],
+        sender_keypair.pubkey(),
+        [sender_keypair],
+        recent_blockhash
+    )
+
+    # 7. نیٹ ورک پر ٹرانزیکشن بھیجیں
+    response = client.send_transaction(txn)
+    print("✅ ٹرانزیکشن کامیاب ہو گئی! ٹرانزیکشن ہیش:", response.value)
+
+except Exception as e:
+    print("❌ ٹرانزیکشن میں خرابی پیش آگئی:", str(e))
