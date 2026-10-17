@@ -78,4 +78,10 @@ if __name__ == "__main__":
     while True:
         schedule.run_pending()
         time.sleep(60)
+# 3. آپ کے تمام کاپی ٹریڈنگ اور پروجیکٹ والٹس کی مکمل لسٹ
+TARGET_WALLETS = [
+    "A9aEY896KTSgWe8HdU6L3sSxQjdoca6r39difpjDAh7Q",  # آپ کا مکمل کاپی ٹریڈنگ والٹ
+    "0x5B43453FCE04b92E190f391a83136bfBeCEDEFd1"     # آپ کا مین اسپاٹ/پروجیکٹ والٹ
+]
+
 
