@@ -1,0 +1,91 @@
+import base64
+import requests
+from solders.keypair import Keypair
+from solders.transaction import VersionedTransaction
+from solana.rpc.api import Client
+from solana.rpc.types import TxOpts
+
+# 1. نیٹ ورک اور RPC سیٹ اپ
+SOLANA_RPC = "https://api.mainnet-beta.solana.com"
+client = Client(SOLANA_RPC)
+
+# 2. Jupiter API Key
+JUPITER_API_KEY = "Jup_3ae5c9c664f72aa9e6354d93c9bbf2f9b5fd7cf57b95cd1e76f9bdecec93bd8e"
+
+# API درخواستوں کے لیے ہیڈرز (Headers)
+HEADERS = {
+    "x-api-key": JUPITER_API_KEY,
+    "Content-Type": "application/json"
+}
+
+# 3. والٹ پرائیویٹ کی (Base58 String)
+PRIVATE_KEY_STR = "YOUR_SOLANA_PRIVATE_KEY_HERE"
+wallet = Keypair.from_base58_string(PRIVATE_KEY_STR)
+
+# 4. ٹوکنز کے Mint ایڈریسز
+SOL_MINT = "So11111111111111111111111111111111111111112"
+TOKEN_MINT = "YOUR_TOKEN_MINT_ADDRESS_HERE"
+
+def execute_jupiter_swap(input_mint, output_mint, amount_in_lamports, slippage_bps=100):
+    """
+    Jupiter API Key کے ساتھ خودکار سواب کرنے کا فنکشن
+    """
+    print(f"🔄 Jupiter API سے کووٹ (Quote) حاصل کی جا رہی ہے...")
+    
+    # اسٹیپ 1: Jupiter سے کووٹ (Quote) حاصل کریں
+    quote_url = f"https://quote-api.jup.ag/v6/quote?inputMint={input_mint}&outputMint={output_mint}&amount={amount_in_lamports}&slippageBps={slippage_bps}"
+    
+    try:
+        quote_response = requests.get(quote_url, headers=HEADERS).json()
+    except Exception as e:
+        print(f"❌ Connection Error: {e}")
+        return False
+    
+    if "error" in quote_response or not quote_response:
+        print(f"❌ Quote حاصل کرنے میں ناکامی: {quote_response}")
+        return False
+        
+    print("✅ Quote کامیابی سے حاصل ہو گئی۔ سواب ٹرانزیکشن تیار کی جا رہی ہے...")
+
+    # اسٹیپ 2: سواب ٹرانزیکشن کا پے لوڈ بنائیں
+    swap_url = "https://quote-api.jup.ag/v6/swap"
+    payload = {
+        "userPublicKey": str(wallet.pubkey()),
+        "quoteResponse": quote_response,
+        "wrapAndUnwrapSol": True,
+        "dynamicComputeUnitLimit": True,
+        "prioritizationFeeLamports": "auto"
+    }
+    
+    swap_response = requests.post(swap_url, json=payload, headers=HEADERS).json()
+    swap_transaction_buf = swap_response.get("swapTransaction")
+    
+    if not swap_transaction_buf:
+        print("❌ Swap Transaction بنانے میں ناکامی!")
+        return False
+
+    # اسٹیپ 3: ڈی کوڈ اور سائن (Sign) کریں
+    raw_tx = base64.b64decode(swap_transaction_buf)
+    tx = VersionedTransaction.from_bytes(raw_tx)
+    
+    signature = wallet.sign_message(tx.message.to_bytes())
+    signed_tx = VersionedTransaction.populate(tx.message, [signature])
+
+    # اسٹیپ 4: سولانا بلاک چین پر پبلش کریں
+    print("🚀 ٹرانزیکشن نیٹ ورک پر بھیجی جا رہی ہے...")
+    result = client.send_raw_transaction(bytes(signed_tx), opts=TxOpts(skip_preflight=True))
+    
+    tx_hash = result.value
+    print(f"🎉 Swap مکمل ہو گیا! Transaction Hash: https://solscan.io/tx/{tx_hash}")
+    return True
+
+if __name__ == "__main__":
+    # ٹیسٹ کے لیے
+    amount_to_swap = 100000000  # 0.1 SOL equivalent lamports
+    
+    execute_jupiter_swap(
+        input_mint=TOKEN_MINT, 
+        output_mint=SOL_MINT, 
+        amount_in_lamports=amount_to_swap, 
+        slippage_bps=150
+    )
