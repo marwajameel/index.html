@@ -1,0 +1,50 @@
+from solana.rpc.api import Client
+from solana.transaction import Transaction
+from solders.keypair import Keypair
+from solders.pubkey import Pubkey
+from solana.system_program import TransferParams, transfer
+
+# سولانا نیٹ ورک سے کنکشن قائم کریں
+SOLANA_RPC_URL = "https://api.mainnet-beta.solana.com"
+client = Client(SOLANA_RPC_URL)
+
+def transfer_solana_profit(sender_secret_key: bytes, recipient_address: str, amount_in_sol: float):
+    """
+    یہ فنکشن آپ کے پرافٹ (SOL) کو خودکار طور پر دوسرے مطلوبہ والٹ میں ٹرانسفر کرتا ہے۔
+    """
+    try:
+        # بھیجنے والے کے والٹ کی پرائیویٹ کی
+        sender_keypair = Keypair.from_bytes(sender_secret_key)
+        recipient_pubkey = Pubkey.from_string(recipient_address)
+        
+        # SOL کو لامپورٹس (Lamports) میں تبدیل کریں (1 SOL = 1,000,000,000 Lamports)
+        lamports = int(amount_in_sol * 1_000_000_000)
+        
+        # ٹرانزیکشن بلڈ کریں
+        transaction = Transaction().add(
+            transfer(
+                TransferParams(
+                    from_pubkey=sender_keypair.pubkey(),
+                    to_pubkey=recipient_pubkey,
+                    lamports=lamports
+                )
+            )
+        )
+        
+        # ٹرانزیکشن کو نیٹ ورک پر بھیجیں
+        response = client.send_transaction(transaction, sender_keypair)
+        return {"status": "success", "signature": response}
+    
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# --- استعمال کرنے کا طریقہ ---
+if __name__ == "__main__":
+    # نوٹ: یہاں اپنی اصل پرائیویٹ کی (Byte array) اور جس والٹ میں ٹرانسفر کرنا ہے اس کا پبلک ایڈریس درج کریں
+    # sender_sk = b'...' 
+    # target_wallet = "یہاں_دوسرا_والٹ_ایڈریس_لکھیں"
+    
+    # مثال کے طور پر 1 SOL ٹرانسفر کرنے کے لیے:
+    # result = transfer_solana_profit(sender_sk, target_wallet, 1.0)
+    # print(result)
+    pass
