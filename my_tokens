@@ -1,0 +1,42 @@
+import json
+
+def generate_token_records(token_list):
+    """
+    یہ فنکشن خودکار طریقے سے تمام ٹوکنز اور ان کے ایڈریسز کو فارمیٹ کر کے لسٹ تیار کرتا ہے۔
+    """
+    formatted_records = []
+    for index, token in enumerate(token_list, start=1):
+        record = (
+            f"--- ٹوکن ریکارڈ نمبر {index} ---\n"
+            f"ٹوکن کا نام: {token.get('name', 'N/A')}\n"
+            f"علامت (Symbol): {token.get('symbol', 'N/A')}\n"
+            f"کنٹریکٹ ایڈریس: {token.get('address', 'N/A')}\n"
+            f"نیٹ ورک: {token.get('network', 'Base / Solana')}\n"
+            f"رپورٹ: جمیل احمد کلیال\n"
+            f"رابطہ: +92 346 0008235\n"
+            f"----------------------------------------\n"
+        )
+        formatted_records.append(record)
+    return formatted_records
+
+# یہاں آپ اپنے تمام ٹوکنز کی معلومات (نام اور ایڈریس) درج کر سکتے ہیں
+my_tokens = [
+    {
+        "name": "MJ04 Token",
+        "symbol": "MJ04",
+        "address": "0x5f8355d14bf786fb4115e4ce268ae8db98f73789b75d15ebf352cb361553e148",
+        "network": "Base"
+    },
+    {
+        "name": "SDN News / مقامی خبریں",
+        "symbol": "NEWS",
+        "address": "آپ کا دوسرا ٹوکن ایڈریس یہاں درج کریں",
+        "network": "Base"
+    }
+]
+
+# خودکار طریقے سے ریکارڈ جنरेट کرنے کا عمل
+if __name__ == "__main__":
+    results = generate_token_records(my_tokens)
+    for res in results:
+        print(res)
