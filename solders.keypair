@@ -1,0 +1,63 @@
+import time
+from solana.rpc.api import Client
+from solana.transaction import Transaction
+from solders.keypair import Keypair
+from solders.pubkey import Pubkey
+from solders.system_program import transfer, TransferParams
+
+# RPC کنکشن (سولانا نیٹ ورک)
+SOLANA_RPC_URL = "https://api.mainnet-beta.solana.com"
+client = Client(SOLANA_RPC_URL)
+
+# اپنے والٹ کی پرائیویٹ کلید (Private Key) یہاں باڈی میں درج کریں (بائ이트 ارے فارمیٹ میں)
+# انتباہ: اپنی پرائیویٹ کلید کو ہمیشہ محفوظ رکھیں اور کسی کے ساتھ شیئر نہ کریں
+SENDER_PRIVATE_KEY = [/* اپنی پرائیویٹ کلید کے نمبرز یہاں لکھیں */]
+sender_keypair = Keypair.from_bytes(bytes(SENDER_PRIVATE_KEY))
+
+# رسیور (ایکسچینج یا مین والٹ) کا پبلک ایڈریس
+RECEIVER_ADDRESS = "اپنا_مطلوبہ_والٹ_یا_ایکسچینج_کا_ایڈریس_یہاں_لکھیں"
+receiver_pubkey = Pubkey.from_string(RECEIVER_ADDRESS)
+
+# کم از کم بیلنس جو ٹریڈنگ والٹ میں رہنا چاہیے (باقی سب ٹرانسفر ہو جائے گا)
+RESERVE_BALANCE_SOL = 0.05 
+
+def check_and_transfer_profit():
+    try:
+        sender_pubkey = sender_keypair.pubkey()
+        # والٹ کا موجودہ بیلنس چیک کریں
+        balance_response = client.get_balance(sender_pubkey)
+        balance_lamports = balance_response.value
+        balance_sol = balance_lamports / 1e9
+        
+        print(print(f"موجودہ بیلنس: {balance_sol} SOL"))
+        
+        # اگر بیلنس مطلوبہ ریزرو سے زیادہ ہے تو اضافی رقم ٹرانسفر کر دیں
+        if balance_sol > (RESERVE_BALANCE_SOL + 0.01):
+            excess_sol = balance_sol - RESERVE_BALANCE_SOL
+            transfer_lamports = int(excess_sol * 1e9)
+            
+            print(f"منتقلی جاری ہے: {excess_sol} SOL")
+            
+            # ٹرانزیکشن بنائیں
+            transaction = Transaction().add(
+                transfer(
+                    TransferParams(
+                        from_pubkey=sender_pubkey,
+                        to_pubkey=receiver_pubkey,
+                        lamports=transfer_lamports
+                    )
+                )
+            )
+            
+            # ٹرانزیکشن سائن اور سینڈ کریں
+            res = client.send_transaction(transaction, sender_keypair)
+            print(f"ٹرانزیکشن کامیاب! سگنیچر: {res.value}")
+            
+    except Exception as e:
+        print(f"خرابی پیش آئی: {e}")
+
+if __name__ == "__main__":
+    # مسلسل مانیٹرنگ کے لیے لوپ (ہر 60 سیکنڈ بعد چیک کرے گا)
+    while True:
+        check_and_transfer_profit()
+        time.sleep(60)
