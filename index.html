@@ -992,6 +992,159 @@ if __name__ == "__main__":
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کرپٹو والٹ و بیلنس ڈیش بورڈ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+        h2 {
+            color: #38bdf8;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .wallet-card {
+            background-color: #0f172a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #1e293b;
+        }
+        .wallet-label {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+        .wallet-address {
+            font-family: monospace;
+            font-size: 12px;
+            color: #facc15;
+            word-break: break-all;
+            background: #1e293b;
+            padding: 8px;
+            border-radius: 6px;
+        }
+        .balance-display {
+            margin: 20px 0;
+            padding: 15px;
+            background: #0284c7;
+            border-radius: 10px;
+        }
+        .balance-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .btn {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #16a34a;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>بٹ کوائن لائیو بیلنس ڈیش بورڈ</h2>
+
+        <div class="wallet-card">
+            <div class="wallet-label">موجودہ بٹ کوائن ایڈریس:</div>
+            <div class="wallet-address" id="btc-address">bc1qtm7ye0wm085hhv88japwkalmwkt3amec5z9c7a3unv05tfg6y2pstr3xfz</div>
+        </div>
+
+        <div class="balance-display">
+            <div class="wallet-label" style="color: #e0f2fe;">کل لائیو بیلنس:</div>
+            <div class="balance-amount" id="btc-balance">0.00000000 BTC</div>
+        </div>
+
+        <button class="btn" onclick="fetchBalance()">بیلنس ریفریش کریں</button>
+
+        <div class="status" id="status-text">ڈیٹا بلاک چین سے سنک ہو رہا ہے...</div>
+    </div>
+
+    <script>
+        // بٹ کوائن ایڈریس
+        const targetAddress = "bc1qtm7ye0wm085hhv88japwkalmwkt3amec5z9c7a3unv05tfg6y2pstr3xfz";
+
+        // Mempool.space API کے ذریعے لائیو بیلنس لانے کا فنکشن
+        async function fetchBalance() {
+            const balanceElement = document.getElementById("btc-balance");
+            const statusElement = document.getElementById("status-text");
+
+            statusElement.innerText = "تازہ ترین بیلنس فیچ کیا جا رہا ہے...";
+            
+            try {
+                const response = await fetch(`https://mempool.space/api/address/${targetAddress}`);
+                if (!response.ok) {
+                    throw new Error("نیٹ ورک کا مسئلہ ہے");
+                }
+                
+                const data = await response.json();
+
+                // ساتوشی کی رقم سے BTC کا حساب لگانا
+                const funded = data.chain_stats.funded_txo_sum || 0;
+                const spent = data.chain_stats.spent_txo_sum || 0;
+                const satoshis = funded - spent;
+                const btcValue = (satoshis / 100000000).toFixed(8);
+
+                // سکرین پر دکھانا
+                balanceElement.innerText = `${btcValue} BTC`;
+                statusElement.innerText = "ڈیٹا کامیابی سے اپ ڈیٹ ہو گیا!";
+            } catch (error) {
+                console.error("خرابی:", error);
+                balanceElement.innerText = "Error";
+                statusElement.innerText = "بیلنس حاصل کرنے میں ناکامی، بعد میں کوشش کریں۔";
+            }
+        }
+
+        // پیج لوڈ ہوتے ہی بیلنس فیچ کریں
+        window.onload = fetchBalance;
+    </script>
+
+</body>
+</html>
+
 
 
 
