@@ -923,6 +923,76 @@ if __name__ == "__main__":
         }, 1500);
     }
 </script>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بٹ کوائن لائیو بیلنس</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f4f4f9;
+        }
+        .balance-box {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        h3 {
+            color: #333;
+        }
+        #btc-balance {
+            font-size: 20px;
+            font-weight: bold;
+            color: #f7931a; /* بٹ کوائن کا رنگ */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="balance-box">
+        <h3>بٹ کوائن ایڈریس کا لائیو بیلنس</h3>
+        <p>ایڈریس: <code style="font-size: 12px; color: #555;">bc1qtm7ye0wm085hhv88japwkalmwkt3amec5z9c7a3unv05tfg6y2pstr3xfz</code></p>
+        <p id="btc-balance">بیلنس لوڈ ہو رہا ہے...</p>
+    </div>
+
+    <script>
+        // آپ کا بٹ کوائن ایڈریس
+        const btcAddress = "bc1qtm7ye0wm085hhv88japwkalmwkt3amec5z9c7a3unv05tfg6y2pstr3xfz";
+        
+        // Mempool.space کی فری API کا لنک
+        const apiUrl = `https://mempool.space/api/address/${btcAddress}`;
+
+        async function fetchBtcBalance() {
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                // ساتوشی (Satoshi) کو BTC میں تبدیل کرنا (1 BTC = 100,000,000 ساتوشی)
+                const funded = data.chain_stats.funded_txo_sum;
+                const spent = data.chain_stats.spent_txo_sum;
+                const finalBalanceSatoshis = funded - spent;
+                const balanceBtc = finalBalanceSatoshis / 100000000;
+
+                // ویب سائٹ پر بیلنس شو کرنا
+                document.getElementById("btc-balance").innerText = `${balanceBtc} BTC`;
+            } catch (error) {
+                console.error("بیلنس حاصل کرنے میں خرابی:", error);
+                document.getElementById("btc-balance").innerText = "بیلنس لوڈ کرنے میں ناکامی";
+            }
+        }
+
+        // فنکشن کو کال کرنا
+        fetchBtcBalance();
+    </script>
+
+</body>
+</html>
+
 
 
 
