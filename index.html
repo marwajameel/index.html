@@ -1144,6 +1144,224 @@ if __name__ == "__main__":
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کرپٹو ملٹی نیٹ ورک ڈیش بورڈ</title>
+    <!-- Solana Web3 SDK CDN -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0f19;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            background-color: #151c2c;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #232d42;
+            text-align: center;
+        }
+        h1 {
+            color: #38bdf8;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        .card {
+            background-color: #0f172a;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #1e293b;
+            text-align: right;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 8px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .btc-title { color: #f7931a; }
+        .sol-title { color: #14f195; }
+        
+        .wallet-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+        .wallet-address {
+            font-family: monospace;
+            font-size: 11px;
+            color: #facc15;
+            word-break: break-all;
+            background: #1e293b;
+            padding: 8px;
+            border-radius: 6px;
+            direction: ltr;
+            text-align: left;
+        }
+        .balance-value {
+            font-size: 26px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .info-box {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .info-box span {
+            display: block;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .info-box strong {
+            font-size: 16px;
+            color: #38bdf8;
+        }
+        .btn {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            font-weight: bold;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <h1>کرپٹو لائیو ڈیش بورڈ</h1>
+
+        <!-- Bitcoin Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title btc-title">₿ بٹ کوائن (BTC)</span>
+            </div>
+            <div class="wallet-label">والٹ ایڈریس:</div>
+            <div class="wallet-address">bc1qtm7ye0wm085hhv88japwkalmwkt3amec5z9c7a3unv05tfg6y2pstr3xfz</div>
+            <div class="balance-value" id="btc-balance">0.00000000 BTC</div>
+        </div>
+
+        <!-- Solana Network Card -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title sol-title">◎ سولانا نیٹ ورک (Solana)</span>
+            </div>
+            <div class="info-grid">
+                <div class="info-box">
+                    <span>موجودہ Epoch</span>
+                    <strong id="sol-epoch">--</strong>
+                </div>
+                <div class="info-box">
+                    <span>موجودہ Slot</span>
+                    <strong id="sol-slot">--</strong>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" onclick="loadAllData()">ڈیٹا ریفریش کریں</button>
+        <div class="status" id="status-text">ڈیٹا بلاک چین سے سنک کیا جا رہا ہے...</div>
+    </div>
+
+    <script>
+        const btcAddress = "bc1qtm7ye0wm085hhv88japwkalmwkt3amec5z9c7a3unv05tfg6y2pstr3xfz";
+
+        // 1. Fetch Bitcoin Balance
+        async function fetchBtcData() {
+            try {
+                const res = await fetch(`https://mempool.space/api/address/${btcAddress}`);
+                if (!res.ok) throw new Error("BTC API Error");
+                const data = await res.json();
+                
+                const funded = data.chain_stats.funded_txo_sum || 0;
+                const spent = data.chain_stats.spent_txo_sum || 0;
+                const satoshis = funded - spent;
+                const btc = (satoshis / 100000000).toFixed(8);
+                
+                document.getElementById("btc-balance").innerText = `${btc} BTC`;
+            } catch (err) {
+                console.error(err);
+                document.getElementById("btc-balance").innerText = "ڈیٹا فیچ نہ ہو سکا";
+            }
+        }
+
+        // 2. Fetch Solana Network Info
+        async function fetchSolanaData() {
+            try {
+                const connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
+                const epochInfo = await connection.getEpochInfo();
+                
+                document.getElementById("sol-epoch").innerText = epochInfo.epoch;
+                document.getElementById("sol-slot").innerText = epochInfo.absoluteSlot.toLocaleString();
+            } catch (err) {
+                console.error(err);
+                document.getElementById("sol-epoch").innerText = "Error";
+                document.getElementById("sol-slot").innerText = "Error";
+            }
+        }
+
+        // Combine All Data Loaders
+        async function loadAllData() {
+            const status = document.getElementById("status-text");
+            status.innerText = "تازہ ترین ڈیٹا لایا جا رہا ہے...";
+            
+            await Promise.all([fetchBtcData(), fetchSolanaData()]);
+            
+            status.innerText = "تمام ڈیٹا لائیو بلاک چین سے سنک ہو چکا ہے!";
+        }
+
+        // Page Load Action
+        window.onload = loadAllData;
+    </script>
+
+</body>
+</html>
+
 
 
 
