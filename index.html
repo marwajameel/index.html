@@ -1361,6 +1361,37 @@ if __name__ == "__main__":
 
 </body>
 </html>
+<script type="module">
+    import { createPublicClient, http, formatEther } from 'https://esm.sh/viem';
+    import { base } from 'https://esm.sh/viem/chains';
+
+    async function checkAddressBalance() {
+        // 1. بیس نیٹ ورک کے لیے پبلک کلائنٹ بنانا
+        const client = createPublicClient({
+            chain: base,
+            transport: http()
+        });
+
+        const targetAddress = "0xdeef7C6CAa67Fbb1b62f98665f37c8343Bae072b";
+
+        try {
+            // 2. ایڈریس کا بیلنس (Wei میں) حاصل کرنا
+            const balanceWei = await client.getBalance({
+                address: targetAddress,
+            });
+
+            // 3. Wei کو ETH میں تبدیل کرنا
+            const balanceEth = formatEther(balanceWei);
+
+            console.log(`ایڈریس کا بیلنس: ${balanceEth} ETH`);
+            alert(`ایڈریس کا لائیو بیلنس: ${balanceEth} ETH`);
+        } catch (error) {
+            console.error("بیلنس فیچ کرنے میں خرابی:", error);
+        }
+    }
+
+    checkAddressBalance();
+</script>
 
 
 
