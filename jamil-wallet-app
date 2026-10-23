@@ -153,3 +153,27 @@
     </script>
 </body>
 </html>
+from web3 import Web3
+
+# آپ کا انکوڈڈ بلڈر کوڈ
+BUILDER_CODE_HEX = "0x62635f79696834666764720b0080218021802180218021802180218021"
+
+# ٹرانزیکشن کا ڈیٹا تیار کرنے کے لیے
+tx_params = {
+    'from': sender_address,
+    'to': contract_or_recipient_address,
+    'value': w3.to_wei(amount, 'ether'),
+    'gas': 21000,
+    'maxFeePerGas': w3.to_wei('2', 'gwei'),
+    'maxPriorityFeePerGas': w3.to_wei('1', 'gwei'),
+    'nonce': w3.eth.get_transaction_count(sender_address),
+    'chainId': 8453,  # Base Mainnet
+    'data': BUILDER_CODE_HEX  # بلڈر کوڈ کا اٹیچمنٹ
+}
+
+# ٹرانزیکشن سائن اور بھیجنے کا عمل
+signed_tx = w3.eth.account.sign_transaction(tx_params, private_key=PRIVATE_KEY)
+tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+
+print(f"Transaction successful! Hash: {w3.to_hex(tx_hash)}")
+
