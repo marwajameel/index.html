@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جمال والٹ - لائیو پورٹ فولیو اور نیٹ پرافٹ ڈیش بورڈ</title>
+    <title>جمیل والٹ - لائیو پورٹ فولیو اور نیٹ پرافٹ ڈیش بورڈ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
@@ -15,7 +15,7 @@
         
         <!-- Header & Connect Button -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-800 pb-4">
-            <h1 class="text-2xl font-bold text-blue-500 mb-4 md:mb-0">ایس ڈی این / جمال کرپٹو ایکسچینج پورٹل</h1>
+            <h1 class="text-2xl font-bold text-blue-500 mb-4 md:mb-0">ایس ڈی این / جمیل کرپٹو ایکسچینج پورٹل</h1>
             <button id="connectWalletBtn" onclick="connectWallet()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition duration-200 shadow-lg">
                 والٹ کنیکٹ کریں (Connect Wallet)
             </button>
@@ -39,9 +39,28 @@
 
         <!-- Wallet & Network Status -->
         <div class="bg-gray-800 p-5 rounded-xl border border-gray-700 mb-6">
-            <h2 class="text-lg font-semibold mb-2 text-gray-200">صارف کا سেশন اور نیٹ ورک</h2>
+            <h2 class="text-lg font-semibold mb-2 text-gray-200">صارف کا سیشن اور نیٹ ورک</h2>
             <p class="text-sm text-gray-400 mb-1">نیٹ ورک (Network): <span class="text-blue-400 font-mono">Base Chain (8453)</span></p>
-            <p class="text-sm text-gray-400 truncate">کنیکتد والٹ: <span class="text-yellow-400 font-mono" id="wallet-address">کوئی والٹ جڑا ہوا نہیں ہے</span></p>
+            <p class="text-sm text-gray-400 truncate">کنیکٹڈ والٹ: <span class="text-yellow-400 font-mono" id="wallet-address">کوئی والٹ جڑا ہوا نہیں ہے</span></p>
+        </div>
+
+        <!-- Transfer Funds Section -->
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 mb-6 shadow-md">
+            <h2 class="text-xl font-bold mb-4 text-blue-400">فنڈز منتقل کریں (Transfer / Send Funds)</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">وصول کرنے والے کا ایڈریس (Recipient Address)</label>
+                    <input type="text" id="recipientAddress" placeholder="0x..." class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500 font-mono" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">مقدار (Amount in ETH/Base)</label>
+                    <input type="number" step="0.0001" id="transferAmount" placeholder="0.01" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-blue-500 font-mono" />
+                </div>
+                <button id="sendTxBtn" onclick="transferFunds()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg">
+                    فنڈز ٹرانسفر کریں (Send / Transfer)
+                </button>
+                <p id="txStatus" class="text-sm mt-2 text-center text-gray-400 font-mono"></p>
+            </div>
         </div>
 
         <div class="text-center text-gray-500 text-xs">
@@ -50,31 +69,34 @@
     </div>
 
     <script>
+        let provider;
+        let signer;
+
         async function connectWallet() {
             if (typeof window.ethereum !== 'undefined') {
                 try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const account = accounts[0];
+                    provider = new ethers.providers.Web3Provider(window.ethereum);
+                    await provider.send("eth_requestAccounts", []);
+                    signer = provider.getSigner();
+
+                    const account = await signer.getAddress();
                     
-                    // ڈسپلے ایڈریس چھوٹا کر کے دکھائیں
                     const shortAddr = account.substring(0, 6) + '...' + account.substring(account.length - 4);
                     document.getElementById('wallet-address').innerText = shortAddr;
                     document.getElementById('connectWalletBtn').innerText = 'کنیکٹڈ';
                     document.getElementById('connectWalletBtn').classList.remove('bg-blue-600', 'hover:bg-blue-700');
                     document.getElementById('connectWalletBtn').classList.add('bg-green-600');
 
-                    // فرضی لائیو ڈیٹا لوڈ کریں (جب والٹ جڑ جائے)
                     loadLivePortfolioData(account);
                 } catch (error) {
                     alert('والٹ کنیکٹ کرنے میں خرابی پیش آئی!');
                 }
             } else {
-                alertبرائے مہربانی براؤزر میں میٹاماسک یا کوئی سپورٹڈ کرپٹو والٹ انسٹال کریں!');
+                alert('برائے مہربانی براؤزر میں میٹاماسک یا کوئی سپورٹڈ کرپٹو والٹ انسٹال کریں!');
             }
         }
 
         function loadLivePortfolioData(address) {
-            // یہاں یوزر کے بیلنس اور گیس فیس کی خودکار کیلکولیشن شو ہوگی
             const mockGross = 15420.50;
             const mockGas = 4.25;
             const mockNet = mockGross - mockGas;
@@ -82,6 +104,51 @@
             document.getElementById('gross-balance').innerText = '$' + mockGross.toLocaleString();
             document.getElementById('gas-deducted').innerText = '-$' + mockGas.toFixed(2);
             document.getElementById('net-profit').innerText = '$' + mockNet.toLocaleString();
+        }
+
+        async function transferFunds() {
+            if (!signer) {
+                alert('براہ کرم پہلے اپنا والٹ کنیکٹ کریں!');
+                return;
+            }
+
+            const recipient = document.getElementById('recipientAddress').value.trim();
+            const amount = document.getElementById('transferAmount').value.trim();
+            const txStatus = document.getElementById('txStatus');
+
+            if (!ethers.utils.isAddress(recipient)) {
+                alert('براہ کرم درست والٹ ایڈریس (Recipient Address) درج کریں۔');
+                return;
+            }
+
+            if (!amount || amount <= 0) {
+                alert('براہ کرم درست مقدار درج کریں۔');
+                return;
+            }
+
+            try {
+                txStatus.innerText = "ٹرانزیکشن جاری ہے... برائے مہربانی والٹ میں کنفرم کریں";
+                txStatus.className = "text-sm mt-2 text-center text-yellow-400 font-mono";
+
+                const tx = await signer.sendTransaction({
+                    to: recipient,
+                    value: ethers.utils.parseEther(amount)
+                });
+
+                txStatus.innerText = "پروسیسنگ ہو رہی ہے... ٹرانزیکشن ہیش: " + tx.hash.substring(0, 10) + "...";
+                
+                await tx.wait();
+
+                txStatus.innerText = "ٹرانزیکشن کامیابی سے مکمل ہو گئی!";
+                txStatus.className = "text-sm mt-2 text-center text-green-400 font-mono";
+
+                document.getElementById('recipientAddress').value = '';
+                document.getElementById('transferAmount').value = '';
+            } catch (error) {
+                console.error(error);
+                txStatus.innerText = "ٹرانزیکشن منسوخ یا ناکام ہو گئی۔";
+                txStatus.className = "text-sm mt-2 text-center text-red-400 font-mono";
+            }
         }
     </script>
 </body>
