@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+no<!DOCTYPE html>
 <html lang="ur">
 <head><script src="wallet-connect.js"></script>
 
@@ -1423,6 +1423,29 @@ if __name__ == "__main__":
         window.open(swapUrl, '_blank');
     }
 </script>
+async function fetchWeb3DashboardData() {
+    try {
+        const walletAddress = "0xe40200000000000000000000000000000000b0f1"; // آپ کا mj04 ایڈریس
+        const apiUrl = `https://api.dexscreener.com/latest/dex/tokens/${walletAddress}`;
+        
+        let response = await fetch(apiUrl);
+        let data = await response.json();
+        
+        if (data && data.pairs) {
+            console.log("Web3 Data Loaded Successfully:", data.pairs);
+            // یہاں آپ اپنے ڈیش بورڈ کے HTML عناصر میں ڈیٹا شو کر سکتے ہیں
+            document.getElementById("dashboard-status").innerText = "ڈیٹا کامیابی سے لوڈ ہو گیا ہے!";
+        } else {
+            document.getElementById("dashboard-status").innerText = "ڈیٹا سنک ہو رہا ہے، براہِ کرم انتظار کریں...";
+        }
+    } catch (error) {
+        console.error("Web3 Data Loading Error:", error);
+        document.getElementById("dashboard-status").innerText = "کنکشن کا مسئلہ ہے، دوبارہ کوشش کریں۔";
+    }
+}
+
+// ہر 10 سیکنڈ بعد ڈیٹا خود بخود اپ ڈیٹ کرنے کے لیے
+setInterval(fetchWeb3DashboardData, 10000);
 
 
 
