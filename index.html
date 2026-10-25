@@ -1397,6 +1397,32 @@ if __name__ == "__main__":
 <!-- ٹوکن ہولڈرز ویژولائزیشن چارٹ سیکشن -->
 <div style="background: #0f172a; padding: 20px; border-radius: 12px; margin-top: 20px; color: #fff; direction: ltr;">
     <h3 سٹائل="text-align: right; font
+<!-- ڈائریکٹ سوائپ سیکشن -->
+<div class="card" style="background: #1e293b; padding: 20px; border-radius: 12px; margin-top: 20px; text-align: center;">
+    <h3 style="color: #38bdf8;">فوری ٹوکن سوپ (Direct Swap)</h3>
+    <p style="color: #94a3b8; font-size: 14px;">اپنا ٹوکن کانٹریکٹ درج کریں اور فوری سوپ کریں</p>
+    
+    <input type="text" id="tokenContract" placeholder="ٹوکن کانٹریک트 ایڈریس یہاں لکھیں" style="width: 90%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 15px; direction: ltr; text-align: left;">
+    
+    <button onclick="executeSwap()" style="background-color: #2563eb; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">
+        فوری سوپ شروع کریں ⚡
+    </button>
+</div>
+
+<script>
+    async function executeSwap() {
+        const contractAddress = document.getElementById('tokenContract').value.trim();
+        if (!contractAddress) {
+            alert("براہ کرم پہلے ٹوکن کا کانٹریک트 ایڈریس درج کریں۔");
+            return;
+        }
+
+        // OKX یا کسی بھی ڈی آر سی / سولانا DEX کا پبلک سوپ لنک اوپن کرنا
+        const swapUrl = `https://www.okx.com/web3/dex?inputChain=501&inputCurrency=So11111111111111111111111111111111111111112&outputCurrency=${contractAddress}`;
+        
+        window.open(swapUrl, '_blank');
+    }
+</script>
 
 
 
