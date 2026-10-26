@@ -1,0 +1,56 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+contract SDNBusinessB2B is Ownable, ReentrancyGuard {
+    
+    address public feeCollector;
+    address public spotWallet;
+    uint256 public feePercentage = 1; // مثال کے طور پر 1 فیصد فیس
+    bool public paused = false;
+
+    event WithdrawnToSpot(address indexed token, uint256 netAmount, uint256 fee);
+
+    constructor(address _feeCollector, address _spotWallet) {
+        feeCollector = _feeCollector;
+        spotWallet = _spotWallet;
+    }
+
+    // ایمرجنسی چیک
+    modifier whenNotPaused() {
+        require(!paused, "Contract is paused");
+        _;
+    }
+
+    // ERC20 ٹوکنز (جیسے NVDAc) کو خودکار فیس کاٹ کر سپورٹ والٹ میں بھیجنے کا فنکشن
+    function withdrawTokenToSpotWallet(address tokenAddress, uint256 totalAmount) external onlyOwner nonReentrant whenNotPaused {
+        require(totalAmount > 0, "Amount must be greater than zero");
+        
+        IERC20 token = IERC20(tokenAddress);
+        
+        uint256 fee = (totalAmount * feePercentage) / 100; // فیس کی رقم
+        uint256 netAmount = totalAmount - fee;              // خالص رقم
+
+        // 1. فیس کلیکٹر کو ٹرانسفر کریں
+        require(token.transferFrom(msg.sender, feeCollector, fee), "Fee transfer failed");
+
+        // 2. باقی تمام رقم سپورٹ والٹ میں منتقل کریں
+        require(token.transferFrom(msg.sender, spotWallet, netAmount), "Net amount transfer failed");
+
+        emit WithdrawnToSpot(tokenAddress, netAmount, fee);
+    }
+
+    // ایمرجنسی پاز سیٹنگ
+    function setPaused(bool _paused) external onlyOwner {
+        paused = _paused;
+    }
+
+    // ایڈریس اپ ڈیٹ کرنے کی سیٹنگ
+    function updateWallets(address _feeCollector, address _spotWallet) external onlyOwner {
+        feeCollector = _feeCollector;
+        spotWallet = _spotWallet;
+    }
+}
