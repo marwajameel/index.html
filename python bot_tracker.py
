@@ -1,0 +1,30 @@
+import requests
+import time
+
+def monitor_bot_wallets(wallet_list, api_key):
+    print("--- GMGN Bot Wallet Tracker Active ---")
+    for wallet in wallet_list:
+        url = f"https://api.basescan.org/api?module=account&action=txlist&address={wallet}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc&apikey={api_key}"
+        try:
+            response = requests.get(url)
+            data = response.json()
+            if data["status"] == "1" and len(data["result"]) > 0:
+                latest_tx = data["result"][0]
+                print(f"✅ والٹ: {wallet[:6]}...{wallet[-4:]}")
+                print(f"   آخری ٹرانزیکشن ہیش: {latest_tx['hash'][:10]}...")
+                print(f"   اسٹیٹس: کامیابی (Block: {latest_tx['blockNumber']})")
+            else:
+                print(f"⏳ والٹ: {wallet[:6]}...{wallet[-4:]} - کوئی نئی ٹرانزیکشن نہیں ملی۔")
+        except Exception as e:
+            print(f"❌ والٹ {wallet[:6]} کو ٹریک کرنے میں خرابی: {e}")
+        time.sleep(0.2)
+
+if __name__ == "__main__":
+    # آپ کے بوٹس میں شامل والٹ ایڈریسز کی لسٹ
+    bot_wallets = [
+        "0x0A64Fe1f0D01E0B4b453B9F010a03dBD214D0cf9",
+        # مزید والٹس کا ایڈریس یہاں شامل کریں
+    ]
+    basescan_api_key = "YOUR_BASESCAN_API_KEY"
+    
+    # monitor_bot_wallets(bot_wallets, basescan_api_key)
