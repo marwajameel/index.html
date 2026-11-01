@@ -1446,6 +1446,191 @@ async function fetchWeb3DashboardData() {
 
 // ہر 10 سیکنڈ بعد ڈیٹا خود بخود اپ ڈیٹ کرنے کے لیے
 setInterval(fetchWeb3DashboardData, 10000);
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Base Domain verification meta tag -->
+    <meta name="base:app_id" content="69cd51062608b1800e" />
+    <title>SDN Web3 Wallet Dashboard - Mj04</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0d1b2a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card-custom {
+            background-color: #1b263b;
+            border: 1px solid #415a77;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .btn-base {
+            background-color: #0052ff;
+            color: #ffffff;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        .btn-base:hover {
+            background-color: #0039b3;
+            color: #ffffff;
+        }
+        .text-accent {
+            color: #00f5d4;
+        }
+        .table-dark-custom {
+            background-color: #1b263b;
+            color: #e0e1dd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-accent">SDN Web3 Wallet Dashboard</h1>
+        <p class="text-secondary">Base Mainnet (Chain ID: 8453) Live Data Integration</p>
+    </div>
+
+    <!-- Wallet Input Section -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <div class="card card-custom p-4">
+                <label for="walletAddress" class="form-label font-weight-bold">اپنا والٹ ایڈریس درج کریں (Mj04 Wallet):</label>
+                <div class="input-group dir-ltr">
+                    <input type="text" id="walletAddress" class="form-control" placeholder="0x..." value="0x0000000000000000000000000000000000000000">
+                    <button class="btn btn-base" onclick="fetchBaseNetworkData()">دادہ فیچ کریں (Fetch Data)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Display Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card card-custom p-4 text-center">
+                <h5 class="text-secondary">Base ETH Balance</h5>
+                <h2 id="ethBalance" class="text-accent my-2">0.0000 ETH</h2>
+                <small class="text-muted">Live On-Chain Data via Etherscan V2</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-custom p-4 text-center">
+                <h5 class="text-secondary">Latest Block Number</h5>
+                <h2 id="latestBlock" class="text-warning my-2">--</h2>
+                <small class="text-muted">Base Network Status: Active (1)</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-custom p-4">
+                <h4 class="mb-3 text-accent">حالیہ آن چین ٹرانزیکشنز (Recent Transactions)</h4>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover table-striped" id="txTable">
+                        <thead>
+                            <tr>
+                                <th>Tx Hash</th>
+                                <th>Block</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Value (ETH)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="txList">
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">ڈیٹا لوڈ کرنے کے لیے اوپر والٹ ایڈریس درج کر کے بٹن دبائیں۔</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Integration -->
+<script>
+    // Configuration Variables
+    const API_KEY = "7GVJ3UX56BBJC5JMUAEBBDDNI99YMFRN78"; // آپ کی آفیشل Etherscan API Key
+    const CHAIN_ID = "8453"; // Base Mainnet Chain ID
+    const BASE_API_URL = "https://api.etherscan.io/v2/api";
+
+    async function fetchBaseNetworkData() {
+        const address = document.getElementById("walletAddress").value.trim();
+        if (!address || address === "0x0000000000000000000000000000000000000000") {
+            alert("براہِ کرم درست والٹ ایڈریس درج کریں!");
+            return;
+        }
+
+        // 1. Fetch ETH Balance
+        try {
+            const balanceUrl = `${BASE_API_URL}?chainid=${CHAIN_ID}&module=account&action=balance&address=${address}&tag=latest&apikey=${API_KEY}`;
+            const balRes = await fetch(balanceUrl);
+            const balData = await balRes.json();
+            
+            if (balData.status === "1") {
+                const ethVal = (parseInt(balData.result) / 1e18).toFixed(4);
+                document.getElementById("ethBalance").innerText = `${ethVal} ETH`;
+            } else {
+                document.getElementById("ethBalance").innerText = "Error Loading";
+            }
+        } catch (err) {
+            console.error("Balance Error:", err);
+        }
+
+        // 2. Fetch Latest Block Number
+        try {
+            const blockUrl = `${BASE_API_URL}?chainid=${CHAIN_ID}&module=proxy&action=eth_blockNumber&apikey=${API_KEY}`;
+            const blockRes = await fetch(blockUrl);
+            const blockData = await blockRes.json();
+            if (blockData.result) {
+                document.getElementById("latestBlock").innerText = parseInt(blockData.result, 16);
+            }
+        } catch (err) {
+            console.error("Block Error:", err);
+        }
+
+        // 3. Fetch Recent Transactions List
+        try {
+            const txUrl = `${BASE_API_URL}?chainid=${CHAIN_ID}&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=5&sort=desc&apikey=${API_KEY}`;
+            const txRes = await fetch(txUrl);
+            const txData = await txRes.json();
+            
+            const tbody = document.getElementById("txList");
+            tbody.innerHTML = "";
+
+            if (txData.status === "1" && txData.result.length > 0) {
+                txData.result.forEach(tx => {
+                    const row = `
+                        <tr>
+                            <td><a href="https://basescan.org/tx/${tx.hash}" target="_blank" class="text-accent">${tx.hash.substring(0, 8)}...</a></td>
+                            <td>${tx.blockNumber}</td>
+                            <td>${tx.from.substring(0, 6)}...</td>
+                            <td>${tx.to ? tx.to.substring(0, 6) + '...' : 'N/A'}</td>
+                            <td>${(parseInt(tx.value) / 1e18).toFixed(4)} ETH</td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">کوئی حالیہ ٹرانزیکشن نہیں ملی یا API رسپانس نہیں آیا۔</td></tr>`;
+            }
+        } catch (err) {
+            console.error("Tx List Error:", err);
+        }
+    }
+</script>
+
+</body>
+</html>
 
 
 
