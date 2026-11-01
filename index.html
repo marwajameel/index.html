@@ -1631,6 +1631,98 @@ setInterval(fetchWeb3DashboardData, 10000);
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <title>Mj04 & Base Auto Wallet Sync</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: #fff; text-align: center; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 10px; margin: 15px auto; max-width: 450px; border: 1px solid #334155; }
+        button { background: #2563eb; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        button:hover { background: #1d4ed8; }
+        input { width: 90%; padding: 8px; margin: 8px 0; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <h2>⚡ Mj04 Wallet & Auto Transfer Dashboard</h2>
+
+    <div class="card">
+        <h3>ورچوئل / لائو والٹ بیلنس</h3>
+        <p><strong>Base Chain ID:</strong> 8453</p>
+        <p><strong>ETH Balance:</strong> <span id="ethBalance">Loading...</span> ETH</p>
+        <p><strong>Status:</strong> <span id="status" style="color:#4ade80;">Active Sync (30s)</span></p>
+    </div>
+
+    <!-- وِتھ ڈرا / ٹرانسفر فارم -->
+    <div class="card">
+        <h3>فنڈز وِتھ ڈرا / ٹرانسفر کریں</h3>
+        <input type="text" id="toAddress" placeholder="رسیور کا والٹ ایڈریس (0x...)">
+        <input type="number" id="amount" placeholder="رقم درج کریں (ETH)" step="0.0001">
+        <button onclick="executeWithdrawal()">ود ڈرا کی درخواست درج کریں</button>
+        <p id="txStatus" style="font-size:12px; margin-top:10px;"></p>
+    </div>
+
+<script>
+    const API_KEY = "7GVJ3UX56BBJC5JMUAEBBDDNI99YMFRN78";
+    const WALLET_ADDRESS = "0xE0E4...9881"; // اپنا مکمل والٹ ایڈریس یہاں درج کریں
+
+    // 1. لائو بیلنس چیک کرنا (ہر 30 سیکنڈ بعد)
+    async function checkBalance() {
+        try {
+            const url = `https://api.basescan.org/api?module=account&action=balance&address=${WALLET_ADDRESS}&tag=latest&apikey=${API_KEY}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data.status === "1") {
+                const ethVal = (data.result / 1e18).toFixed(6);
+                document.getElementById("ethBalance").innerText = ethVal;
+            }
+        } catch (err) {
+            console.error("Sync Error:", err);
+        }
+    }
+
+    // 2. وِتھ ڈرا / ٹرانسفر کوڈ
+    async function executeWithdrawal() {
+        const toAddr = document.getElementById("toAddress").value;
+        const amount = document.getElementById("amount").value;
+        const txStatus = document.getElementById("txStatus");
+
+        if (!toAddr || !amount) {
+            txStatus.innerHTML = "<span style='color:#ef4444;'>براہ کرم ایڈریس اور رقم کی تصدیق کریں۔</span>";
+            return;
+        }
+
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                txStatus.innerHTML = "<span style='color:#facc15;'>ٹرانزیکشن کی تصدیق ہو رہی ہے...</span>";
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+
+                const tx = await signer.sendTransaction({
+                    to: toAddr,
+                    value: ethers.utils.parseEther(amount)
+                });
+
+                txStatus.innerHTML = `<span style='color:#4ade80;'>کامیابی! Hash: ${tx.hash.substring(0,10)}...</span>`;
+            } catch (err) {
+                txStatus.innerHTML = `<span style='color:#ef4444;'>ایر: ${err.message}</span>`;
+            }
+        } else {
+            txStatus.innerHTML = "<span style='color:#facc15;'>والٹ (Metamask/OKX) کنیکٹ کریں یا براؤزر میں کھولیں۔</span>";
+        }
+    }
+
+    // آٹو سنک انسٹالیشن
+    checkBalance();
+    setInterval(checkBalance, 30000);
+</script>
+
+</body>
+</html>
 
 
 
