@@ -1,0 +1,73 @@
+import { createWalletClient, createPublicClient, http, parseUnits } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { base } from 'viem/chains';
+import * as dotenv from 'dotenv';
+
+// محیطی متغیرات (Environment Variables) کو لوڈ کرنا
+dotenv.config();
+
+const VAULT_ADDRESS = '0xf7CF01e5d58b3F1Ba228920978c47B5B79b67bF4'; // مورفو والٹ ایڈریس
+const RPC_URL = 'https://mainnet.base.org';
+
+// مورفو والٹ کا ودڈرا ABI
+const morphoVaultAbi = [
+  {
+    inputs: [
+      { name: 'assets', type: 'uint256' },
+      { name: 'receiver', type: 'address' },
+      { name: 'owner', type: 'address' }
+    ],
+    name: 'withdraw',
+    outputs: [{ name: 'shares', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
+] as const;
+
+async function automatedWithdrawal(amountToWithdraw: string) {
+  try {
+    // سسٹم خود بخود .env فائل سے پرائیویٹ کی حاصل کرے گا
+    const privateKey = process.env.PRIVATE_KEY as `0x${string}`;
+    
+    if (!privateKey) {
+      throw new Error("خلافت: .env فائل میں PRIVATE_KEY نہیں ملی!");
+    }
+
+    const account = privateKeyToAccount(privateKey);
+    
+    const publicClient = createPublicClient({
+      chain: base,
+      transport: http(RPC_URL),
+    });
+
+    const walletClient = createWalletClient({
+      account,
+      chain: base,
+      transport: http(RPC_URL),
+    });
+
+    console.log(`آٹومیٹڈ سسٹم شروع ہو گیا ہے... والٹ پتہ: ${account.address}`);
+
+    const assetsValue = parseUnits(amountToWithdraw, 6);
+
+    // سمارٹ کانٹریکٹ س뮬یشن اور ودڈرا
+    const { request } = await publicClient.simulateContract({
+      address: VAULT_ADDRESS,
+      abi: morphoVaultAbi,
+      functionName: 'withdraw',
+      args: [assetsValue, account.address, account.address],
+    });
+
+    const hash = await walletClient.writeContract(request);
+    console.log(`ٹرانزیکشن کامیابی سے سبمٹ ہو گئی! ہیش: ${hash}`);
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash });
+    console.log(`ودڈرا مکمل ہو گیا! بلاک نمبر: ${receipt.blockNumber}`);
+    
+  } catch (error) {
+    console.error('سسٹم میں خرابی یا لاک اپ کا مسئلہ پیش آیا:', error);
+  }
+}
+
+// فنکشن کو رن کرنا (مثلاً 1,000,000 ٹوکنز کے لیے)
+automatedWithdrawal('1000000');
