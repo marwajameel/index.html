@@ -1,0 +1,8 @@
+کنفیگریشن فائل کو آپ اپنے پروجیکٹ میں {
+  "stage": "production",
+  "version": "4.5.0",
+  "currentTimestamp": "1784020220",
+  "deploymentTimestamp": "1783579600",
+  "configHash": "0x2e55b08ec13ce549a02e86ec14a9855b8e7395e6fe607fd914acd5177c867ff8",
+  "certifiedAirnodes": ["0x9dB03a07bE313B3C08261B1d1606D511f3560D9e"]
+}
