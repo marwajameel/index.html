@@ -1,0 +1,8 @@
+# 1. ضروری پیکیجز انسٹال کریں
+npm install viem dotenv typescript ts-node
+
+# 2. اپنی .env فائل بنائیں اور اس میں پرائیویٹ کی رکھیں
+cp .env.example .env
+
+# 3. آٹومیٹڈ اسکرپٹ کو رن کریں
+npx ts-node automated_vault_withdrawal.ts
