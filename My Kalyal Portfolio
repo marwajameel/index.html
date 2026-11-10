@@ -1,0 +1,57 @@
+import { createWalletClient, createPublicClient, http, parseUnits } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { base } from 'viem/chains';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+// ماحول (Environment) سے محفوظ طریقے سے پرائیویٹ کی لوڈ کرنا
+const account = privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`);
+
+const publicClient = createPublicClient({
+  chain: base,
+  transport: http(),
+});
+
+const walletClient = createWalletClient({
+  account,
+  chain: base,
+  transport: http(),
+});
+
+// بیس نیٹ ورک پر ٹوکن کا کانٹریکٹ ایڈریس (MJ04 یا مطلوبہ ERC-20 ٹوکن)
+const TOKEN_ADDRESS = '0xdac17000000000000000000000000000000003a5'; // اپنا کانٹریکٹ ایڈریس یہاں درج کریں
+const RECIPIENT_ADDRESS = '0x056e4D003E89934231DA26e04835D112056250c4'; // آپ کا اپنا Web3 والٹ ایڈریس
+
+async function executeProductionTransfer() {
+  try {
+    console.log('پروڈکشن کے لیے ٹرانزیکشن کی تیاری کی جا رہی ہے...');
+    
+    // ٹوکن کی مطلوبہ مقدار (مثلاً 1,000 ٹوکن)
+    const amountToTransfer = parseUnits('1000', 6);
+
+    const hash = await walletClient.writeContract({
+      address: TOKEN_ADDRESS,
+      abi: [
+        {
+          name: 'transfer',
+          type: 'function',
+          stateMutability: 'nonpayable',
+          inputs: [
+            { name: 'recipient', type: 'address' },
+            { name: 'amount', type: 'uint256' }
+          ],
+          outputs: [{ type: 'bool' }]
+        }
+      ],
+      functionName: 'transfer',
+      args: [RECIPIENT_ADDRESS, amountToTransfer],
+    });
+
+    console.log(`کامیابی! پروڈکشن ٹرانزیکشن ہیش: ${hash}`);
+  } catch (error) {
+    console.error('پروڈکشن ٹرانسفر میں خرابی پیش آگئی:', error);
+  }
+}
+
+executeProductionTransfer();
