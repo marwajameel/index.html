@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamil Ahmed Kalyal | Web3 Wallet & USDS Portal</title>
+    <!-- Base App Verification Meta Tag -->
+    <meta name="base:app_id" content="69cd51062608b1800e" />
+    
+    <!-- Tailwind CSS & Ethers.js CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.2/ethers.umd.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Nastaliq Urdu', sans-serif;
+            background: linear-gradient(135deg, #090d16 0%, #111b33 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .urdu-text {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            line-height: 2.2;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="w-full max-w-4xl flex flex-col md:flex-row justify-between items-center gap-4 pb-6 border-b border-slate-800">
+        <div class="text-center md:text-right">
+            <h1 class="text-2xl font-bold text-blue-400 tracking-wide" dir="ltr">jamilahmed.base.eth</h1>
+            <p class="text-xs text-slate-400 mt-1" dir="ltr">Sarai Alamgir | Digital Media & Blockchain Technology</p>
+        </div>
+        <button id="connectBtn" onclick="connectWallet()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow-lg transition duration-200 flex items-center gap-2">
+            <span id="walletStatus" class="urdu-text text-sm">والٹ کنیکٹ کریں</span>
+        </button>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="w-full max-w-2xl my-8 space-y-6">
+        
+        <!-- Account Info Card -->
+        <div class="glass-card rounded-2xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-slate-400 text-sm urdu-text">منسلک والٹ ایڈریس</span>
+                <span id="networkBadge" class="bg-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full font-semibold" dir="ltr">Ethereum Mainnet</span>
+            </div>
+            <p id="userAddress" class="text-sm md:text-base font-mono bg-slate-900/80 p-3 rounded-lg text-slate-300 break-all border border-slate-800" dir="ltr">
+                Not Connected (والٹ منسلک نہیں ہے)
+            </p>
+
+            <!-- Balances Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <p class="text-slate-400 text-xs mb-1" dir="ltr">ETH Balance (Gas)</p>
+                    <h2 id="ethBalance" class="text-2xl font-bold text-white" dir="ltr">0.0000 ETH</h2>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-blue-900/50">
+                    <p class="text-blue-400 text-xs mb-1" dir="ltr">USDS Token Balance</p>
+                    <h2 id="usdsBalance" class="text-2xl font-bold text-emerald-400" dir="ltr">0.00 USDS</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transfer Section -->
+        <div class="glass-card rounded-2xl p-6 shadow-2xl">
+            <h3 class="text-lg font-bold text-white mb-4 urdu-text border-b border-slate-800 pb-2">محفوظ USDS ٹرانسفر</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-slate-300 mb-1 urdu-text">وصول کرنے والے کا ایڈریس (0x...)</label>
+                    <input type="text" id="recipientAddress" placeholder="0x..." dir="ltr"
+                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-sm text-slate-300 urdu-text">رقم (USDS Amount)</label>
+                        <button onclick="setMaxAmount()" class="text-xs text-blue-400 hover:underline" dir="ltr">Max Available</button>
+                    </div>
+                    <input type="number" id="transferAmount" placeholder="0.00" dir="ltr"
+                        class="w-full bg-slate-900/90 border border-slate-700 rounded-xl p-3 text-white font-mono text-sm focus:outline-none focus:border-blue-500">
+                </div>
+
+                <button id="sendBtn" onclick="sendUSDS()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-200 urdu-text">
+                    USDS ٹرانسفر کریں
+                </button>
+            </div>
+
+            <!-- Status / Log Output -->
+            <div id="txLog" class="hidden mt-4 p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono break-all" dir="ltr"></div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-4xl text-center text-slate-500 text-xs pt-6 border-t border-slate-800 space-y-1">
+        <p dir="ltr">© 2026 Jamil Ahmed Kalyal | Web3 & Digital Media Portal</p>
+        <p class="urdu-text">یہ پورٹل مکمل طور پر نان کسٹوڈیل (Non-Custodial) اور محفوظ ہے — کوئی پرائیویٹ کی محفوظ نہیں کی جاتی۔</p>
+    </footer>
+
+    <!-- Web3 Logic -->
+    <script>
+        const USDS_CONTRACT_ADDRESS = "0xdC035D45d973E3EC169d2276DDab16f1e407384F";
+        const ERC20_ABI = [
+            "function balanceOf(address owner) view returns (uint256)",
+            "function decimals() view returns (uint8)",
+            "function transfer(address to, uint256 amount) returns (bool)"
+        ];
+
+        let provider, signer, userAddress, rawUsdsBalance = 0;
+
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                alert("براہ کرم MetaMask یا کوئی Web3 والٹ انسٹال کریں!");
+                return;
+            }
+
+            try {
+                provider = new ethers.BrowserProvider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                signer = await provider.getSigner();
+                userAddress = await signer.getAddress();
+
+                document.getElementById("userAddress").innerText = userAddress;
+                document.getElementById("walletStatus").innerText = "والٹ منسلک ہے ✓";
+                document.getElementById("connectBtn").classList.replace("bg-blue-600", "bg-emerald-600");
+
+                await updateBalances();
+            } catch (error) {
+                console.error(error);
+                showLog("Connection Error: " + error.message, "text-red-400");
+            }
+        }
+
+        async function updateBalances() {
+            if (!provider || !userAddress) return;
+
+            try {
+                // Fetch ETH Balance
+                const ethBal = await provider.getBalance(userAddress);
+                document.getElementById("ethBalance").innerText = parseFloat(ethers.formatEther(ethBal)).toFixed(4) + " ETH";
+
+                // Fetch USDS Balance
+                const usdsContract = new ethers.Contract(USDS_CONTRACT_ADDRESS, ERC20_ABI, provider);
+                const decimals = await usdsContract.decimals();
+                const bal = await usdsContract.balanceOf(userAddress);
+                rawUsdsBalance = ethers.formatUnits(bal, decimals);
+                
+                document.getElementById("usdsBalance").innerText = parseFloat(rawUsdsBalance).toFixed(2) + " USDS";
+            } catch (err) {
+                console.error("Balance fetch error:", err);
+                showLog("Note: Make sure your wallet is switched to Ethereum Mainnet.", "text-yellow-400");
+            }
+        }
+
+        function setMaxAmount() {
+            if (rawUsdsBalance > 0) {
+                document.getElementById("transferAmount").value = rawUsdsBalance;
+            }
+        }
+
+        async function sendUSDS() {
+            if (!signer) {
+                alert("پہلے اپنا والٹ کنیکٹ کریں!");
+                return;
+            }
+
+            const to = document.getElementById("recipientAddress").value.trim();
+            const amount = document.getElementById("transferAmount").value.trim();
+
+            if (!ethers.isAddress(to)) {
+                alert("براہ کرم درست 0x ایڈریس درج کریں!");
+                return;
+            }
+            if (!amount || parseFloat(amount) <= 0) {
+                alert("براہ کرم درست رقم درج کریں!");
+                return;
+            }
+
+            try {
+                showLog("Transaction initiated... Please confirm in your wallet.", "text-blue-400");
+                const usdsContract = new ethers.Contract(USDS_CONTRACT_ADDRESS, ERC20_ABI, signer);
+                const decimals = await usdsContract.decimals();
+                const parsedAmount = ethers.parseUnits(amount, decimals);
+
+                const tx = await usdsContract.transfer(to, parsedAmount);
+                showLog("Transaction Sent! Hash: " + tx.hash + " (Waiting for confirmation...)", "text-yellow-400");
+
+                await tx.wait();
+                showLog("Success! Transfer Confirmed. Hash: " + tx.hash, "text-emerald-400");
+                await updateBalances();
+            } catch (error) {
+                console.error(error);
+                showLog("Transfer Failed: " + (error.reason || error.message), "text-red-400");
+            }
+        }
+
+        function showLog(msg, colorClass) {
+            const logBox = document.getElementById("txLog");
+            logBox.classList.remove("hidden", "text-red-400", "text-emerald-400", "text-yellow-400", "text-blue-400");
+            logBox.classList.add(colorClass);
+            logBox.innerText = msg;
+        }
+    </script>
+</body>
+</html>
