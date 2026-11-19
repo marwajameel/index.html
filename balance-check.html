@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Base & Solana Balance Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: #f9fafb;
+      padding: 20px;
+      margin: 0;
+    }
+    .box {
+      max-width: 640px;
+      margin: auto;
+      background: #1f2937;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    button {
+      padding: 10px 16px;
+      margin: 5px 0 12px 8px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+    }
+    button.sol {
+      background: #16a34a;
+    }
+    pre {
+      background: #030712;
+      color: #e5e7eb;
+      padding: 14px;
+      border-radius: 8px;
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h3>Base اور Solana بیلنس چیک</h3>
+
+    <button onclick="checkBase()">Check Base (ETH & USDT)</button>
+    <button class="sol" onclick="checkSolana()">Check Solana (A9aEY...h7Q)</button>
+
+    <pre id="out">Ready...</pre>
+  </div>
+
+  <script>
+    const out = document.getElementById("out");
+
+    // Solana target address provided by you
+    const SOL_ADDRESS = "A9aEY896KTSgWe8HdU6L3sSxQjdoca6r39difpjDAh7Q";
+    const SOL_RPC = "https://api.mainnet-beta.solana.com";
+
+    // Base RPC & USDT contract
+    const BASE_RPC = "https://mainnet.base.org";
+    const BASE_USDT = "0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2";
+
+    async function checkSolana() {
+      try {
+        out.textContent = "Checking Solana: " + SOL_ADDRESS + " ...";
+        const res = await fetch(SOL_RPC, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 1,
+            method: "getBalance",
+            params: [SOL_ADDRESS],
+          }),
+        });
+        const data = await res.json();
+        const lamports = Number(data?.result?.value || 0);
+        const sol = lamports / 1e9;
+
+        out.textContent =
+          "Solana Address: " + SOL_ADDRESS + "\n" +
+          "SOL Balance: " + sol.toFixed(6) + " SOL";
+      } catch (e) {
+        out.textContent = "Solana Error: " + e.message;
+      }
+    }
+
+    async function checkBase() {
+      try {
+        if (!window.ethereum) {
+          out.textContent = "EVM wallet (window.ethereum) not found for Base.";
+          return;
+        }
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const addr = accounts[0];
+
+        const ethRes = await fetch(BASE_RPC, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 1,
+            method: "eth_getBalance",
+            params: [addr, "latest"],
+          }),
+        });
+        const ethJson = await ethRes.json();
+        const eth = Number(BigInt(ethJson.result || "0x0")) / 1e18;
+
+        const padded = addr.toLowerCase().replace(/^0x/, "").padStart(64, "0");
+        const usdtRes = await fetch(BASE_RPC, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: 2,
+            method: "eth_call",
+            params: [{ to: BASE_USDT, data: "0x70a08231" + padded }, "latest"],
+          }),
+        });
+        const usdtJson = await usdtRes.json();
+        const usdt = Number(BigInt(usdtJson.result || "0x0")) / 1e6;
+
+        out.textContent =
+          "Base Address: " + addr + "\n" +
+          "ETH Balance: " + eth.toFixed(6) + " ETH\n" +
+          "USDT Balance: " + usdt.toFixed(2) + " USDT";
+      } catch (e) {
+        out.textContent = "Base Error: " + e.message;
+      }
+    }
+  </script>
+</body>
+</html>
