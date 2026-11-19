@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Base 1,000,000 Token Transfer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 20px;
+      margin: 0;
+    }
+    .card {
+      max-width: 680px;
+      margin: auto;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #090d16;
+      color: #f8fafc;
+      direction: ltr;
+      text-align: left;
+    }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+    }
+    button.check {
+      background: #475569;
+    }
+    button.send {
+      background: #16a34a;
+    }
+    pre {
+      background: #090d16;
+      color: #e2e8f0;
+      padding: 14px;
+      border-radius: 8px;
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Base (ERC-20) — 1,000,000 ٹوکن ٹرانسفر</h2>
+
+    <label>ERC-20 Token Contract Address (Base)</label>
+    <input id="tokenAddr" type="text" placeholder="0xYourTokenContractAddress" />
+
+    <label>Recipient Address</label>
+    <input id="toAddr" type="text" value="0xcBcA630521176E76D8a5F55F78703B92336A1411" />
+
+    <label>Amount (Tokens)</label>
+    <input id="amountInput" type="text" value="1000000" />
+
+    <div class="btn-row">
+      <button onclick="connectBase()">1. Connect Base</button>
+      <button class="check" onclick="checkBalances()">2. Check Balances</button>
+      <button class="send" onclick="sendTokens()">3. Send 1,000,000 Tokens</button>
+    </div>
+
+    <pre id="out">Ready...</pre>
+  </div>
+
+  <script>
+    const out = document.getElementById("out");
+    const BASE_CHAIN_ID = "0x2105"; // 8453
+    const BASE_RPC = "https://mainnet.base.org";
+
+    let senderAddr = null;
+
+    function log(msg) {
+      out.textContent = msg;
+    }
+
+    function isValidEthAddr(addr) {
+      return /^0x[a-fA-F0-9]{40}$/.test((addr || "").trim());
+    }
+
+    function pad32HexFromAddr(addr) {
+      return addr.trim().toLowerCase().replace(/^0x/, "").padStart(64, "0");
+    }
+
+    function parseUnitsBigInt(amountStr, decimals) {
+      const clean = amountStr.trim();
+      if (!/^\d+(\.\d+)?$/.test(clean)) {
+        throw new Error("Invalid token amount.");
+      }
+      const [whole, frac = ""] = clean.split(".");
+      const fracPadded = frac.padEnd(decimals, "0").slice(0, decimals);
+      return BigInt(whole) * (10n ** BigInt(decimals)) + BigInt(fracPadded || "0");
+    }
+
+    async function rpcCall(method, params) {
+      const res = await fetch(BASE_RPC, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: Date.now(), method, params }),
+      });
+      const json = await res.json();
+      if (json.error) {
+        throw new Error(json.error.message || "RPC Error");
+      }
+      return json.result;
+    }
+
+    async function getTokenDecimals(tokenAddr) {
+      // decimals() selector = 0x313ce567
+      const resHex = await rpcCall("eth_call", [{ to: tokenAddr, data: "0x313ce567" }, "latest"]);
+      if (!resHex || resHex === "0x") return 18;
+      return Number(BigInt(resHex));
+    }
+
+    async function connectBase() {
+      try {
+        if (!window.ethereum) {
+          log("EVM wallet (window.ethereum) not found.");
+          return;
+        }
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        senderAddr = accounts[0];
+
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: BASE_CHAIN_ID }],
+        });
+
+        log("Connected on Base (0x2105):\n" + senderAddr);
+      } catch (err) {
+        log("Connect Error (" + (err.code || "") + "): " + err.message);
+      }
+    }
+
+    async function checkBalances() {
+      try {
+        if (!senderAddr) {
+          if (!window.ethereum) {
+            log("EVM wallet not found.");
+            return;
+          }
+          const accounts = await window.ethereum.request({ method: "eth_accounts" });
+          if (!accounts || !accounts.length) {
+            log("Please connect Base wallet first.");
+            return;
+          }
+          senderAddr = accounts[0];
+        }
+
+        const tokenAddr = document.getElementById("tokenAddr").value.trim();
+        const ethHex = await rpcCall("eth_getBalance", [senderAddr, "latest"]);
+        const ethBal = Number(BigInt(ethHex || "0x0")) / 1e18;
+
+        let tokenInfo = "Token Contract: Not entered";
+        if (isValidEthAddr(tokenAddr)) {
+          const decimals = await getTokenDecimals(tokenAddr);
+          // balanceOf(address) selector = 0x70a08231
+          const data = "0x70a08231" + pad32HexFromAddr(senderAddr);
+          const balHex = await rpcCall("eth_call", [{ to: tokenAddr, data }, "latest"]);
+          const raw = BigInt(balHex || "0x0");
+          const formatted = Number(raw) / (10 ** decimals);
+          tokenInfo = "Token Balance (" + decimals + " dec): " + formatted;
+        }
+
+        log(
+          "Wallet: " + senderAddr + "\n" +
+          "ETH Balance (Gas): " + ethBal.toFixed(6) + " ETH\n" +
+          tokenInfo
+        );
+      } catch (err) {
+        log("Balance Error: " + err.message);
+      }
+    }
+
+    async function sendTokens() {
+      try {
+        if (!window.ethereum) {
+          log("EVM wallet not found.");
+          return;
+        }
+        if (!senderAddr) {
+          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+          senderAddr = accounts[0];
+        }
+
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: BASE_CHAIN_ID }],
+        });
+
+        const tokenAddr = document.getElementById("tokenAddr").value.trim();
+        const toAddr = document.getElementById("toAddr").value.trim();
+        const amountStr = document.getElementById("amountInput").value.trim();
+
+        if (!isValidEthAddr(tokenAddr)) {
+          log("Please enter a valid ERC-20 token contract address (0x...).");
+          return;
+        }
+        if (!isValidEthAddr(toAddr)) {
+          log("Please enter a valid recipient address (0x...).");
+          return;
+        }
+
+        const decimals = await getTokenDecimals(tokenAddr);
+        const amountUnits = parseUnitsBigInt(amountStr, decimals);
+        const amountHex = amountUnits.toString(16).padStart(64, "0");
+
+        // transfer(address,uint256) selector = 0xa9059cbb
+        const callData = "0xa9059cbb" + pad32HexFromAddr(toAddr) + amountHex;
+
+        const txHash = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: senderAddr,
+              to: tokenAddr,
+              data: callData,
+            },
+          ],
+        });
+
+        log(
+          "Transaction Sent!\n" +
+          "To: " + toAddr + "\n" +
+          "Amount: " + amountStr + " tokens\n" +
+          "TX Hash: " + txHash
+        );
+      } catch (err) {
+        log("Send Error (" + (err.code || "") + "): " + err.message);
+      }
+    }
+  </script>
+</body>
+</html>
