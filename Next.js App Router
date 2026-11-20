@@ -1,0 +1,36 @@
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+
+  const items = [
+    {
+      id: 1,
+      title: 'SDN News آن-چین ریکارڈ اپڈیٹ',
+      date: '2026-11-20',
+      details: 'Base (8453) ٹریکنگ سیٹ اپ اور ویب ہُک اینڈ پوائنٹ کی تصدیق۔',
+    },
+    {
+      id: 2,
+      title: 'والیٹ اور ٹرانزیکشن لاگ',
+      date: '2026-11-18',
+      details: 'ٹرانزیکشن ہسٹری اور ایڈریس اسٹیٹس کا جائزہ۔',
+    },
+    {
+      id: 3,
+      title: 'ٹریکنگ کنفیگریشن تیار',
+      date: today,
+      details: 'ماحولیاتی متغیرات اور اینڈ پوائنٹ کی ہم آہنگی۔',
+    },
+  ];
+
+  // نئی تاریخ سب سے اوپر
+  items.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  return NextResponse.json({
+    ok: true,
+    fetchedAt: now.toISOString(),
+    items,
+  });
+}
